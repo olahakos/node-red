@@ -73,5 +73,15 @@ module.exports = function(RED) {
         });
     }
     RED.nodes.registerType("analogread",analogRead);
+    
+    function sendSignal(config) {
+        RED.nodes.createNode(this,config);
+        var node = this;
+        this.on('input', function(msg) {
+        	wyliodrin.sendSignal (parseInt(config.signal), parseInt (msg.payload));
+            node.send(null);
+        });
+    }
+    RED.nodes.registerType("sendsignal",sendSignal);
 }
 
