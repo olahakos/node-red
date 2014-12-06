@@ -1,0 +1,124 @@
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/javascript">
+    RED.nodes.registerType('web_listen',{
+        color:"rgb(215, 215, 180)",
+        category: 'input',
+        defaults: {
+            name: {value:""},
+            port: {value:5000, validator:RED.validators.number ()},
+            route: {value:"/"},
+            method: {value: 'GET'}
+        },
+        inputs:0,
+        outputs:1,
+        icon: "white-globe.png",
+        label: function() {
+            return 'Web '+this.route;
+        },
+    });
+
+    RED.nodes.registerType('web_response',{
+        color:"rgb(215, 215, 180)",
+        category: 'output',
+        defaults: {
+            name: {value:""},
+            error: {value: 200, validator: RED.validators.number ()}
+        },
+        inputs:1,
+        outputs:0,
+        icon: "white-globe.png",
+        align: 'right',
+        label: function() {
+            return (this.name.length>0)?this.name:'Web Response';
+        },
+    });
+
+    RED.nodes.registerType('web_template',{
+        color:"rgb(215, 215, 180)",
+        category: 'output',
+        defaults: {
+            name: {value:""},
+            template: {value: ""}
+        },
+        inputs:1,
+        outputs:0,
+        icon: "white-globe.png",
+        align: 'right',
+        label: function() {
+            return (this.name.length>0)?this.name:'Web '+this.template;
+        },
+    });
+</script>
+
+<script type="text/x-red" data-template-name="web_listen">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-route"><i class="fa fa-tag"></i> Route</label>
+        <input type="text" id="node-input-route" placeholder="/">
+    </div>
+    <div class="form-row">
+        <label for="node-input-method"><i class="fa fa-arrow-up"></i> Method</label>
+        <select id="node-input-method" style="width:73% !important">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-port"><i class="fa fa-random"></i> Port</label>
+        <input id="node-input-port" style="width: 60px; height: 1.7em;" value="5000">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="web_listen">
+    Web Listen 
+          
+</script>
+
+<script type="text/x-red" data-template-name="web_response">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-error"><i class="fa fa-tag"></i> Error</label>
+        <input type="text" id="node-input-error" placeholder="/">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="web_response">
+    Web Response 
+          
+</script>
+
+<script type="text/x-red" data-template-name="web_template">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-template"><i class="fa fa-tag"></i> Template</label>
+        <input type="text" id="node-input-template" placeholder="template.html">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="web_template">
+    Web Response Template
+          
+</script>

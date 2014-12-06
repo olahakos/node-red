@@ -13,6 +13,7 @@
         inputs:1,
         outputs:0,
         icon: "file.png",
+        align: 'right',
         label: function() {
             return this.name||"Digital Write "+this.pin;
         }
@@ -51,6 +52,7 @@
         inputs:1,
         outputs:0,
         icon: "file.png",
+        align: 'right',
         label: function() {
             return this.name||"Analog Write "+this.pin;
         }
@@ -81,14 +83,15 @@
         defaults: {
             name: {value:""},
             signal: {
-                value: 0, 
+                value: "signal", 
                 required: true, 
-                validate: RED.validators.string()
+                validate: RED.validators.regex(/[A-Za-z]+/)
             }
         },
         inputs:1,
         outputs:0,
-        icon: "file.png",
+        icon: "serial.png",
+        align: 'right',
         label: function() {
             return this.name||"Send signal "+this.signal;
         }
@@ -164,7 +167,7 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-pin"><i class="icon-tag"></i> Pin Number</label>
+        <label for="node-input-pin"><i class="icon-tag"></i> Signal</label>
         <input type="text" id="node-input-signal" placeholder="signal">
     </div>
 </script>
