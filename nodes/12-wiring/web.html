@@ -13,6 +13,48 @@
 -->
 
 <script type="text/javascript">
+    RED.nodes.registerType('http request',{
+        category: 'function',
+        color:"rgb(231, 231, 174)",
+        defaults: {
+            name: {value:""},
+            method:{value:"GET"},
+            url:{value:""},
+            user: {value:""},
+            password: {value: ""}
+            //user -> credentials
+            //pass -> credentials
+        },
+        inputs:1,
+        outputs:1,
+        align: "right",
+        icon: "white-globe.png",
+        label: function() {
+            return this.name||"http request";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            if ((this.user && this.user.length>0) || (this.password && this.password.length>0)) {
+                $('#node-input-useAuth').prop('checked', true);
+                $(".node-input-useAuth-row").show();
+            } else {
+                $('#node-input-useAuth').prop('checked', false);
+                $(".node-input-useAuth-row").hide();
+            }
+            $("#node-input-useAuth").change(function() {
+                if ($(this).is(":checked")) {
+                    $(".node-input-useAuth-row").show();
+                } else {
+                    $(".node-input-useAuth-row").hide();
+                    $('#node-input-user').val('');
+                    $('#node-input-password').val('');
+                }
+            });
+        },
+    });
+
     RED.nodes.registerType('web_listen',{
         color:"rgb(215, 215, 180)",
         category: 'input',
@@ -61,6 +103,62 @@
             return (this.name.length>0)?this.name:'Web '+this.template;
         },
     });
+</script>
+
+<script type="text/x-red" data-template-name="http request">
+    <div class="form-row">
+        <label for="node-input-method"><i class="fa fa-tasks"></i> Method</label>
+        <select type="text" id="node-input-method" style="width:72%;">
+        <option value="GET">GET</option>
+        <option value="POST">POST</option>
+        <option value="PUT">PUT</option>
+        <option value="DELETE">DELETE</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-url"><i class="fa fa-globe"></i> URL</label>
+        <input type="text" id="node-input-url" placeholder="http://">
+    </div>
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-useAuth" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-useAuth" style="width: 70%;">Use basic authentication?</label>
+    </div>
+    <div class="form-row node-input-useAuth-row">
+        <label for="node-input-user"><i class="fa fa-user"></i> Username</label>
+        <input type="text" id="node-input-user">
+    </div>
+    <div class="form-row node-input-useAuth-row">
+        <label for="node-input-password"><i class="fa fa-lock"></i> Password</label>
+        <input type="password" id="node-input-password">
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="http request">
+    <p>Provides a node for making http requests.</p>
+    <p>The URL and HTTP method can be configured in the node, if they are left blank they should be set in an incoming message on <code>msg.url</code> and <code>msg.method</code>:</p>
+    <ul>
+        <li><code>url</code>, if set, is used as the url of the request. Must start with http: or https:</li>
+        <li><code>method</code>, if set, is used as the HTTP method of the request.
+        Must be one of <code>GET</code>, <code>PUT</code>, <code>POST</code> or <code>DELETE</code> (default: GET)</li>
+        <li><code>headers</code>, if set, should be an object containing field/value
+        pairs to be added as request headers</li>
+        <li><code>payload</code> is sent as the body of the request</li>
+    </ul>
+    <p>When configured within the node, the URL property can contain <a href="http://mustache.github.io/mustache.5.html" target="_new">mustache-style</a> tags. These allow the
+    url to be constructed using values of the incoming message. For example, if the url is set to
+    <code>example.com/{{topic}}</code>, it will have the value of <code>msg.topic</code> automatically inserted.</p>
+    <p>
+    The output message contains the following properties:
+    <ul>
+        <li><code>payload</code> is the body of the response</li>
+        <li><code>statusCode</code> is the status code of the response, or the error code if the request could not be completed</li>
+        <li><code>headers</code> is an object containing the response headers</li>
+    </ul>
 </script>
 
 <script type="text/x-red" data-template-name="web_listen">

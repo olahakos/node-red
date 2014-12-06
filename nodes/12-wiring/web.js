@@ -20,11 +20,127 @@ module.exports = function(RED) {
     var express = null;
     var app = null;
     var jinja = null;
+    var http = null;
+    var https = null;
+    var mustache = null;
+    var urllib = null;
+    var querystring = null;
+
 
     if (RED.device)
     {
         express = require ('express');
+        http = require("follow-redirects").http;
+        https = require("follow-redirects").https;
+        mustache = require("mustache");
+        urllib = require("url");
+        querystring = require("querystring");
     }
+
+    function HTTPRequest(n) {
+        RED.nodes.createNode(this,n);
+        var nodeUrl = n.url;
+        var isTemplatedUrl = (nodeUrl||"").indexOf("{{") != -1;
+        var nodeMethod = n.method || "GET";
+        var node = this;
+        var user = n.user;
+        var password = n.password;
+        this.on("input",function(msg) {
+            node.status({fill:"blue",shape:"dot",text:"requesting"});
+            var url;
+            if (msg.url) {
+                if (n.url && (n.url !== msg.url)) {
+                    node.warn("Deprecated: msg properties should not override set node properties. See bit.ly/nr-override-msg-props");
+                }
+                url = msg.url;
+            } else if (isTemplatedUrl) {
+                url = mustache.render(nodeUrl,msg);
+            } else {
+                url = nodeUrl;
+            }
+            // url must start http:// or https:// so assume http:// if not set
+            if (!((url.indexOf("http://")===0) || (url.indexOf("https://")===0))) {
+                url = "http://"+url;
+            }
+
+            var method;
+            if (msg.method) {
+                if (n.method && (n.method !== msg.method)) {
+                    node.warn("Deprecated: msg properties should not override set node properties. See bit.ly/nr-override-msg-props");
+                }
+                method = msg.method.toUpperCase();
+            } else {
+                method = nodeMethod.toUpperCase();
+            }
+            //node.log(method+" : "+url);
+            var opts = urllib.parse(url);
+            opts.method = method;
+            opts.headers = {};
+            if (msg.headers) {
+                for (var v in msg.headers) {
+                    if (msg.headers.hasOwnProperty(v)) {
+                        var name = v.toLowerCase();
+                        if (name !== "content-type" && name !== "content-length") {
+                            // only normalise the known headers used later in this
+                            // function. Otherwise leave them alone.
+                            name = v;
+                        }
+                        opts.headers[name] = msg.headers[v];
+                    }
+                }
+            }
+            if (n.user && n.user.length>0) {
+                opts.auth = n.user+":"+(n.password||"");
+            }
+            var payload = null;
+
+            if (msg.payload && (method == "POST" || method == "PUT") ) {
+                if (typeof msg.payload === "string" || Buffer.isBuffer(msg.payload)) {
+                    payload = msg.payload;
+                } else if (typeof msg.payload == "number") {
+                    payload = msg.payload+"";
+                } else {
+                    if (opts.headers['content-type'] == 'application/x-www-form-urlencoded') {
+                        payload = querystring.stringify(msg.payload);
+                    } else {
+                        payload = JSON.stringify(msg.payload);
+                        if (opts.headers['content-type'] == null) {
+                            opts.headers['content-type'] = "application/json";
+                        }
+                    }
+                }
+                if (opts.headers['content-length'] == null) {
+                    opts.headers['content-length'] = Buffer.byteLength(payload);
+                }
+            }
+
+            var req = ((/^https/.test(url))?https:http).request(opts,function(res) {
+                res.setEncoding('utf8');
+                msg.statusCode = res.statusCode;
+                msg.headers = res.headers;
+                msg.payload = "";
+                res.on('data',function(chunk) {
+                    msg.payload += chunk;
+                });
+                res.on('end',function() {
+                    node.send(msg);
+                    node.status({});
+                });
+            });
+            req.on('error',function(err) {
+                msg.payload = err.toString() + " : " + url;
+                msg.statusCode = err.code;
+                node.send(msg);
+                node.status({fill:"red",shape:"ring",text:err.code});
+            });
+            if (payload) {
+                req.write(payload);
+            }
+            req.end();
+        });
+    }
+
+    RED.nodes.registerType("http request",HTTPRequest);
 
     function WebListenNode(n) {
         RED.nodes.createNode(this,n);

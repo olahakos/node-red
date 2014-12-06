@@ -16,7 +16,13 @@
 
 module.exports = function(RED) {
     "use strict";
-    var mustache = require("mustache");
+    var mustache = null;
+
+    if (RED.device)
+    {
+        mustache = require("mustache");
+    }
+
     function TriggerNode(n) {
         RED.nodes.createNode(this,n);
         this.op1 = n.op1 || "1";
