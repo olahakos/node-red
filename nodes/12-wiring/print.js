@@ -30,14 +30,14 @@ module.exports = function(RED) {
             if (this.active)
             {
                 if (this.complete == "true") { // debug complete msg object
-                    console.log("\n"+util.inspect(msg, {colors:useColors, depth:10}));
+                    console.log(util.inspect(msg, {colors:useColors, depth:10}));
                 } 
                 else 
                 { // debug just the msg.payload
                     if (typeof msg.payload === "string") {
                         console.log((msg.payload.indexOf("\n") != -1 ? "\n" : "") + msg.payload);
                     }
-                    else if (typeof msg.payload === "object") { console.log("\n"+util.inspect(msg.payload, {colors:useColors, depth:10})); }
+                    else if (typeof msg.payload === "object") { console.log(util.inspect(msg.payload, {colors:useColors, depth:10})); }
                     else { console.log(util.inspect(msg.payload, {colors:useColors})); }
                 }
             }
