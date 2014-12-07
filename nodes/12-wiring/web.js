@@ -152,7 +152,7 @@ module.exports = function(RED) {
         {
             app = express ();
             app.use (require ('morgan')("dev"));
-            var = bodyparser=require ('body-parser');
+            var bodyparser=require ('body-parser');
             app.use (bodyparser.json());
             app.use (bodyparser.urlencoded({ extended:true }));
             app.use ('static', express.static(__dirname+'/static'));
