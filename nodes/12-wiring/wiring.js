@@ -78,7 +78,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         var node = this;
         this.on('input', function(msg) {
-        	wyliodrin.sendSignal (parseInt(config.signal), parseInt (msg.payload));
+        	wyliodrin.sendSignal (config.signal, parseFloat (msg.payload));
             node.send(null);
         });
     }
