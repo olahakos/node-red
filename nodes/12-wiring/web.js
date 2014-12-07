@@ -163,7 +163,7 @@ module.exports = function(RED) {
         {
             app.get (this.route, function (req, res, next)
             {
-                msg = {
+                var msg = {
                     payload: req.query,
                     req: req,
                     res: res,
