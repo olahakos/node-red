@@ -148,6 +148,7 @@ module.exports = function(RED) {
         this.port = n.port;
         this.route = n.route;
         this.method = n.method;
+        var that = this;
         if (!app)
         {
             app = express ();
@@ -169,7 +170,7 @@ module.exports = function(RED) {
                     res: res,
                     next: next
                 };
-                this.send (msg);
+                that.send (msg);
             });
         }
         else
@@ -183,7 +184,7 @@ module.exports = function(RED) {
                     res: res,
                     next: next
                 };
-                this.send (msg);
+                that.send (msg);
             });
         }
         else
@@ -197,7 +198,7 @@ module.exports = function(RED) {
                     res: res,
                     next: next
                 };
-                this.send (msg);
+                that.send (msg);
             });
         }
 
