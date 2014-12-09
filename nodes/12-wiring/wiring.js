@@ -6,6 +6,10 @@ module.exports = function(RED) {
 	if (RED.device)
 	{
 		wyliodrin = require ('wyliodrin');
+        if (process.env.wyliodrin_board == "raspberrypi")
+        {
+            wyliodrin.grovepiSetup (300, 4);
+        }
 	}
 
     if (!RED.wyliodrin) RED.wyliodrin = {};
@@ -17,7 +21,7 @@ module.exports = function(RED) {
         var node = this;
         this.on('input', function(msg) {
             var pin = config.pin;
-            if (!config.pin || config.pin.length == 0) pin = msg.pin;
+            if (config.pin.length == 0) pin = msg.pin;
             if (RED.wyliodrin.pinModes[pin] !== wyliodrin.OUTPUT)
             {
                 wyliodrin.pinMode (parseInt(pin), wyliodrin.OUTPUT);    
@@ -41,7 +45,7 @@ module.exports = function(RED) {
         // }
         this.on('input', function(msg) {
             var pin = config.pin;
-            if (!config.pin || config.pin.length == 0) pin = msg.pin;
+            if (config.pin.length == 0) pin = msg.pin;
             if (RED.wyliodrin.pinModes[pin] !== wyliodrin.INPUT)
             {
                 wyliodrin.pinMode (parseInt(pin), wyliodrin.INPUT);    
@@ -60,7 +64,7 @@ module.exports = function(RED) {
             //     wyliodrin.pinMode (parseInt(config.pin), wyliodrin.OUTPUT);    
             // }
             var pin = config.pin;
-            if (!config.pin || config.pin.length == 0) pin = msg.pin;
+            if (config.pin.length == 0) pin = msg.pin;
             wyliodrin.analogWrite (parseInt(pin), parseInt (msg.payload));
             node.send(null);
         });
@@ -80,7 +84,7 @@ module.exports = function(RED) {
         // }
         this.on('input', function(msg) {
             var pin = config.pin;
-            if (!config.pin || config.pin.length == 0) pin = msg.pin;
+            if (config.pin.length == 0) pin = msg.pin;
             node.send({payload: wyliodrin.analogRead (parseInt(pin))});
         });
     }
@@ -90,7 +94,14 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         var node = this;
         this.on('input', function(msg) {
-        	wyliodrin.sendSignal (config.signal, parseFloat (msg.payload));
+            if (msg.flag)
+            {
+               wyliodrin.sendSignal (msg.flag, config.signal, parseFloat (msg.payload)); 
+            }
+            else
+            {
+        	   wyliodrin.sendSignal (config.signal, parseFloat (msg.payload));
+            }
             node.send(null);
         });
     }

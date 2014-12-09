@@ -21,7 +21,7 @@ module.exports = function(RED) {
             {
                 publish = redis.createClient ();
             }
-            if (this.boardid && this.boardid.trim().length == 0) this.boardid = msg.boardid;
+            if (!this.boardid || this.boardid.trim().length == 0) this.boardid = msg.boardid;
             var ids = this.boardid.split (',');
             var label = that.label;
             if (!that.label || that.label.length==0) label = msg.label;
