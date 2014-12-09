@@ -156,7 +156,7 @@ module.exports = function(RED) {
             var bodyparser=require ('body-parser');
             app.use (bodyparser.json());
             app.use (bodyparser.urlencoded({ extended:true }));
-            app.use ('static', express.static(__dirname+'/static'));
+            app.use ('static', express.static(process.cwd()+'/static'));
             app.listen (5000);
         }
         
@@ -229,7 +229,7 @@ module.exports = function(RED) {
         }
         this.on ('input', function (msg)
         {
-            msg.res.send (jinja.compileFile (__dirname+'/templates/'+this.template).render (msg.payload));
+            msg.res.send (jinja.compileFile (process.cwd()+'/templates/'+this.template).render (msg.payload));
         });
 
     }
