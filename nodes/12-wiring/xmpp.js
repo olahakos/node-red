@@ -23,10 +23,12 @@ module.exports = function(RED) {
             }
             if (this.boardid && this.boardid.trim().length == 0) this.boardid = msg.boardid;
             var ids = this.boardid.split (',');
+            var label = that.label;
+            if (!that.label || that.label.length==0) label = msg.label;
             for (var boardid in ids)
             {
                 // console.log ('sending: '+JSON.stringify ({id: ids[boardid].trim(), data:JSON.stringify(msg.payload)}));
-                publish.publish ('communication_server:'+msg.label, JSON.stringify ({id: ids[boardid].trim(), data:JSON.stringify(msg.payload)}));
+                publish.publish ('communication_server:'+label, JSON.stringify ({id: ids[boardid].trim(), data:JSON.stringify(msg.payload)}));
             }
         });
     }
@@ -52,7 +54,7 @@ module.exports = function(RED) {
             var message = JSON.parse (strmessage);
             var msg = 
             {
-                label: channel,
+                label: channel.substring ('communication_client'.length),
                 sender: message.from,
                 payload: JSON.parse(message.data)
             };
