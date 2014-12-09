@@ -204,7 +204,7 @@ module.exports = function(RED) {
 
     }
 
-    RED.nodes.registerType("web_listen",WebListenNode);
+    RED.nodes.registerType("web route",WebListenNode);
 
     function WebResponseNode(n) {
         RED.nodes.createNode(this,n);
@@ -218,7 +218,7 @@ module.exports = function(RED) {
 
     }
 
-    RED.nodes.registerType("web_response",WebResponseNode);
+    RED.nodes.registerType("web response",WebResponseNode);
 
     function WebResponseTemplateNode(n) {
         RED.nodes.createNode(this,n);
@@ -234,5 +234,5 @@ module.exports = function(RED) {
 
     }
 
-    RED.nodes.registerType("web_template",WebResponseTemplateNode);
+    RED.nodes.registerType("web template",WebResponseTemplateNode);
 }

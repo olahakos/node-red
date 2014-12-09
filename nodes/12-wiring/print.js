@@ -23,6 +23,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,n);
         this.name = n.name;
         this.complete = n.complete;
+        this.field = n.field;
         this.active = (n.active == null)||n.active;
         var node = this;
     
@@ -34,8 +35,13 @@ module.exports = function(RED) {
                 } 
                 else 
                 { // debug just the msg.payload
+                    if (this.field && this.field.length > 0)
+                    {
+                        console.log(util.inspect(msg[field], {colors:useColors}));
+                    }
+                    else
                     if (typeof msg.payload === "string") {
-                        console.log((msg.payload.indexOf("\n") != -1 ? "\n" : "") + msg.payload);
+                        console.log(msg.payload);
                     }
                     else if (typeof msg.payload === "object") { console.log(util.inspect(msg.payload, {colors:useColors, depth:10})); }
                     else { console.log(util.inspect(msg.payload, {colors:useColors})); }
