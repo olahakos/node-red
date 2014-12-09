@@ -21,7 +21,7 @@ module.exports = function(RED) {
             publish.publish ('communication_server:'+msg.label, JSON.stringify ({id: msg.boardid, data:msg.payload}));
         });
     }
-    RED.nodes.registerType("send message",sendMessage);
+    RED.nodes.registerType("send",sendMessage);
 
     function receiveMessage(config) {
         RED.nodes.createNode(this,config);
@@ -51,6 +51,6 @@ module.exports = function(RED) {
             });
         }
     }
-    RED.nodes.registerType("receive message",receiveMessage);
+    RED.nodes.registerType("receive",receiveMessage);
 }
 

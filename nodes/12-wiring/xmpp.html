@@ -1,5 +1,5 @@
 <script type="text/javascript">
-    RED.nodes.registerType('send message',{
+    RED.nodes.registerType('send',{
         category: 'social',
         color: '#a6bbcf',
         defaults: {
@@ -16,12 +16,12 @@
         }
     });
 
-    RED.nodes.registerType('receive message',{
+    RED.nodes.registerType('receive',{
         category: 'social',
         color: '#a6bbcf',
         defaults: {
             name: {value:""},
-            label: {value:""}
+            label: {value:"*"}
         },
         inputs:0,
         outputs:1,
@@ -32,38 +32,38 @@
     });
 </script>
 
-<script type="text/x-red" data-template-name="send message">
+<script type="text/x-red" data-template-name="send">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
         <label for="node-input-label"><i class="icon-tag"></i> Label</label>
-        <input type="spinner" id="node-input-label" placeholder="label">
+        <input type="text" id="node-input-label" placeholder="label">
     </div>
     <div class="form-row">
         <label for="node-input-boardid"><i class="icon-tag"></i> Board ID Number</label>
-        <input type="spinner" id="node-input-boardid" placeholder="boardid@wyliodrin.com">
+        <input type="text" id="node-input-boardid" placeholder="boardid@wyliodrin.com">
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="send message">
+<script type="text/x-red" data-help-name="send">
     <p>Send message to board</p>
 </script>
 
 
-<script type="text/x-red" data-template-name="receive message">
+<script type="text/x-red" data-template-name="receive">
     <div class="form-row">
         <label for="node-input-name"><i class="icon-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
         <label for="node-input-label"><i class="icon-tag"></i> Label</label>
-        <input type="number" id="node-input-label" placeholder="*">
+        <input type="text" id="node-input-label" placeholder="*">
     </div>
 </script>
 
-<script type="text/x-red" data-help-name="receive message">
+<script type="text/x-red" data-help-name="receive">
     <p>Receive message</p>
 </script>
 
