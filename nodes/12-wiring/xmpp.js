@@ -12,14 +12,22 @@ module.exports = function(RED) {
 
     function sendMessage(config) {
         RED.nodes.createNode(this,config);
+        this.name = config.name;
+        this.label = config.label;
+        this.boardid = config.boardid;
         var node = this;
         this.on('input', function(msg) {
             if (!publish)
             {
                 publish = redis.createClient ();
             }
-            console.log ('sending: '+JSON.stringify ({id: msg.boardid, data:msg.payload}));
-            publish.publish ('communication_server:'+msg.label, JSON.stringify ({id: msg.boardid, data:msg.payload}));
+            if (this.boardid && this.boardid.trim().length == 0) this.boardid = msg.boardid;
+            var ids = this.boardid.split (',');
+            for (boardid in ids)
+            {
+                // console.log ('sending: '+JSON.stringify ({id: boardid, data:msg.payload}));
+                publish.publish ('communication_server:'+msg.label, JSON.stringify ({id: boardid, data:msg.payload}));
+            }
         });
     }
     RED.nodes.registerType("send",sendMessage);
