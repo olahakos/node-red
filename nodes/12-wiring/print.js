@@ -37,7 +37,7 @@ module.exports = function(RED) {
                 { // debug just the msg.payload
                     if (this.field && this.field.length > 0)
                     {
-                        console.log(util.inspect(msg[field], {colors:useColors}));
+                        console.log(util.inspect(msg[this.field], {colors:useColors}));
                     }
                     else
                     if (typeof msg.payload === "string") {
