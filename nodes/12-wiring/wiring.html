@@ -5,8 +5,6 @@
         defaults: {
             name: {value:""},
             pin: {
-                value: 0, 
-                required: true, 
                 validate: RED.validators.number()
             }
         },
@@ -25,8 +23,6 @@
         defaults: {
             name: {value:""},
             pin: {
-                value: 0, 
-                required: true, 
                 validate: RED.validators.number()
             }
         },
@@ -44,8 +40,6 @@
         defaults: {
             name: {value:""},
             pin: {
-                value: 0, 
-                required: true, 
                 validate: RED.validators.number()
             }
         },
@@ -64,8 +58,6 @@
         defaults: {
             name: {value:""},
             pin: {
-                value: 0, 
-                required: true, 
                 validate: RED.validators.number()
             }
         },
@@ -104,13 +96,15 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-pin"><i class="icon-tag"></i> Pin Number</label>
-        <input type="spinner" id="node-input-pin" placeholder="0">
+        <label for="node-input-pin"><i class="icon-circle"></i> Pin Number</label>
+        <input type="text" id="node-input-pin" placeholder="0">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="digitalwrite">
-    <p>Write a value on a pin</p>
+    <p>Write a digital value on a pin. The value written is in <b>payload</b> and should be is HIGH (1) or LOW (0).</p>
+
+    <p>If no pin is specified, the pin number is the <b>pin</b> field of msg.</p>
 </script>
 
 
@@ -120,13 +114,15 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-pin"><i class="icon-tag"></i> Pin Number</label>
+        <label for="node-input-pin"><i class="icon-circle"></i> Pin Number</label>
         <input type="number" id="node-input-pin" placeholder="0">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="digitalread">
-    <p>Read a value on a pin</p>
+    <p>When it receives an input, reads a digital value from a pin. The value read is in <b>payload</b> and is HIGH (1) or LOW (0).</p>
+
+    <p>If no pin is specified, the pin number is the <b>pin</b> field of msg.</p>
 </script>
 
 
@@ -137,13 +133,15 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-pin"><i class="icon-tag"></i> Pin Number</label>
-        <input type="spinner" id="node-input-pin" placeholder="0">
+        <label for="node-input-pin"><i class="icon-circle"></i> Pin Number</label>
+        <input type="text" id="node-input-pin" placeholder="0">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="analogwrite">
-    <p>Write an analog value on a pin</p>
+    <p>Write a PWM value on a pin. The value written is in [0, 255].</p>
+
+    <p>If no pin is specified, the pin number is the <b>pin</b> field of msg.</p>
 </script>
 
 <script type="text/x-red" data-template-name="analogread">
@@ -152,13 +150,15 @@
         <input type="text" id="node-input-name" placeholder="Name">
     </div>
     <div class="form-row">
-        <label for="node-input-pin"><i class="icon-tag"></i> Pin Number</label>
+        <label for="node-input-pin"><i class="icon-circle"></i> Pin Number</label>
         <input type="number" id="node-input-pin" placeholder="0">
     </div>
 </script>
 
 <script type="text/x-red" data-help-name="analogread">
-    <p>Read an analog value on a pin</p>
+    <p>When it receives an input, reads an analog value from a pin. The value read is in [0, 1023].</p>
+
+    <p>If no pin is specified, the pin number is the <b>pin</b> field of msg.</p>
 </script>
 
 <script type="text/x-red" data-template-name="sendsignal">

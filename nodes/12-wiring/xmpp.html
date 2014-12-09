@@ -48,7 +48,10 @@
 </script>
 
 <script type="text/x-red" data-help-name="send">
-    <p>Send message to board</p>
+    <p>Send message with a specified <b>label</b> to a board or boards. The message to send is <b>payload</b>. It will be serialized as string.</p>
+
+    <p>The message will be sent to the board with <b>boardid</b>. This has to be one id or more ids separated with commas. If this is missing, the <b>Board ID</b> part of the message has to be filled.
+    </p>
 </script>
 
 
@@ -64,6 +67,14 @@
 </script>
 
 <script type="text/x-red" data-help-name="receive">
-    <p>Receive message</p>
+    <p>Receive message from a board with label <b>Label</b>. If label is <b>*</b>, it will receive all the messages.</p>
+
+    <p>Message will be filled with:
+    <ul>
+        <li> <b>label</b> - the label of the message
+        <li> <b>sender</b> - the board id of the sender of the message</li>
+        <li> <b>payload</b> - the message
+    </ul>
+    </p>
 </script>
 

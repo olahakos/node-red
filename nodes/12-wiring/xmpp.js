@@ -25,8 +25,8 @@ module.exports = function(RED) {
             var ids = this.boardid.split (',');
             for (var boardid in ids)
             {
-                console.log ('sending: '+JSON.stringify ({id: ids[boardid], data:JSON.stringify(msg.payload)}));
-                publish.publish ('communication_server:'+msg.label, JSON.stringify ({id: ids[boardid], data:JSON.stringify(msg.payload)}));
+                // console.log ('sending: '+JSON.stringify ({id: ids[boardid].trim(), data:JSON.stringify(msg.payload)}));
+                publish.publish ('communication_server:'+msg.label, JSON.stringify ({id: ids[boardid].trim(), data:JSON.stringify(msg.payload)}));
             }
         });
     }
@@ -52,7 +52,7 @@ module.exports = function(RED) {
             var message = JSON.parse (strmessage);
             var msg = 
             {
-                label: channel.substring ('communication_client'.length),
+                label: channel,
                 sender: message.from,
                 payload: JSON.parse(message.data)
             };

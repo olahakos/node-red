@@ -16,11 +16,13 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         var node = this;
         this.on('input', function(msg) {
-            if (RED.wyliodrin.pinModes[config.pin] !== wyliodrin.OUTPUT)
+            var pin = config.pin;
+            if (!config.pin || config.pin.length == 0) pin = msg.pin;
+            if (RED.wyliodrin.pinModes[pin] !== wyliodrin.OUTPUT)
             {
-                wyliodrin.pinMode (parseInt(config.pin), wyliodrin.OUTPUT);    
+                wyliodrin.pinMode (parseInt(pin), wyliodrin.OUTPUT);    
             }
-        	wyliodrin.digitalWrite (parseInt(config.pin), parseInt (msg.payload));
+        	wyliodrin.digitalWrite (parseInt(pin), parseInt (msg.payload));
             node.send(null);
         });
     }
@@ -38,7 +40,13 @@ module.exports = function(RED) {
         //     this.inputs = 0;
         // }
         this.on('input', function(msg) {
-            node.send({payload: wyliodrin.digitalRead (parseInt(config.pin))});
+            var pin = config.pin;
+            if (!config.pin || config.pin.length == 0) pin = msg.pin;
+            if (RED.wyliodrin.pinModes[pin] !== wyliodrin.INPUT)
+            {
+                wyliodrin.pinMode (parseInt(pin), wyliodrin.INPUT);    
+            }
+            node.send({payload: wyliodrin.digitalRead (parseInt(pin))});
         });
     }
     RED.nodes.registerType("digitalread",digitalRead);
@@ -51,7 +59,9 @@ module.exports = function(RED) {
             // {
             //     wyliodrin.pinMode (parseInt(config.pin), wyliodrin.OUTPUT);    
             // }
-            wyliodrin.analogWrite (parseInt(config.pin), parseInt (msg.payload));
+            var pin = config.pin;
+            if (!config.pin || config.pin.length == 0) pin = msg.pin;
+            wyliodrin.analogWrite (parseInt(pin), parseInt (msg.payload));
             node.send(null);
         });
     }
@@ -69,7 +79,9 @@ module.exports = function(RED) {
         //     this.inputs = 0;
         // }
         this.on('input', function(msg) {
-            node.send({payload: wyliodrin.analogRead (parseInt(config.pin))});
+            var pin = config.pin;
+            if (!config.pin || config.pin.length == 0) pin = msg.pin;
+            node.send({payload: wyliodrin.analogRead (parseInt(pin))});
         });
     }
     RED.nodes.registerType("analogread",analogRead);
