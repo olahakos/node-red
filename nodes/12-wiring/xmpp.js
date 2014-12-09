@@ -18,7 +18,7 @@ module.exports = function(RED) {
             {
                 publish = redis.createClient ();
             }
-            console.log (sending+': '+JSON.stringify ({id: msg.boardid, data:msg.payload}));
+            console.log ('sending: '+JSON.stringify ({id: msg.boardid, data:msg.payload}));
             publish.publish ('communication_server:'+msg.label, JSON.stringify ({id: msg.boardid, data:msg.payload}));
         });
     }
