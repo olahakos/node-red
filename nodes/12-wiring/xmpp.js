@@ -15,7 +15,7 @@ module.exports = function(RED) {
         this.name = config.name;
         this.label = config.label;
         this.boardid = config.boardid;
-        var node = this;
+        var that = this;
         this.on('input', function(msg) {
             if (!publish)
             {
@@ -34,7 +34,7 @@ module.exports = function(RED) {
 
     function receiveMessage(config) {
         RED.nodes.createNode(this,config);
-        var node = this;
+        var that = this;
         this.label = config.label;
         this.subscribe = redis.createClient ();
         // if (this.interval == "on_input")
@@ -56,7 +56,7 @@ module.exports = function(RED) {
                 sender: message.from,
                 payload: message.data
             };
-            this.send (msg);
+            that.send (msg);
         });
     }
     RED.nodes.registerType("receive",receiveMessage);
