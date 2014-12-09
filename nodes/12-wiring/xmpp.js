@@ -23,7 +23,7 @@ module.exports = function(RED) {
             }
             if (this.boardid && this.boardid.trim().length == 0) this.boardid = msg.boardid;
             var ids = this.boardid.split (',');
-            for (boardid in ids)
+            for (var boardid in ids)
             {
                 // console.log ('sending: '+JSON.stringify ({id: boardid, data:msg.payload}));
                 publish.publish ('communication_server:'+msg.label, JSON.stringify ({id: boardid, data:msg.payload}));
