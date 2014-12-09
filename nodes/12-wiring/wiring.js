@@ -5,11 +5,11 @@ module.exports = function(RED) {
 	var wyliodrin = null;
 	if (RED.device)
 	{
-		wyliodrin = require ('wyliodrin');
         if (process.env.wyliodrin_board == "raspberrypi")
         {
-            wyliodrin.grovepiSetup (300, 4);
+            process.env.GROVE_PI = 300;   
         }
+		wyliodrin = require ('wyliodrin');   
 	}
 
     if (!RED.wyliodrin) RED.wyliodrin = {};
