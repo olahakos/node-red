@@ -47,7 +47,11 @@
         "imap":"0.8.13",
         "request":"2.42.0",
         "colors":"0.6.2",
-        "is-utf8":"0.2.0"
+        "is-utf8":"0.2.0",
+        "arduino-firmata":"0.3.2",
+        "serialport":"1.4.6",
+        "feedparser":"0.19.2",
+        "fs.notify":"0.0.4"
     },
     "devDependencies": {
         "grunt": "0.4.5",
