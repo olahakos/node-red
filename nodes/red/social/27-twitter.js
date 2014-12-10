@@ -61,6 +61,10 @@ module.exports = function(RED) {
         {
 
             if (this.twitterConfig.screen_name) {
+                console.log (this.twitterConfig.consumer_key);
+                console.log (this.twitterConfig.consumer_secret);
+                console.log (this.twitterConfig.access_token);
+                console.log (this.twitterConfig.access_token_secret);
                 var twit = new ntwitter({
                     consumer_key: this.twitterConfig.consumer_key,
                     consumer_secret: this.twitterConfig.consumer_secret,
