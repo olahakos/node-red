@@ -194,7 +194,7 @@ module.exports = function(RED) {
                                     node.stream = stream;
                                     stream.on('data', function(tweet) {
                                         //console.log(tweet.user);
-                                        console.log (tweet);
+                                        //console.log (tweet);
                                         if (tweet.user !== undefined) {
                                             var where = tweet.user.location||"";
                                             var la = tweet.lang || tweet.user.lang;
