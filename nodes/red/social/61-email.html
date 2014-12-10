@@ -83,14 +83,10 @@
             server: {value:"smtp.gmail.com",required:true},
             port: {value:"465",required:true},
             name: {value:"",required:true},
-            dname: {value:""}
-        },
-        credentials: {
+            dname: {value:""},
             userid: {type:"text"},
-            password: {type: "password"},
-            global: { type:"boolean"}
+            password: {type: "password"}
         },
-
         inputs:1,
         outputs:0,
         icon: "envelope.png",
@@ -102,11 +98,9 @@
             return (this.dname||!this.topic)?"node_label_italic":"";
         },
         oneditprepare: function() {
-            if (this.credentials.global) {
-                $('#node-tip').show();
-            } else {
-                $('#node-tip').hide();
-            };
+
+
+
         }
     });
 })();
@@ -159,12 +153,9 @@
             repeat: {value:"300",required:true},
             server: {value:"imap.gmail.com",required:true},
             port: {value:"993",required:true},
-            name: {value:""}
-        },
-        credentials: {
+            name: {value:""},
             userid: {type:"text"},
-            password: {type: "password"},
-            global: { type:"boolean"}
+            password: {type: "password"}
         },
         inputs:0,
         outputs:1,
@@ -176,11 +167,12 @@
             return (this.name||!this.topic)?"node_label_italic":"";
         },
         oneditprepare: function() {
-            if (this.credentials.global) {
-                $('#node-tip').show();
-            } else {
-                $('#node-tip').hide();
-            };
+            
+
+
+
+
+
         }
     });
 })();

@@ -39,30 +39,32 @@ module.exports = function(RED) {
         this.name = n.name;
         this.outserver = n.server;
         this.outport = n.port;
+        this.userid = n.userid;
+        this.password = n.password;
         var flag = false;
-        if (this.credentials && this.credentials.hasOwnProperty("userid")) {
-            this.userid = this.credentials.userid;
-        } else {
-            if (globalkeys) {
-                this.userid = globalkeys.user;
-                flag = true;
-            } else {
-                this.error("No e-mail userid set");
-            }
-        }
-        if (this.credentials && this.credentials.hasOwnProperty("password")) {
-            this.password = this.credentials.password;
-        } else {
-            if (globalkeys) {
-                this.password = globalkeys.pass;
-                flag = true;
-            } else {
-                this.error("No e-mail password set");
-            }
-        }
-        if (flag) {
-            RED.nodes.addCredentials(n.id,{userid:this.userid, password:this.password, global:true});
-        }
+        // if (this.credentials && this.credentials.hasOwnProperty("userid")) {
+        //     this.userid = this.credentials.userid;
+        // } else {
+        //     if (globalkeys) {
+        //         this.userid = globalkeys.user;
+        //         flag = true;
+        //     } else {
+        //         this.error("No e-mail userid set");
+        //     }
+        // }
+        // if (this.credentials && this.credentials.hasOwnProperty("password")) {
+        //     this.password = this.credentials.password;
+        // } else {
+        //     if (globalkeys) {
+        //         this.password = globalkeys.pass;
+        //         flag = true;
+        //     } else {
+        //         this.error("No e-mail password set");
+        //     }
+        // }
+        // if (flag) {
+        //     RED.nodes.addCredentials(n.id,{userid:this.userid, password:this.password, global:true});
+        // }
         var node = this;
 
         var smtpTransport = nodemailer.createTransport({
@@ -111,31 +113,33 @@ module.exports = function(RED) {
         this.repeat = n.repeat * 1000 || 300000;
         this.inserver = n.server || globalkeys.server || "imap.gmail.com";
         this.inport = n.port || globalkeys.port || "993";
+        this.userid = n.userid;
+        this.password = n.password;
         var flag = false;
 
-        if (this.credentials && this.credentials.hasOwnProperty("userid")) {
-            this.userid = this.credentials.userid;
-        } else {
-            if (globalkeys) {
-                this.userid = globalkeys.user;
-                flag = true;
-            } else {
-                this.error("No e-mail userid set");
-            }
-        }
-        if (this.credentials && this.credentials.hasOwnProperty("password")) {
-            this.password = this.credentials.password;
-        } else {
-            if (globalkeys) {
-                this.password = globalkeys.pass;
-                flag = true;
-            } else {
-                this.error("No e-mail password set");
-            }
-        }
-        if (flag) {
-            RED.nodes.addCredentials(n.id,{userid:this.userid, password:this.password, global:true});
-        }
+        // if (this.credentials && this.credentials.hasOwnProperty("userid")) {
+        //     this.userid = this.credentials.userid;
+        // } else {
+        //     if (globalkeys) {
+        //         this.userid = globalkeys.user;
+        //         flag = true;
+        //     } else {
+        //         this.error("No e-mail userid set");
+        //     }
+        // }
+        // if (this.credentials && this.credentials.hasOwnProperty("password")) {
+        //     this.password = this.credentials.password;
+        // } else {
+        //     if (globalkeys) {
+        //         this.password = globalkeys.pass;
+        //         flag = true;
+        //     } else {
+        //         this.error("No e-mail password set");
+        //     }
+        // }
+        // if (flag) {
+        //     RED.nodes.addCredentials(n.id,{userid:this.userid, password:this.password, global:true});
+        // }
 
         var node = this;
         this.interval_id = null;

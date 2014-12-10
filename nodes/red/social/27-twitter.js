@@ -40,6 +40,8 @@ module.exports = function(RED) {
     function TwitterNode(n) {
         RED.nodes.createNode(this,n);
         this.screen_name = n.screen_name;
+        this.consumer_key = n.consumer_key;
+        this.consumer_secret = n.consumer_secret;
         this.access_token = n.access_token;
         this.token_secret = n.token_secret;
     }
@@ -58,10 +60,10 @@ module.exports = function(RED) {
         if (RED.device)
         {
 
-            if (credentials && credentials.screen_name == this.twitterConfig.screen_name) {
+            if (this.twitterConfig.screen_name) {
                 var twit = new ntwitter({
-                    consumer_key: "OKjYEd1ef2bfFolV25G5nQ",
-                    consumer_secret: "meRsltCktVMUI8gmggpXett7WBLd1k0qidYazoML6g",
+                    consumer_key: this.twitterConfig.consumer_key,
+                    consumer_secret: this.twitterConfig.consumer_secret,
                     access_token_key: this.twitterConfig.access_token,
                     access_token_secret: this.twitterConfig.access_token_secret
                 });
@@ -251,10 +253,10 @@ module.exports = function(RED) {
         this.twitterConfig = RED.nodes.getNode(this.twitter);
         var node = this;
 
-        if (credentials && credentials.screen_name == this.twitterConfig.screen_name) {
+        if (this.twitterConfig.screen_name) {
             var twit = new ntwitter({
-                consumer_key: "OKjYEd1ef2bfFolV25G5nQ",
-                consumer_secret: "meRsltCktVMUI8gmggpXett7WBLd1k0qidYazoML6g",
+                consumer_key: this.twitterConfig.consumer_key,
+                consumer_secret: this.twitterConfig.consumer_secret,
                 access_token_key: this.twitterConfig.access_token,
                 access_token_secret: this.twitterConfig.access_token_secret
             });

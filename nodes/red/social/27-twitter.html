@@ -20,6 +20,14 @@
         <input type="text" id="node-config-input-screen_name">
     </div>
     <div class="form-row">
+        <label for="node-config-input-consumer_key"> Consumer Key</label>
+        <input type="text" id="node-config-input-consumer_key">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-consumer_secret"> Consumer Secret</label>
+        <input type="password" id="node-config-input-consumer_secret">
+    </div>
+    <div class="form-row">
         <label for="node-config-input-access_token"> Access Token</label>
         <input type="text" id="node-config-input-access_token">
     </div>
@@ -34,6 +42,8 @@
         category: 'config',
         defaults: {
             screen_name: {value:""},
+            consumer_key: {value:""},
+            consumer_secret: {value:""},
             access_token: {value:""},
             access_token_secret: {value:""}
         },
