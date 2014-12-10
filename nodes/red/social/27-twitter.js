@@ -25,16 +25,6 @@ module.exports = function(RED) {
         var ntwitter = require('twitter-ng');
         var OAuth= require('oauth').OAuth;
         var request = require('request');
-
-        var oa = new OAuth(
-            "https://api.twitter.com/oauth/request_token",
-            "https://api.twitter.com/oauth/access_token",
-            "OKjYEd1ef2bfFolV25G5nQ",
-            "meRsltCktVMUI8gmggpXett7WBLd1k0qidYazoML6g",
-            "1.0",
-            null,
-            "HMAC-SHA1"
-        );
     }
     
     function TwitterNode(n) {
@@ -56,6 +46,16 @@ module.exports = function(RED) {
         this.twitter = n.twitter;
         this.topic = n.topic||"tweets";
         this.twitterConfig = RED.nodes.getNode(this.twitter);
+
+        var oa = new OAuth(
+            "https://api.twitter.com/oauth/request_token",
+            "https://api.twitter.com/oauth/access_token",
+            this.twitterConfig.access_token,
+            thi.twitterConfig.access_token_secret,
+            "1.0",
+            null,
+            "HMAC-SHA1"
+        );
 
         if (RED.device)
         {
@@ -256,6 +256,15 @@ module.exports = function(RED) {
         this.topic = n.topic;
         this.twitter = n.twitter;
         this.twitterConfig = RED.nodes.getNode(this.twitter);
+        var oa = new OAuth(
+            "https://api.twitter.com/oauth/request_token",
+            "https://api.twitter.com/oauth/access_token",
+            this.twitterConfig.access_token,
+            thi.twitterConfig.access_token_secret,
+            "1.0",
+            null,
+            "HMAC-SHA1"
+        );
         var node = this;
 
         if (this.twitterConfig.screen_name) {
