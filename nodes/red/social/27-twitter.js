@@ -51,7 +51,7 @@ module.exports = function(RED) {
             "https://api.twitter.com/oauth/request_token",
             "https://api.twitter.com/oauth/access_token",
             this.twitterConfig.access_token,
-            thi.twitterConfig.access_token_secret,
+            this.twitterConfig.access_token_secret,
             "1.0",
             null,
             "HMAC-SHA1"
