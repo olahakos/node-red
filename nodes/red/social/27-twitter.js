@@ -43,7 +43,7 @@ module.exports = function(RED) {
         this.consumer_key = n.consumer_key;
         this.consumer_secret = n.consumer_secret;
         this.access_token = n.access_token;
-        this.token_secret = n.token_secret;
+        this.access_token_secret = n.access_token_secret;
     }
     RED.nodes.registerType("twitter-credentials",TwitterNode);
 
@@ -61,10 +61,10 @@ module.exports = function(RED) {
         {
 
             if (this.twitterConfig.screen_name) {
-                console.log (this.twitterConfig.consumer_key);
-                console.log (this.twitterConfig.consumer_secret);
-                console.log (this.twitterConfig.access_token);
-                console.log (this.twitterConfig.access_token_secret);
+                // console.log (this.twitterConfig.consumer_key);
+                // console.log (this.twitterConfig.consumer_secret);
+                // console.log (this.twitterConfig.access_token);
+                // console.log (this.twitterConfig.access_token_secret);
                 var twit = new ntwitter({
                     consumer_key: this.twitterConfig.consumer_key,
                     consumer_secret: this.twitterConfig.consumer_secret,
