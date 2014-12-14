@@ -64,21 +64,25 @@ module.exports = function(RED) {
                 }
                 else
                 {
-                    if (that.pos == that.size)
+                    if (that.pos == that.size && that.drop == false)
                     {
                         for (var id in that.data)
                         {
                             that.data[id].splice (0, 1);
-                        }       
+                        }    
+                        that.pos = that.pos - 1;   
                     }
-                    if (!that.data) that.data = {};
-                    for (var id in msg)
+                    if (that.pos < that.size)
                     {
-                        if (_.isArray (data[id]) == false)
+                        if (!that.data) that.data = {};
+                        for (var id in msg)
                         {
-                            data[id] = Array (that.size);
+                            if (_.isArray (that.data[id]) == false)
+                            {
+                                data[id] = Array (that.size);
+                            }
+                            data[id][that.pos] = msg[id];
                         }
-                        data[id][that.pos] = msg[id];
                     }
                 }
                 if (that.pos == that.size && that.send == "full")
