@@ -79,9 +79,9 @@ module.exports = function(RED) {
                         {
                             if (_.isArray (that.data[id]) == false)
                             {
-                                data[id] = Array (that.size);
+                                that.data[id] = Array (that.size);
                             }
-                            data[id][that.pos] = msg[id];
+                            that.data[id][that.pos] = msg[id];
                         }
                     }
                 }
