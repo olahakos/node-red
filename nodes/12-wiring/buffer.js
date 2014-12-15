@@ -38,7 +38,7 @@ module.exports = function(RED) {
         {
             if (that.data)
             {
-                that.send (that.data);
+                that.send (_.clone(that.data));
                 that.data = null;
                 that.pos = 0;
             }
