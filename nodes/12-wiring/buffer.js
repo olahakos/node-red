@@ -21,7 +21,7 @@ module.exports = function(RED) {
     function BufferNode(n) {
         RED.nodes.createNode(this,n);
 
-        this.send = n.send;
+        this.sendaction = n.send;
         this.size = n.size;
         this.shift = n.shift;
         this.multiple = n.multiple;
@@ -61,7 +61,7 @@ module.exports = function(RED) {
         };
 
         this.on("input", function(msg) {
-            if (this.send == "event" && msg.send)
+            if (this.sendaction == "event" && msg.send)
             {
                 if (that.data)
                 {
@@ -109,7 +109,7 @@ module.exports = function(RED) {
                         addToArray (msg);
                     }
                 }
-                if (that.pos == that.size && that.send == "full") sendData ();
+                if (that.pos == that.size && that.sendaction == "full") sendData ();
                 console.log (util.inspect (that.data));
             }
         });
