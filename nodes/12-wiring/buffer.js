@@ -50,7 +50,6 @@ module.exports = function(RED) {
 
         var addToArray = function (msg)
         {
-            console.log (that.pos+" / "+that.size);
             if (!that.data) that.data = {};
             for (var id in msg)
             {
@@ -105,15 +104,8 @@ module.exports = function(RED) {
                     }
                     if (that.pos < that.size)
                     {
-                        if (!that.data) that.data = {};
-                        for (var id in msg)
-                        {
-                            if (_.isArray (that.data[id]) == false)
-                            {
-                                that.data[id] = Array (that.size);
-                            }
-                            that.data[id][that.pos] = msg[id];
-                        }
+                        // if (!that.data) that.data = {};
+                        addToArray (msg);
                     }
                 }
                 if (that.pos == that.size && that.send == "full") sendData ();
