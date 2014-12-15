@@ -116,7 +116,7 @@ module.exports = function(RED) {
                     }
                 }
                 if (that.pos == that.size && that.send == "full") sendData ();
-                console.log (util.inspect (data));
+                console.log (util.inspect (that.data));
             }
         });
 
