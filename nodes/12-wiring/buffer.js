@@ -30,8 +30,34 @@ module.exports = function(RED) {
         this.pos = 0;
 
         var _ = require ('underscore');
+        var util = require ('util');
         
         var that = this;
+
+        var sendData = function ()
+        {
+            if (that.data)
+            {
+                that.send (that.data);
+                that.data = null;
+                that.pos = 0;
+            }
+            else
+            {
+                that.info ('')
+            }
+        };
+
+        var addToArray = function (msg)
+        {
+            if (!that.data) that.data = {};
+            for (var id in msg)
+            {
+                if (!that.data[id]) that.data[id] = Array (that.size);
+                that.data[id][that.pos] = msg[id];
+                that.pos = that.pos + 1;
+            }
+        };
 
         this.on("input", function(msg) {
             if (this.send == "event" && msg.send)
@@ -42,11 +68,15 @@ module.exports = function(RED) {
                     that.data = null;
                     that.pos = 0;
                 }
+                else
+                {
+                    that.warn ("data is null");
+                }
             }
             else
             if (!msg.send)
             {
-                if (that.size == 1)
+                if (that.size <= 1)
                 {
                     if (that.multiple)
                     {
@@ -54,12 +84,12 @@ module.exports = function(RED) {
                         else
                         for (var id in msg)
                         {
-                            that.data[id] = msg[id];
+                            if (!that.data[id] || !that.drop) that.data[id] = msg[id];
                         }
                     }
                     else
                     {
-                        that.data = msg;    
+                        if (!that.data || !that.drop) that.data = msg;    
                     }
                 }
                 else
@@ -68,9 +98,9 @@ module.exports = function(RED) {
                     {
                         for (var id in that.data)
                         {
-                            that.data[id].splice (0, 1);
-                        }    
-                        that.pos = that.pos - 1;   
+                            that.data[id].shift ();
+                        }
+                        that.pos = that.pos - 1;
                     }
                     if (that.pos < that.size)
                     {
@@ -85,12 +115,8 @@ module.exports = function(RED) {
                         }
                     }
                 }
-                if (that.pos == that.size && that.send == "full")
-                {
-                    that.send (that.data);
-                    that.data = null;
-                    that.pos = 0;
-                }
+                if (that.pos == that.size && that.send == "full") sendData ();
+                console.log (util.inspect (data));
             }
         });
 

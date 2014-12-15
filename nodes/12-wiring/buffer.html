@@ -29,10 +29,14 @@
         <input type="spinner" id="node-input-size" placeholder="1000">
     </div>
     <div class="form-row">
-        <input type="checkbox" id="node-input-drop"><label style="width: 250px;" for="node-input-drop">Drop messages if buffer is full</label>
+        <label for="node-input-shift"><i class="fa fa-tasks"></i> If buffer is full </label>
+        <select id="node-input-shift" style="width:270px !important">
+          <option value="drop">drop messages</option>
+          <option value="shift">shift messages</option>
+        </select>
     </div>
     <div class="form-row">
-        <input type="checkbox" id="node-input-multiple"><label style="width: 250px;" for="node-input-multiple">Multiple message types</label>
+        <input style="width: 30px;" type="checkbox" id="node-input-multiple"><label style="width: 250px;" for="node-input-multiple">Mix multiple message types</label>
     </div>
     <div class="form-row">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
@@ -56,7 +60,7 @@
             name: {value:""},   //  along with default values.
             send: {value:"full", required:true},
             size: {value:1000, required:true, validate:RED.validators.number()},
-            drop: {value:false},
+            shift: {value:"shift"},
             multiple: {value:false}
         },
         inputs:1,                // set the number of inputs - only 0 or 1
