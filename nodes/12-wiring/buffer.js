@@ -56,8 +56,8 @@ module.exports = function(RED) {
             {
                 if (!that.data[id]) that.data[id] = Array (that.size);
                 that.data[id][that.pos] = msg[id];
-                that.pos = that.pos + 1;
             }
+            that.pos = that.pos + 1;
         };
 
         this.on("input", function(msg) {
