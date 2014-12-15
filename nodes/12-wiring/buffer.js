@@ -24,7 +24,7 @@ module.exports = function(RED) {
         this.sendaction = n.send;
         this.size = n.size;
         this.shift = n.shift;
-        this.multiple = n.multiple;
+        this.mix_messages = n.mix_messages;
 
         this.data = null;
         this.pos = 0;
@@ -61,7 +61,7 @@ module.exports = function(RED) {
         };
 
         this.on("input", function(msg) {
-            if (this.sendaction == "event" && msg.send)
+            if ((that.sendarray =="value" || that.sendaction == "event") && msg.send)
             {
                 if (that.data)
                 {
@@ -77,9 +77,9 @@ module.exports = function(RED) {
             else
             if (!msg.send)
             {
-                if (that.size <= 1)
+                if (that.sendarray == "value")
                 {
-                    if (that.multiple)
+                    if (that.mix_messages)
                     {
                         if (!that.data) that.data = msg;
                         else
@@ -110,7 +110,7 @@ module.exports = function(RED) {
                     }
                 }
                 if (that.pos == that.size && that.sendaction == "full") sendData ();
-                console.log (util.inspect (that.data));
+                // console.log (util.inspect (that.data));
             }
         });
 
@@ -119,4 +119,17 @@ module.exports = function(RED) {
         });
     }
     RED.nodes.registerType("buffer",BufferNode);
+
+    function SetEventNode(n) {
+        RED.nodes.createNode(this,n);
+
+        var that = this;
+
+        this.on("input", function(msg) {
+            if (!msg.event) msg.event = "event";
+            that.send (msg);
+        });
+
+    }
+    RED.nodes.registerType("set event",SetEventNode);
 }
