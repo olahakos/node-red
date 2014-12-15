@@ -50,7 +50,7 @@ module.exports = function(RED) {
 
         var addToArray = function (msg)
         {
-            console.log (that.pos + " / "+ that.size);
+            // console.log (that.pos + " / "+ that.size);
             if (!that.data) that.data = {};
             for (var id in msg)
             {
@@ -61,7 +61,7 @@ module.exports = function(RED) {
         };
 
         this.on("input", function(msg) {
-            if ((that.sendarray =="value" || that.sendaction == "event") && msg.send)
+            if ((that.sendarray =="value" || that.sendaction == "event") && msg.event)
             {
                 if (that.data)
                 {
@@ -75,7 +75,7 @@ module.exports = function(RED) {
                 }
             }
             else
-            if (!msg.send)
+            if (!msg.event)
             {
                 if (that.sendarray == "value")
                 {
