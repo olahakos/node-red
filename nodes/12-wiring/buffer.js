@@ -23,7 +23,7 @@ module.exports = function(RED) {
 
         this.send = n.send;
         this.size = n.size;
-        this.drop = n.drop;
+        this.shift = n.shift;
         this.multiple = n.multiple;
 
         this.data = null;
@@ -84,17 +84,17 @@ module.exports = function(RED) {
                         else
                         for (var id in msg)
                         {
-                            if (!that.data[id] || !that.drop) that.data[id] = msg[id];
+                            if (!that.data[id] || that.shift == "shift") that.data[id] = msg[id];
                         }
                     }
                     else
                     {
-                        if (!that.data || !that.drop) that.data = msg;    
+                        if (!that.data || that.shift == "shift") that.data = msg;    
                     }
                 }
                 else
                 {
-                    if (that.pos == that.size && that.drop == false)
+                    if (that.pos == that.size && that.shift == "shift")
                     {
                         for (var id in that.data)
                         {
