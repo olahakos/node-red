@@ -50,6 +50,7 @@ module.exports = function(RED) {
 
         var addToArray = function (msg)
         {
+            console.log (that.pos + " / "+ that.size);
             if (!that.data) that.data = {};
             for (var id in msg)
             {
