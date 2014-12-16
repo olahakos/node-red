@@ -53,8 +53,8 @@
 
 <!-- Next, some simple help text is provided for the node.                   -->
 <script type="text/x-red" data-help-name="buffer">
-    <p>Introduces a buffer into a flow or rate limts messges</p>
-    <p>Default buffer is 5 seconds and rate limit of 1 msg/second, but both can be configured</p>
+    <p>Store an array and sends it when it is full or when it receives a message with <b>event</b>. It stores as arrays all the components of the message and mixes them.</p>
+    <p>If a value is stored, it knows how to mix the messages. Sends the value when a messages is received with <b>event</b>.</p>
 </script>
 
 <script type="text/x-red" data-template-name="set event">
