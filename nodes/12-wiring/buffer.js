@@ -22,6 +22,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,n);
 
         this.sendaction = n.send;
+        this.sendarray = n.sendarray;
         this.size = n.size;
         this.shift = n.shift;
         this.mix_messages = n.mix_messages;
@@ -110,7 +111,7 @@ module.exports = function(RED) {
                     }
                 }
                 if (that.pos == that.size && that.sendaction == "full") sendData ();
-                // console.log (util.inspect (that.data));
+                console.log (util.inspect (that.data));
             }
         });
 
