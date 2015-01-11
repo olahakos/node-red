@@ -30,6 +30,13 @@ module.exports = function(RED) {
     {
         noble = require('noble');
         os = require('os');
+
+        console.log('Unblocking BLE');
+        function puts(error, stdout, stderr) { sys.puts(stdout) };
+        if (process.env.wyliodrin_board == "edison")
+        {
+            exec("systemctl stop bluetooth; rfkill unblock bluetooth; hciconfig hci0 up", puts);
+        }
     }
     
     // The main node definition - most things happen in here
