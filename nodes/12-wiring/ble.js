@@ -32,7 +32,7 @@ module.exports = function(RED) {
         os = require('os');
 
         console.log('Unblocking BLE');
-        function puts(error, stdout, stderr) { sys.puts(stdout) };
+        function puts(error, stdout, stderr) { console.log(stdout) };
         if (process.env.wyliodrin_board == "edison")
         {
             var cps = require ('child_process');
