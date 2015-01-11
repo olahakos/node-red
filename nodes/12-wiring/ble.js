@@ -35,7 +35,7 @@ module.exports = function(RED) {
         function puts(error, stdout, stderr) { sys.puts(stdout) };
         if (process.env.wyliodrin_board == "edison")
         {
-            exec("systemctl stop bluetooth; rfkill unblock bluetooth; hciconfig hci0 up", puts);
+            os.exec("systemctl stop bluetooth; rfkill unblock bluetooth; hciconfig hci0 up", puts);
         }
     }
     
