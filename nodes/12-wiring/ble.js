@@ -1,5 +1,6 @@
 /*
  * Copyright (c) 2014. Knowledge Media Institute - The Open University
+ * Modified by: Wyliodrin
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +26,13 @@ module.exports = function(RED) {
 
     var noble = null;
     var os = null;
+    var dict = null;
 
     if (RED.device)
     {
         noble = require('noble');
         os = require('os');
+        dict = require ('dict');
 
         console.log('Unblocking BLE');
         function puts(error, stdout, stderr) { console.log(stdout) };
@@ -66,6 +69,7 @@ module.exports = function(RED) {
                 msg.detectedBy = machineId;
                 msg.advertisement = peripheral.advertisement;
                 msg.rssi = peripheral.rssi;
+                msg.peripheral = peripheral;
 
                 // Check the BLE follows iBeacon spec
                 if (peripheral.manufacturerData) {
@@ -138,5 +142,33 @@ module.exports = function(RED) {
     // Register the node by name. This must be called before overriding any of the
     // Node functions.
     RED.nodes.registerType("scan ble",NobleScan);
+
+    // The main node definition - most things happen in here
+    function NobleRead(n) {
+        // Create a RED node
+        RED.nodes.createNode(this,n);
+
+        var peripherals = dict ();
+
+        if (RED.device)
+        {
+    
+            this.on ('input', function (msg)
+            {
+                
+            });
+
+            this.on("close", function() {
+                // Called when the node is shutdown - eg on redeploy.
+                // Allows ports to be closed, connections dropped etc.
+                // eg: this.client.disconnect();
+                if (peripheral) peripheral.disconnect ();
+            });
+        }
+    }
+    
+    // Register the node by name. This must be called before overriding any of the
+    // Node functions.
+    RED.nodes.registerType("read ble",NobleScan);
 
 }
