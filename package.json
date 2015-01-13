@@ -55,7 +55,8 @@
         "request":"2.42.0",
         "colors":"0.6.2",
         "is-utf8":"0.2.0",
-        "dualshock-controller":"0.6.7"
+        "dualshock-controller":"0.6.7",
+        "dict": "1.4.0"
     },
     "devDependencies": {
         "grunt": "0.4.5",
