@@ -92,7 +92,7 @@ module.exports = function(RED) {
             if (!pdata.connecting && pdata.load == 0)
             {
                 if (pdata.peripheral) pdata.peripheral.disconnect ();
-                connections.del (peripheral.uuid);
+                connections.delete (peripheral.uuid);
             }
         }
         else
