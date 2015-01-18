@@ -178,7 +178,7 @@ module.exports = function(RED) {
                 if (msg.peripheral)
                 {
                     console.log ('peripheraldevice');
-                    console.log (peripheral);
+                    console.log (msg.peripheral);
                     if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
                     {
                         if (hasAddress (msg.peripheralUuid))
@@ -190,6 +190,7 @@ module.exports = function(RED) {
                 }
                 if (msg.event)
                 {
+                    console.log ('periferal devices');
                     _.each (that.peripherals, function (peripheraldevice, address)
                     {
                         console.log (peripheraldevice);
