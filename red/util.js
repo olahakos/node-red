@@ -59,7 +59,7 @@ function cloneMessage(msg) {
     if (peripheraldevice)
     {
         m.peripheral = peripheraldevice;
-        msg.peripheral = pripheraldevice;
+        msg.peripheral = peripheraldevice;
     }
     return m;
 }
