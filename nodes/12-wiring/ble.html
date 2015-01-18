@@ -113,7 +113,7 @@
         category: 'advanced',      // the palette category
         color:"#207FC3",
         defaults: {             // defines the editable properties of the node
-            uuids: {value:""},
+            uuids: {value:"", validate:RED.validators.regex(/^([a-fA-F0-9]{32}){0,1}(?:,[a-fA-F0-9]{32})*$/)},
             duplicates: {value:false},
             service: {value:""},
             characteristic: {value:""},
@@ -140,7 +140,7 @@ RED.nodes.registerType('read ble',{
         color:"#207FC3",
         defaults: {             // defines the editable properties of the node
             names: {value:""},
-            addresses: {value:"", validate:RED.validators.regex(/^([a-fA-F0-9]{32}){0,1}(?:,[a-fA-F0-9]{32})*$/)},
+            addresses: {value:""},
             // duplicates: {value:false},
             name: {value:""}
         },

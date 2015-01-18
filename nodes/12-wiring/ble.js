@@ -219,6 +219,6 @@ module.exports = function(RED) {
     
     // Register the node by name. This must be called before overriding any of the
     // Node functions.
-    RED.nodes.registerType("read ble",NobleScan);
+    RED.nodes.registerType("read ble",NobleRead);
 
 }
