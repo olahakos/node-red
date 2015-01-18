@@ -151,7 +151,7 @@ module.exports = function(RED) {
 
         this.peripherals = dict ();
 
-        this.uuids = n.uuids.split (', ');
+        this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
 
