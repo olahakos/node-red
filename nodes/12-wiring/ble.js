@@ -164,7 +164,7 @@ module.exports = function(RED) {
             {
                 for (var i=0; i<that.addresses.length; i++)
                 {
-                    if (that.addresses[i].toLower() == address.toLower ()) return true;
+                    if (that.addresses[i].toLowerCase() == address.toLowerCase()) return true;
                 }
                 return false;
             }
