@@ -221,8 +221,20 @@ module.exports = function(RED) {
                                         {
                                             console.log (services);
                                             console.log (characteristics);
-                                            // read characteristic
-                                            peripheraldevice.disconnect ();
+                                            characteristics[0].read (function (err, data)
+                                            {
+                                                if (err)
+                                                {
+                                                    that.warn (err);
+                                                    peripheraldevice.disconnect ();
+                                                }
+                                                else
+                                                {
+                                                    that.send ({payload: data});
+                                                    peripheraldevice.disconnect ();
+                                                }
+                                            });
+                                            // peripheraldevice.disconnect ();
                                         }
                                     });
                                 setTimeout (function ()
