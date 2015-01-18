@@ -46,7 +46,7 @@ function cloneMessage(msg) {
     var peripheraldevice = mm.peripheral;
     delete msg.req;
     delete msg.res;
-    delete mm.peripheral;
+    delete msg.peripheral;
     var m = clone(msg);
     if (req) {
         m.req = req;
@@ -59,7 +59,7 @@ function cloneMessage(msg) {
     if (peripheraldevice)
     {
         m.peripheral = peripheraldevice;
-        mm.peripheral = pripheraldevice;
+        msg.peripheral = pripheraldevice;
     }
     return m;
 }
