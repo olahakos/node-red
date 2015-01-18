@@ -157,7 +157,7 @@ module.exports = function(RED) {
 
         var that = this;
 
-        var hasAddress = function (uuid)
+        var hasAddress = function (address)
         {
             if (that.addresses.length == 0) return true;
             else
