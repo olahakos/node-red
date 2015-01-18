@@ -177,19 +177,19 @@ module.exports = function(RED) {
             {
                 if (msg.peripheral)
                 {
-                    if (that.peripherals.get (msg.peripheralUuid) != peripheral)
+                    if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
                     {
                         if (hasUUID (msg.peripheralUuid))
                         {
-                            that.peripherals.set (msg.peripheralUuid, peripheral);
+                            that.peripherals.set (msg.peripheralUuid, msg.peripheral);
                         }
                     }
                 }
                 if (msg.event)
                 {
-                    _.each (that.peripherals, function (device)
+                    _.each (that.peripherals, function (peripheraldevice)
                     {
-                        device.connect (function (err)
+                        peripheraldevice.connect (function (err)
                         {
                             if (!err)
                             {
@@ -197,7 +197,7 @@ module.exports = function(RED) {
                             }
                             else
                             {
-                                device.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
+                                peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                     {
                                           console.log (services);
                                           console.log (characteristics);
