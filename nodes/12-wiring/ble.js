@@ -178,27 +178,27 @@ module.exports = function(RED) {
                 if (msg.peripheral)
                 {
                     console.log ('peripheraldevice');
-                    console.log (msg.peripheral);
-                    console.log (msg.peripheralUuid);
+                    // console.log (msg.peripheral);
+                    // console.log (msg.peripheralUuid);
                     if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
                     {
                         if (hasAddress (msg.peripheralUuid))
                         {
                             console.log ('adding peripheral device');
                             that.peripherals.set (msg.peripheralUuid, msg.peripheral);
-                            console.log (that.peripherals);
-                            console.log (that.peripherals.size);
+                            // console.log (that.peripherals);
+                            // console.log (that.peripherals.size);
                         }
                     }
                 }
                 if (msg.event)
                 {
                     console.log ('periferal devices');
-                    console.log (that.peripherals);
-                    console.log (that.peripherals.size);
+                    // console.log (that.peripherals);
+                    // console.log (that.peripherals.size);
                     that.peripherals.forEach (function (peripheraldevice, address)
                     {
-                        console.log (peripheraldevice);
+                        // console.log (peripheraldevice);
                         peripheraldevice.connect (function (err)
                         {
                             if (err)
