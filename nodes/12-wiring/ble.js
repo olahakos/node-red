@@ -186,6 +186,8 @@ module.exports = function(RED) {
                         {
                             console.log ('adding peripheral device');
                             that.peripherals.set (msg.peripheralUuid, msg.peripheral);
+                            console.log (that.peripherals);
+                            console.log (that.peripherals.size);
                         }
                     }
                 }
@@ -193,7 +195,7 @@ module.exports = function(RED) {
                 {
                     console.log ('periferal devices');
                     console.log (that.peripherals);
-                    console.log (that.peripherals.size ());
+                    console.log (that.peripherals.size);
                     _.each (that.peripherals, function (peripheraldevice, address)
                     {
                         console.log (peripheraldevice);
