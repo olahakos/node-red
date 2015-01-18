@@ -49,7 +49,7 @@ module.exports = function(RED) {
 
     function pconnect (peripheral, done)
     {
-        var pdata = connections.get (peripheral.Uuid);
+        var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
             if (pdata.connecting) pdata.done.push (done);
@@ -62,7 +62,7 @@ module.exports = function(RED) {
         else
         {
             connections.set (peripheral.Uuid, {peripheral:peripheral, connecting:true, load: 0, done:[done]});
-            pdata = connections.get (peripheral.Uuid);
+            pdata = connections.get (peripheral.uuid);
             peripheral.connect (function (err)
             {
                 if (err)
@@ -80,26 +80,26 @@ module.exports = function(RED) {
                 }
             });
         }
-        console.log (pdata.load+' '+pdata.peripheral.Uuid);
+        console.log (pdata.load+' '+pdata.peripheral.uuid);
     }
 
     function pdisconnect (peripheral)
     {
-        var pdata = connections.get (peripheral.Uuid);
+        var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
             pdata.load = pdata.load - 1;
             if (!pdata.connecting && pdata.load == 0)
             {
                 if (pdata.peripheral) pdata.peripheral.disconnect ();
-                connections.del (peripheral.Uuid);
+                connections.del (peripheral.uuid);
             }
         }
         else
         {
             peripheral.disconnect ();
         }
-        console.log (pdata.load+' '+pdata.peripheral.Uuid);
+        console.log (pdata.load+' '+pdata.peripheral.uuid);
     }
     
     // The main node definition - most things happen in here
