@@ -201,9 +201,9 @@ module.exports = function(RED) {
                         console.log (peripheraldevice);
                         peripheraldevice.connect (function (err)
                         {
-                            if (!err)
+                            if (err)
                             {
-                                that.err (err);
+                                that.warn (err);
                             }
                             else
                             {
