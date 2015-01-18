@@ -75,10 +75,11 @@ module.exports = function(RED) {
                     {
                         pdata.load++;
                         func (err);
-                    };
+                    });
                 }
             });
         }
+        console.log (pdata.load+' '+pdata.peripheral.Uuid);
     }
 
     function pdisconnect (peripheral)
@@ -90,13 +91,14 @@ module.exports = function(RED) {
             if (!pdata.connecting && pdata.load == 0)
             {
                 if (pdata.peripheral) pdata.peripheral.disconnect ();
-                pdata.del (peripheral.Uuid);
+                connections.del (peripheral.Uuid);
             }
         }
         else
         {
             peripheral.disconnect ();
         }
+        console.log (pdata.load+' '+pdata.peripheral.Uuid);
     }
     
     // The main node definition - most things happen in here
