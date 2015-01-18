@@ -28,6 +28,7 @@ module.exports = function(RED) {
     var os = null;
     var dict = null;
     var _ = require ('underscore');
+    var connections = null;
 
     if (RED.device)
     {
@@ -42,9 +43,9 @@ module.exports = function(RED) {
             var cps = require ('child_process');
             cps.exec("systemctl stop bluetooth; rfkill unblock bluetooth; hciconfig hci0 up", puts);
         }
-    }
 
-    var connections = dict ();
+        connections = dict ();
+    }
 
     function pconnect (peripheral, done)
     {
