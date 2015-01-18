@@ -210,8 +210,17 @@ module.exports = function(RED) {
                                 console.log ('connected '+address);
                                 peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                     {
-                                          console.log (services);
-                                          console.log (characteristics);
+                                        if (err)
+                                        {
+                                            that.warn (err);
+                                        }
+                                        else
+                                        {
+                                            console.log (services);
+                                            console.log (characteristics);
+                                            // read characteristic
+                                            peripheraldevice.disconnect ();
+                                        }
                                     });
                             }
                         });
