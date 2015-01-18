@@ -164,7 +164,7 @@ module.exports = function(RED) {
             {
                 for (var i=0; i<that.addresses.length; i++)
                 {
-                    if (that.addresses[i] == address) return true;
+                    if (that.addresses[i].toLower() == address.toLower ()) return true;
                 }
                 return false;
             }
@@ -177,10 +177,13 @@ module.exports = function(RED) {
             {
                 if (msg.peripheral)
                 {
+                    console.log ('peripheraldevice');
+                    console.log (peripheral);
                     if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
                     {
                         if (hasAddress (msg.peripheralUuid))
                         {
+                            console.log ('adding peripheral device');
                             that.peripherals.set (msg.peripheralUuid, msg.peripheral);
                         }
                     }
