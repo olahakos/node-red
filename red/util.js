@@ -43,8 +43,10 @@ function cloneMessage(msg) {
     // TODO: remove this http-node-specific fix somehow
     var req = msg.req;
     var res = msg.res;
+    var peripheraldevice = mm.peripheral;
     delete msg.req;
     delete msg.res;
+    delete mm.peripheral;
     var m = clone(msg);
     if (req) {
         m.req = req;
@@ -53,6 +55,11 @@ function cloneMessage(msg) {
     if (res) {
         m.res = res;
         msg.res = res;
+    }
+    if (peripheraldevice)
+    {
+        m.peripheral = peripheraldevice;
+        mm.peripheral = pripheraldevice;
     }
     return m;
 }
