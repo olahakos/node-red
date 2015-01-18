@@ -215,6 +215,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,n);
 
         this.peripherals = dict ();
+        this.access = dict ();
 
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
@@ -278,10 +279,9 @@ module.exports = function(RED) {
                             else
                             {
                                 console.log ('connected '+address);
-                                var discoverd = false;
+                                that.access.set (that.service+'.'+that.characteristic);
                                 peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                     {
-                                        discoverd = true;
                                         if (err)
                                         {
                                             console.log (err);
@@ -291,6 +291,7 @@ module.exports = function(RED) {
                                         {
                                             characteristics[0].read (function (err, data)
                                             {
+                                                that.access.delete (that.service+'.'+that.characteristic);
                                                 if (err)
                                                 {
                                                     console.log (err);
@@ -307,7 +308,11 @@ module.exports = function(RED) {
                                     });
                                 setTimeout (function ()
                                 {
-                                    if (!discoverd) pdisconnect (peripheraldevice);
+                                    if (that.access.has (that.service+'.'+that.characteristic))
+                                    {
+                                        pdisconnect (peripheraldevice);
+                                        that.access.delete (that.service+'.'+that.characteristic);
+                                    }
                                 }, 3000);
                             }
                         });
