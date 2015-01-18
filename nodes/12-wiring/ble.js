@@ -192,6 +192,8 @@ module.exports = function(RED) {
                 if (msg.event)
                 {
                     console.log ('periferal devices');
+                    console.log (that.peripherals);
+                    console.log (that.peripherals.size ());
                     _.each (that.peripherals, function (peripheraldevice, address)
                     {
                         console.log (peripheraldevice);
