@@ -115,8 +115,6 @@
         defaults: {             // defines the editable properties of the node
             uuids: {value:"", validate:RED.validators.regex(/^([a-fA-F0-9]{32}){0,1}(?:,[a-fA-F0-9]{32})*$/)},
             duplicates: {value:false},
-            service: {value:""},
-            characteristic: {value:""},
             name: {value:""}
         },
         inputs:0,               // set the number of inputs - only 0 or 1
@@ -142,6 +140,8 @@ RED.nodes.registerType('read ble',{
             names: {value:""},
             addresses: {value:""},
             // duplicates: {value:false},
+            service: {value:""},
+            characteristic: {value:""},
             name: {value:""}
         },
         inputs:1,               // set the number of inputs - only 0 or 1
