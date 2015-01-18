@@ -279,41 +279,44 @@ module.exports = function(RED) {
                             else
                             {
                                 console.log ('connected '+address);
-                                that.access.set (that.service+'.'+that.characteristic);
-                                peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
-                                    {
-                                        if (err)
-                                        {
-                                            console.log (err);
-                                            pdisconnect (peripheraldevice);
-                                        }
-                                        else
-                                        {
-                                            characteristics[0].read (function (err, data)
-                                            {
-                                                that.access.delete (that.service+'.'+that.characteristic);
-                                                if (err)
-                                                {
-                                                    console.log (err);
-                                                    pdisconnect (peripheraldevice);
-                                                }
-                                                else
-                                                {
-                                                    that.send ({payload: data});
-                                                    pdisconnect (peripheraldevice);
-                                                }
-                                            });
-                                            // peripheraldevice.disconnect ();
-                                        }
-                                    });
-                                setTimeout (function ()
+                                if (!that.access.get (that.service+'.'+that.characteristic))
                                 {
-                                    if (that.access.has (that.service+'.'+that.characteristic))
+                                    that.access.set (that.service+'.'+that.characteristic);
+                                    peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
+                                        {
+                                            if (err)
+                                            {
+                                                console.log (err);
+                                                pdisconnect (peripheraldevice);
+                                            }
+                                            else
+                                            {
+                                                characteristics[0].read (function (err, data)
+                                                {
+                                                    that.access.delete (that.service+'.'+that.characteristic);
+                                                    if (err)
+                                                    {
+                                                        console.log (err);
+                                                        pdisconnect (peripheraldevice);
+                                                    }
+                                                    else
+                                                    {
+                                                        that.send ({payload: data});
+                                                        pdisconnect (peripheraldevice);
+                                                    }
+                                                });
+                                                // peripheraldevice.disconnect ();
+                                            }
+                                        });
+                                    setTimeout (function ()
                                     {
-                                        pdisconnect (peripheraldevice);
-                                        that.access.delete (that.service+'.'+that.characteristic);
-                                    }
-                                }, 3000);
+                                        if (that.access.has (that.service+'.'+that.characteristic))
+                                        {
+                                            pdisconnect (peripheraldevice);
+                                            that.access.delete (that.service+'.'+that.characteristic);
+                                        }
+                                    }, 3000);
+                                }
                             }
                         });
                     });
