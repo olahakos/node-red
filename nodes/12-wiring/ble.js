@@ -208,11 +208,14 @@ module.exports = function(RED) {
                             else
                             {
                                 console.log ('connected '+address);
+                                var discoverd = false;
                                 peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                     {
+                                        discoverd = true;
                                         if (err)
                                         {
                                             that.warn (err);
+                                            peripheraldevice.disconnect ();
                                         }
                                         else
                                         {
@@ -222,6 +225,10 @@ module.exports = function(RED) {
                                             peripheraldevice.disconnect ();
                                         }
                                     });
+                                setTimeout (function ()
+                                {
+                                    if (!discoverd) peripheraldevice.disconnect();
+                                }, 3000);
                             }
                         });
                     });
