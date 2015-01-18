@@ -68,6 +68,11 @@ module.exports = function(RED) {
                 if (err)
                 {
                     console.log (err);
+                    _.each (pdata.done, function (func)
+                    {
+                        func (err);
+                    });
+                    connections.delete (peripheral.uuid);
                 }
                 else
                 {
@@ -94,12 +99,12 @@ module.exports = function(RED) {
                 if (pdata.peripheral) pdata.peripheral.disconnect ();
                 connections.delete (peripheral.uuid);
             }
+            console.log (pdata.load+' '+pdata.peripheral.uuid);
         }
         else
         {
             peripheral.disconnect ();
         }
-        console.log (pdata.load+' '+pdata.peripheral.uuid);
     }
     
     // The main node definition - most things happen in here
