@@ -32,6 +32,13 @@
     </div>
     <div class="form-tips">Leave empty for scanning all devices offering any service.</div>
 
+    <!-- Allow duplicates -->
+    <div class="form-row">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-duplicates" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-duplicates" style="width: 70%;">Allow duplicates?</label>
+    </div>
+
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field. Should always be the last option      -->
 
@@ -61,13 +68,6 @@
         <input type="text" id="node-input-characteristic" placeholder="">
     </div>
     <div class="form-tips">Leave empty for all services.</div>
-
-    <!-- Allow duplicates -->
-    <div class="form-row">
-        <label>&nbsp;</label>
-        <input type="checkbox" id="node-input-duplicates" style="display: inline-block; width: auto; vertical-align: top;">
-        <label for="node-input-duplicates" style="width: 70%;">Allow duplicates?</label>
-    </div>
 
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field. Should always be the last option      -->
@@ -115,6 +115,8 @@
         defaults: {             // defines the editable properties of the node
             uuids: {value:"", validate:RED.validators.regex(/^([a-fA-F0-9]{32}){0,1}(?:,[a-fA-F0-9]{32})*$/)},
             duplicates: {value:false},
+            service: {value:""},
+            characteristic: {value:""},
             name: {value:""}
         },
         inputs:0,               // set the number of inputs - only 0 or 1
@@ -140,8 +142,6 @@ RED.nodes.registerType('read ble',{
             names: {value:""},
             addresses: {value:"", validate:RED.validators.regex(/^([a-fA-F0-9]{32}){0,1}(?:,[a-fA-F0-9]{32})*$/)},
             // duplicates: {value:false},
-            service: {value:""},
-            characteristic: {value: ""},
             name: {value:""}
         },
         inputs:1,               // set the number of inputs - only 0 or 1
