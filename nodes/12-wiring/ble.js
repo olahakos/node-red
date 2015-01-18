@@ -27,6 +27,7 @@ module.exports = function(RED) {
     var noble = null;
     var os = null;
     var dict = null;
+    var _ = require ('underscore');
 
     if (RED.device)
     {
@@ -148,14 +149,63 @@ module.exports = function(RED) {
         // Create a RED node
         RED.nodes.createNode(this,n);
 
-        var peripherals = dict ();
+        this.peripherals = dict ();
+
+        this.uuids = n.uuids.split (', ');
+        this.service = n.service;
+        this.characteristic = n.characteristic;
+
+        var that = this;
+
+        var hasUUID = function (uuid)
+        {
+            if (that.uuids.length == 0) return true;
+            else
+            {
+                for (var i=0; i<that.uuids.length; i++)
+                {
+                    if (that.uuids[i] == uuid) return true;
+                }
+                return false;
+            }
+        };
 
         if (RED.device)
         {
     
             this.on ('input', function (msg)
             {
-                
+                if (msg.peripheral)
+                {
+                    if (that.peripherals.get (msg.peripheralUuid) != peripheral)
+                    {
+                        if (hasUUID (msg.peripheralUuid))
+                        {
+                            that.peripherals.set (msg.peripheralUuid, peripheral);
+                        }
+                    }
+                }
+                if (msg.event)
+                {
+                    _.each (that.peripherals, function (device)
+                    {
+                        device.connect (function (err)
+                        {
+                            if (!err)
+                            {
+                                that.err (err);
+                            }
+                            else
+                            {
+                                device.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
+                                    {
+                                          console.log (services);
+                                          console.log (characteristics);
+                                    });
+                            }
+                        });
+                    });
+                }
             });
 
             this.on("close", function() {
