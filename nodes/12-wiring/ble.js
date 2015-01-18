@@ -187,8 +187,9 @@ module.exports = function(RED) {
                 }
                 if (msg.event)
                 {
-                    _.each (that.peripherals, function (peripheraldevice)
+                    _.each (that.peripherals, function (peripheraldevice, address)
                     {
+                        console.log (peripheraldevice);
                         peripheraldevice.connect (function (err)
                         {
                             if (!err)
@@ -197,6 +198,7 @@ module.exports = function(RED) {
                             }
                             else
                             {
+                                console.log ('connected '+address);
                                 peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                     {
                                           console.log (services);
