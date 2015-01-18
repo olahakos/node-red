@@ -157,14 +157,14 @@ module.exports = function(RED) {
 
         var that = this;
 
-        var hasUUID = function (uuid)
+        var hasAddress = function (uuid)
         {
-            if (that.uuids.length == 0) return true;
+            if (that.addresses.length == 0) return true;
             else
             {
-                for (var i=0; i<that.uuids.length; i++)
+                for (var i=0; i<that.addresses.length; i++)
                 {
-                    if (that.uuids[i] == uuid) return true;
+                    if (that.addresses[i] == address) return true;
                 }
                 return false;
             }
@@ -179,7 +179,7 @@ module.exports = function(RED) {
                 {
                     if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
                     {
-                        if (hasUUID (msg.peripheralUuid))
+                        if (hasAddress (msg.peripheralUuid))
                         {
                             that.peripherals.set (msg.peripheralUuid, msg.peripheral);
                         }
