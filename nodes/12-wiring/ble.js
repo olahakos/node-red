@@ -43,6 +43,61 @@ module.exports = function(RED) {
             cps.exec("systemctl stop bluetooth; rfkill unblock bluetooth; hciconfig hci0 up", puts);
         }
     }
+
+    var connections = dict ();
+
+    function pconnect (peripheral, done)
+    {
+        var pdata = connections.get (peripheral.Uuid);
+        if (pdata)
+        {
+            if (pdata.connecting) pdata.done.push (done);
+            else 
+            {
+                done (null);
+                // console.log ('connecting should be true '+pdata.peripheral.Uuid);
+            }
+        }
+        else
+        {
+            connections.set (peripheral.Uuid, {peripheral:peripheral, connecting:true, load: 0, done:[done]});
+            pdata = connections.get (peripheral.Uuid);
+            peripheral.connect (function (err)
+            {
+                if (err)
+                {
+                    console.log (err);
+                }
+                else
+                {
+                    pdata.connecting = false;
+                    _.each (pdata.done, function (func)
+                    {
+                        pdata.load++;
+                        func (err);
+                    };
+                }
+            });
+        }
+    }
+
+    function pdisconnect (peripheral)
+    {
+        var pdata = connections.get (peripheral.Uuid);
+        if (pdata)
+        {
+            pdata.load = pdata.load - 1;
+            if (!pdata.connecting && pdata.load == 0)
+            {
+                if (pdata.peripheral) pdata.peripheral.disconnect ();
+                pdata.del (peripheral.Uuid);
+            }
+        }
+        else
+        {
+            peripheral.disconnect ();
+        }
+    }
     
     // The main node definition - most things happen in here
     function NobleScan(n) {
@@ -199,11 +254,16 @@ module.exports = function(RED) {
                     that.peripherals.forEach (function (peripheraldevice, address)
                     {
                         // console.log (peripheraldevice);
-                        peripheraldevice.connect (function (err)
+                        var func = function ()
+                        {
+                            
+                        };
+
+                        pconnect (peripheraldevice, function (err)
                         {
                             if (err)
                             {
-                                that.warn (err);
+                                console.log (err+' '+address);
                             }
                             else
                             {
@@ -214,8 +274,8 @@ module.exports = function(RED) {
                                         discoverd = true;
                                         if (err)
                                         {
-                                            that.warn (err);
-                                            peripheraldevice.disconnect ();
+                                            console.log (err);
+                                            pdisconnect (peripheraldevice);
                                         }
                                         else
                                         {
@@ -225,13 +285,13 @@ module.exports = function(RED) {
                                             {
                                                 if (err)
                                                 {
-                                                    that.warn (err);
-                                                    peripheraldevice.disconnect ();
+                                                    console.log (err);
+                                                    pdisconnect (peripheraldevice);
                                                 }
                                                 else
                                                 {
                                                     that.send ({payload: data});
-                                                    peripheraldevice.disconnect ();
+                                                    pdisconnect (peripheraldevice);
                                                 }
                                             });
                                             // peripheraldevice.disconnect ();
@@ -239,7 +299,7 @@ module.exports = function(RED) {
                                     });
                                 setTimeout (function ()
                                 {
-                                    if (!discoverd) peripheraldevice.disconnect();
+                                    if (!discoverd) pdisconnect (peripheraldevice);
                                 }, 3000);
                             }
                         });
