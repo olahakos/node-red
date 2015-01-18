@@ -179,6 +179,7 @@ module.exports = function(RED) {
                 {
                     console.log ('peripheraldevice');
                     console.log (msg.peripheral);
+                    console.log (msg.peripheralUuid);
                     if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
                     {
                         if (hasAddress (msg.peripheralUuid))
