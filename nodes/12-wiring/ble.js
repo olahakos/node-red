@@ -196,7 +196,7 @@ module.exports = function(RED) {
                     console.log ('periferal devices');
                     console.log (that.peripherals);
                     console.log (that.peripherals.size);
-                    _.each (that.peripherals, function (peripheraldevice, address)
+                    that.peripherals.forEach (function (peripheraldevice, address)
                     {
                         console.log (peripheraldevice);
                         peripheraldevice.connect (function (err)
