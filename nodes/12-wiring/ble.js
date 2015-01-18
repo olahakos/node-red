@@ -49,6 +49,7 @@ module.exports = function(RED) {
 
     function pconnect (peripheral, done)
     {
+        console.log (peripheral.uuid+' connect');
         var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
@@ -90,6 +91,7 @@ module.exports = function(RED) {
 
     function pdisconnect (peripheral)
     {
+        console.log (peripheral.uuid+' disconnect');
         var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
@@ -287,8 +289,6 @@ module.exports = function(RED) {
                                         }
                                         else
                                         {
-                                            console.log (services);
-                                            console.log (characteristics);
                                             characteristics[0].read (function (err, data)
                                             {
                                                 if (err)
