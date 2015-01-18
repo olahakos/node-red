@@ -61,7 +61,7 @@ module.exports = function(RED) {
         }
         else
         {
-            connections.set (peripheral.Uuid, {peripheral:peripheral, connecting:true, load: 0, done:[done]});
+            connections.set (peripheral.uuid, {peripheral:peripheral, connecting:true, load: 0, done:[done]});
             pdata = connections.get (peripheral.uuid);
             peripheral.connect (function (err)
             {
