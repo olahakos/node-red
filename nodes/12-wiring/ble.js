@@ -193,7 +193,7 @@ module.exports = function(RED) {
                 }
             }
 
-            devices ();
+            // devices ();
     
             this.on("close", function() {
                 // Called when the node is shutdown - eg on redeploy.
