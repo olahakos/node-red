@@ -372,7 +372,7 @@ module.exports = function(RED) {
             {
                 for (var i=0; i<that.ids.length; i++)
                 {
-                    if (that.ids[i].toLowerCase() == address.toLowerCase()) return true;
+                    if (that.ids[i].toLowerCase() == id.toLowerCase()) return true;
                 }
                 return false;
             }
