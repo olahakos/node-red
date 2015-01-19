@@ -288,6 +288,7 @@ module.exports = function(RED) {
                                     if (!that.access.get (that.service+'.'+that.characteristic))
                                     {
                                         var connected = false;
+                                        that.access.set (that.service+'.'+that.characteristic);
                                         msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                             {
                                                 if (err)
@@ -297,6 +298,7 @@ module.exports = function(RED) {
                                                 }
                                                 else
                                                 {
+                                                    connected = true;
                                                     characteristics[0].notify (true, function (err)
                                                     {
                                                         if (err)
@@ -321,7 +323,7 @@ module.exports = function(RED) {
                                             if (!connected)
                                             {
                                                 pdisconnect (msg.peripheral);
-                                                // that.access.delete (that.service+'.'+that.characteristic);
+                                                that.access.delete (that.service+'.'+that.characteristic);
                                             }
                                         }, 3000);
                                     }
