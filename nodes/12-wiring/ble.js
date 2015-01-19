@@ -289,7 +289,7 @@ module.exports = function(RED) {
                                     {
                                         var connected = false;
                                         that.access.set (that.service+'.'+that.characteristic);
-                                        msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [], function (err, services, characteristics)
+                                        msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], ['713d0002503e4c75ba943148f18d941e'], function (err, services, characteristics)
                                             {
                                                 if (err)
                                                 {
