@@ -308,7 +308,7 @@ module.exports = function(RED) {
                                                         }
                                                         else
                                                         {
-                                                            characteristic[0].on ('read', function (data)
+                                                            characteristics[0].on ('read', function (data)
                                                             {
                                                                 that.send (data);
                                                             });
