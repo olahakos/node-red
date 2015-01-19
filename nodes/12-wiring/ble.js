@@ -298,8 +298,10 @@ module.exports = function(RED) {
                                                 }
                                                 else
                                                 {
-                                                    _.each (that.service[0].characteristics, function (characteristic)
+                                                    console.log (services);
+                                                    _.each (services[0].characteristics, function (characteristic)
                                                     {
+                                                        console.log (characteristic);
                                                         if (characteristic.uuid == that.characteristic)
                                                         {
                                                             for (var p = 0; prop.characteristic.properties.length; p++)
