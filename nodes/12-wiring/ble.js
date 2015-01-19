@@ -276,7 +276,7 @@ module.exports = function(RED) {
                             // console.log (that.peripherals);
                             // console.log (that.peripherals.size);
 
-                            pconnect (peripheraldevice, function (err)
+                            pconnect (msg.peripheral, function (err)
                             {
                                 if (err)
                                 {
