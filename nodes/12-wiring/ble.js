@@ -350,7 +350,7 @@ module.exports = function(RED) {
     
     // Register the node by name. This must be called before overriding any of the
     // Node functions.
-    RED.nodes.registerType("notify ble",NobleRead);
+    RED.nodes.registerType("notify ble",NobleNotify);
 
     function NobleRead(n) {
         // Create a RED node
