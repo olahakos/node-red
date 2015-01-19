@@ -308,15 +308,9 @@ module.exports = function(RED) {
                                                         }
                                                         else
                                                         {
-                                                            characteristics[0].on ('read', function (err, data)
+                                                            characteristics[0].on ('read', function (data)
                                                             {
-                                                                console.log ('read');
-                                                                console.log (err);
-                                                                console.log (data);
-                                                                if (!err) 
-                                                                {
-                                                                    that.send (data);
-                                                                }
+                                                                that.send ({payload: data});
                                                             });
                                                             // pdisconnect (peripheraldevice);
                                                         }
