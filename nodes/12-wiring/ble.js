@@ -359,7 +359,16 @@ module.exports = function(RED) {
         this.peripherals = dict ();
         this.access = dict ();
 
-        this.ids = n.ids.split (', ');
+        this.ids = [];
+        if (n.ids != undefined)
+        {
+            this.ids = n.ids.split (', ');
+        }
+        this.addresses = [];
+        if (n.addresses != undefined)
+        {
+            
+        }
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
