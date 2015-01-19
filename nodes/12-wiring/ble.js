@@ -262,6 +262,7 @@ module.exports = function(RED) {
     
             this.on ('input', function (msg)
             {
+                console.log (that.characteristic);
                 if (msg.peripheral)
                 {
                     console.log ('peripheraldevice');
