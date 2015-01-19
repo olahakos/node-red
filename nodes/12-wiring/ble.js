@@ -288,12 +288,12 @@ module.exports = function(RED) {
                                     if (!that.access.get (that.service+'.'+that.characteristic))
                                     {
                                         var connected = false;
-                                        peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
+                                        msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                             {
                                                 if (err)
                                                 {
                                                     console.log (err);
-                                                    pdisconnect (peripheraldevice);
+                                                    pdisconnect (msg.peripheral);
                                                 }
                                                 else
                                                 {
@@ -302,7 +302,7 @@ module.exports = function(RED) {
                                                         if (err)
                                                         {
                                                             console.log (err);
-                                                            pdisconnect (peripheraldevice);
+                                                            pdisconnect (msg.peripheral);
                                                         }
                                                         else
                                                         {
@@ -320,7 +320,7 @@ module.exports = function(RED) {
                                         {
                                             if (!connected)
                                             {
-                                                pdisconnect (peripheraldevice);
+                                                pdisconnect (msg.peripheral);
                                                 // that.access.delete (that.service+'.'+that.characteristic);
                                             }
                                         }, 3000);
