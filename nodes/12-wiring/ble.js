@@ -191,6 +191,8 @@ module.exports = function(RED) {
                     setTimeout (devices, 1000);
                 }
             }
+
+            devices ();
     
             this.on("close", function() {
                 // Called when the node is shutdown - eg on redeploy.
