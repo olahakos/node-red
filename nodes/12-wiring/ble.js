@@ -304,10 +304,12 @@ module.exports = function(RED) {
                                                         console.log (characteristic);
                                                         if (characteristic.uuid == that.characteristic)
                                                         {
+                                                            console.log ('id');
                                                             for (var p = 0; prop.characteristic.properties.length; p++)
                                                             {
                                                                 if (characteristic.properties[p] == 'notify')
                                                                 {
+                                                                    console.log ('notify');
                                                                     characteristic.notify (true, function (err)
                                                                     {
                                                                         if (err)
