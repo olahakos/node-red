@@ -289,7 +289,7 @@ module.exports = function(RED) {
                                     {
                                         var connected = false;
                                         that.access.set (that.service+'.'+that.characteristic);
-                                        msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [], function (err, services, characteristics)
+                                        msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                             {
                                                 if (err)
                                                 {
@@ -298,40 +298,23 @@ module.exports = function(RED) {
                                                 }
                                                 else
                                                 {
-                                                    console.log (services);
-                                                    _.each (services[0].characteristics, function (characteristic)
+                                                    connected = true;
+                                                    characteristics[0].notify (true, function (err)
                                                     {
-                                                        console.log (characteristic.uuid);
-                                                        console.log (that.characteristic);
-                                                        if (characteristic.uuid.toString() === that.characteristic)
+                                                        if (err)
                                                         {
-                                                            console.log ('id');
-                                                            for (var p = 0; prop.characteristic.properties.length; p++)
+                                                            console.log (err);
+                                                            pdisconnect (msg.peripheral);
+                                                        }
+                                                        else
+                                                        {
+                                                            characteristic[0].on ('read', function (data)
                                                             {
-                                                                if (characteristic.properties[p] == 'notify')
-                                                                {
-                                                                    console.log ('notify');
-                                                                    characteristic.notify (true, function (err)
-                                                                    {
-                                                                        if (err)
-                                                                        {
-                                                                            console.log (err);
-                                                                            pdisconnect (msg.peripheral);
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            characteristic.on ('read', function (data)
-                                                                            {
-                                                                                that.send (data);
-                                                                            });
-                                                                            // pdisconnect (peripheraldevice);
-                                                                        }
-                                                                    });
-                                                                }
-                                                            }
+                                                                that.send (data);
+                                                            });
+                                                            // pdisconnect (peripheraldevice);
                                                         }
                                                     });
-                                                    connected = true;
                                                     // peripheraldevice.disconnect ();
                                                 }
                                           });
