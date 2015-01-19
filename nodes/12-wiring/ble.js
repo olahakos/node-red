@@ -262,7 +262,6 @@ module.exports = function(RED) {
     
             this.on ('input', function (msg)
             {
-                console.log (that.characteristic);
                 if (msg.peripheral)
                 {
                     console.log ('peripheraldevice');
@@ -303,6 +302,7 @@ module.exports = function(RED) {
                                                     _.each (services[0].characteristics, function (characteristic)
                                                     {
                                                         console.log (characteristic.uuid);
+                                                        console.log (that.characteristic);
                                                         if (characteristic.uuid == that.characteristic)
                                                         {
                                                             console.log ('id');
