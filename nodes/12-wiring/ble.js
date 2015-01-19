@@ -298,6 +298,7 @@ module.exports = function(RED) {
                                                 }
                                                 else
                                                 {
+                                                    console.log (characteristics);
                                                     connected = true;
                                                     characteristics[0].notify (true, function (err)
                                                     {
@@ -320,12 +321,12 @@ module.exports = function(RED) {
                                           });
                                         setTimeout (function ()
                                         {
-                                            // if (!connected)
-                                            // {
-                                            //     pdisconnect (msg.peripheral);
-                                            //     that.access.delete (that.service+'.'+that.characteristic);
-                                            // }
-                                        }, 3000);
+                                            if (!connected)
+                                            {
+                                                pdisconnect (msg.peripheral);
+                                                that.access.delete (that.service+'.'+that.characteristic);
+                                            }
+                                        }, 5000);
                                     }
                                 }
                             });
