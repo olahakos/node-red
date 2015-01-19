@@ -302,7 +302,7 @@ module.exports = function(RED) {
                                                     console.log (services);
                                                     _.each (services[0].characteristics, function (characteristic)
                                                     {
-                                                        console.log (characteristic);
+                                                        console.log (characteristic.uuid);
                                                         if (characteristic.uuid == that.characteristic)
                                                         {
                                                             console.log ('id');
