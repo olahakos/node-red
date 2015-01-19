@@ -298,7 +298,7 @@ module.exports = function(RED) {
                                                 }
                                                 else
                                                 {
-                                                    console.log (characteristics);
+                                                    console.log (services);
                                                     connected = true;
                                                     characteristics[0].notify (true, function (err)
                                                     {
