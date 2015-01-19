@@ -303,7 +303,7 @@ module.exports = function(RED) {
                                                     {
                                                         console.log (characteristic.uuid);
                                                         console.log (that.characteristic);
-                                                        if (characteristic.uuid.toString() == that.characteristic)
+                                                        if (characteristic.uuid.toString() === that.characteristic)
                                                         {
                                                             console.log ('id');
                                                             for (var p = 0; prop.characteristic.properties.length; p++)
