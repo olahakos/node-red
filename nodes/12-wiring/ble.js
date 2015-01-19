@@ -365,7 +365,7 @@ module.exports = function(RED) {
 
         var that = this;
 
-        var hasID = function (id)
+        var hasId = function (id)
         {
             if (that.ids.length == 0) return true;
             else
