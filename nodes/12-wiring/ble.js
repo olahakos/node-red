@@ -182,10 +182,14 @@ module.exports = function(RED) {
             });
 
             // start initially
-            if (noble.state === 'poweredOn') {
-                noble.startScanning(node.uuids, node.duplicates);
-            } else {
-                this.warn("Unable to start BLE scan. Adapter state: " + noble.state);
+            var devices = function ()
+            {
+                if (noble.state === 'poweredOn') {
+                    noble.startScanning(node.uuids, node.duplicates);
+                } else {
+                    that.warn("Unable to start BLE scan. Adapter state: " + noble.state);
+                    setTimeout (devices, 1000);
+                }
             }
     
             this.on("close", function() {
@@ -224,7 +228,7 @@ module.exports = function(RED) {
 
         var that = this;
 
-        var hasID = function (id)
+        var hasId = function (id)
         {
             if (that.ids.length == 0) return true;
             else
@@ -262,7 +266,7 @@ module.exports = function(RED) {
                     // console.log (msg.peripheralUuid);
                     if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
                     {
-                        if (hasAddress (msg.peripheralUuid) || hasIds (msg.localName))
+                        if (hasAddress (msg.peripheralUuid) || hasId (msg.localName))
                         {
                             console.log ('adding peripheral device');
                             that.peripherals.set (msg.peripheralUuid, msg.peripheral);
