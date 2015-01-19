@@ -280,11 +280,11 @@ module.exports = function(RED) {
                             {
                                 if (err)
                                 {
-                                    console.log (err+' '+address);
+                                    console.log (err+' '+msg.peripheral.uuid);
                                 }
                                 else
                                 {
-                                    console.log ('connected '+address);
+                                    console.log ('connected '+msg.peripheral.uuid);
                                     if (!that.access.get (that.service+'.'+that.characteristic))
                                     {
                                         var connected = false;
