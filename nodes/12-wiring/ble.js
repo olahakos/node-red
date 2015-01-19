@@ -193,7 +193,7 @@ module.exports = function(RED) {
                 }
             }
 
-            // devices ();
+            devices ();
     
             this.on("close", function() {
                 // Called when the node is shutdown - eg on redeploy.
@@ -367,7 +367,7 @@ module.exports = function(RED) {
         this.addresses = [];
         if (n.addresses != undefined)
         {
-            
+
         }
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
