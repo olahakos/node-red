@@ -325,7 +325,7 @@ module.exports = function(RED) {
                                                                 }
                                                             }
                                                         }
-                                                    };
+                                                    });
                                                     connected = true;
                                                     // peripheraldevice.disconnect ();
                                                 }
