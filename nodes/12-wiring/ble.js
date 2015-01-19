@@ -308,9 +308,12 @@ module.exports = function(RED) {
                                                         }
                                                         else
                                                         {
-                                                            characteristics[0].on ('read', function (data)
+                                                            characteristics[0].on ('read', function (err, data)
                                                             {
-                                                                that.send (data);
+                                                                if (!err) 
+                                                                {
+                                                                    that.send (data);
+                                                                }
                                                             });
                                                             // pdisconnect (peripheraldevice);
                                                         }
