@@ -310,6 +310,9 @@ module.exports = function(RED) {
                                                         {
                                                             characteristics[0].on ('read', function (err, data)
                                                             {
+                                                                console.log ('read');
+                                                                console.log (err);
+                                                                console.log (data);
                                                                 if (!err) 
                                                                 {
                                                                     that.send (data);
