@@ -52,8 +52,38 @@
 <script type="text/x-red" data-template-name="read ble">
     <!-- Limit to list of UUIDs -->
     <div class="form-row">
-        <label for="node-input-names"><i class="fa fa-tasks"></i> Restrict by Name</label>
-        <input type="text" id="node-input-names" placeholder="Comma separated list">
+        <label for="node-input-ids"><i class="fa fa-tasks"></i> Restrict by Name</label>
+        <input type="text" id="node-input-ids" placeholder="Comma separated list">
+    </div>
+    <div class="form-row">
+        <label for="node-input-addresses"><i class="fa fa-tasks"></i> Restrict by UUID</label>
+        <input type="text" id="node-input-addresses" placeholder="Comma separated list">
+    </div>
+    <div class="form-row">
+        <label for="node-input-service"><i class="fa fa-tasks"></i> Service</label>
+        <input type="text" id="node-input-service" placeholder="">
+    </div>
+    <div class="form-row">
+        <label for="node-input-characteristic"><i class="fa fa-tasks"></i> Characteristic</label>
+        <input type="text" id="node-input-characteristic" placeholder="">
+    </div>
+    <div class="form-tips">Leave empty for all services.</div>
+
+    <!-- By convention, most nodes have a 'name' property. The following div -->
+    <!-- provides the necessary field. Should always be the last option      -->
+
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+</script>
+
+<script type="text/x-red" data-template-name="notify ble">
+    <!-- Limit to list of UUIDs -->
+    <div class="form-row">
+        <label for="node-input-ids"><i class="fa fa-tasks"></i> Restrict by Name</label>
+        <input type="text" id="node-input-ids" placeholder="Comma separated list">
     </div>
     <div class="form-row">
         <label for="node-input-addresses"><i class="fa fa-tasks"></i> Restrict by UUID</label>
@@ -137,7 +167,7 @@ RED.nodes.registerType('read ble',{
         category: 'advanced',      // the palette category
         color:"#207FC3",
         defaults: {             // defines the editable properties of the node
-            names: {value:""},
+            ids: {value:""},
             addresses: {value:""},
             // duplicates: {value:false},
             service: {value:""},
@@ -153,6 +183,33 @@ RED.nodes.registerType('read ble',{
                 return this.name;
             } else {
                 return "Read BLEs";
+            }
+        },
+        labelStyle: function() { // sets the class to apply to the label
+            return this.name ? "node_label_italic" : "";
+        }
+    });
+
+RED.nodes.registerType('notify ble',{
+        category: 'advanced',      // the palette category
+        color:"#207FC3",
+        defaults: {             // defines the editable properties of the node
+            ids: {value:""},
+            addresses: {value:""},
+            // duplicates: {value:false},
+            service: {value:""},
+            characteristic: {value:""},
+            name: {value:""}
+        },
+        inputs:1,               // set the number of inputs - only 0 or 1
+        outputs:1,              // set the number of outputs - 0 to n
+        // set the icon (held in icons dir below where you save the node)
+        icon: "bluetooth.png",     // saved in  icons/myicon.png
+        label: function() {     // sets the default label contents
+            if (this.name) {
+                return this.name;
+            } else {
+                return "Notify BLEs";
             }
         },
         labelStyle: function() { // sets the class to apply to the label

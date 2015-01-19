@@ -210,18 +210,32 @@ module.exports = function(RED) {
     RED.nodes.registerType("scan ble",NobleScan);
 
     // The main node definition - most things happen in here
-    function NobleRead(n) {
+    function NobleNotify(n) {
         // Create a RED node
         RED.nodes.createNode(this,n);
 
         this.peripherals = dict ();
         this.access = dict ();
 
+        this.ids = n.ids.split (', ');
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
 
         var that = this;
+
+        var hasID = function (id)
+        {
+            if (that.ids.length == 0) return true;
+            else
+            {
+                for (var i=0; i<that.ids.length; i++)
+                {
+                    if (that.ids[i].toLowerCase() == address.toLowerCase()) return true;
+                }
+                return false;
+            }
+        };
 
         var hasAddress = function (address)
         {
@@ -248,7 +262,142 @@ module.exports = function(RED) {
                     // console.log (msg.peripheralUuid);
                     if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
                     {
-                        if (hasAddress (msg.peripheralUuid))
+                        if (hasAddress (msg.peripheralUuid) || hasIds (msg.localName))
+                        {
+                            console.log ('adding peripheral device');
+                            that.peripherals.set (msg.peripheralUuid, msg.peripheral);
+                            // console.log (that.peripherals);
+                            // console.log (that.peripherals.size);
+
+                            pconnect (peripheraldevice, function (err)
+                            {
+                                if (err)
+                                {
+                                    console.log (err+' '+address);
+                                }
+                                else
+                                {
+                                    console.log ('connected '+address);
+                                    if (!that.access.get (that.service+'.'+that.characteristic))
+                                    {
+                                        var connected = false;
+                                        peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
+                                            {
+                                                if (err)
+                                                {
+                                                    console.log (err);
+                                                    pdisconnect (peripheraldevice);
+                                                }
+                                                else
+                                                {
+                                                    characteristics[0].notify (true, function (err)
+                                                    {
+                                                        if (err)
+                                                        {
+                                                            console.log (err);
+                                                            pdisconnect (peripheraldevice);
+                                                        }
+                                                        else
+                                                        {
+                                                            characteristic[0].on ('read', function (data)
+                                                            {
+                                                                that.send (data);
+                                                            });
+                                                            // pdisconnect (peripheraldevice);
+                                                        }
+                                                    });
+                                                    // peripheraldevice.disconnect ();
+                                                }
+                                          });
+                                        setTimeout (function ()
+                                        {
+                                            if (!connected)
+                                            {
+                                                pdisconnect (peripheraldevice);
+                                                // that.access.delete (that.service+'.'+that.characteristic);
+                                            }
+                                        }, 3000);
+                                    }
+                                }
+                            });
+
+                        }
+                    }
+                }
+            });
+                
+                    // console.log ('periferal devices');
+                    // console.log (that.peripherals);
+                    // console.log (that.peripherals.size);
+                    
+
+
+            this.on("close", function() {
+                // Called when the node is shutdown - eg on redeploy.
+                // Allows ports to be closed, connections dropped etc.
+                // eg: this.client.disconnect();
+                if (peripheral) peripheral.disconnect ();
+            });
+        }
+    }
+    
+    // Register the node by name. This must be called before overriding any of the
+    // Node functions.
+    RED.nodes.registerType("notify ble",NobleRead);
+
+    function NobleRead(n) {
+        // Create a RED node
+        RED.nodes.createNode(this,n);
+
+        this.peripherals = dict ();
+        this.access = dict ();
+
+        this.ids = n.ids.split (', ');
+        this.addresses = n.addresses.split (', ');
+        this.service = n.service;
+        this.characteristic = n.characteristic;
+
+        var that = this;
+
+        var hasID = function (id)
+        {
+            if (that.ids.length == 0) return true;
+            else
+            {
+                for (var i=0; i<that.ids.length; i++)
+                {
+                    if (that.ids[i].toLowerCase() == address.toLowerCase()) return true;
+                }
+                return false;
+            }
+        };
+
+        var hasAddress = function (address)
+        {
+            if (that.addresses.length == 0) return true;
+            else
+            {
+                for (var i=0; i<that.addresses.length; i++)
+                {
+                    if (that.addresses[i].toLowerCase() == address.toLowerCase()) return true;
+                }
+                return false;
+            }
+        };
+
+        if (RED.device)
+        {
+    
+            this.on ('input', function (msg)
+            {
+                if (msg.peripheral)
+                {
+                    console.log ('peripheraldevice');
+                    // console.log (msg.peripheral);
+                    // console.log (msg.peripheralUuid);
+                    if (that.peripherals.get (msg.peripheralUuid) != msg.peripheral)
+                    {
+                        if (hasAddress (msg.peripheralUuid) || hasIds (msg.localName))
                         {
                             console.log ('adding peripheral device');
                             that.peripherals.set (msg.peripheralUuid, msg.peripheral);
