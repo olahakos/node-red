@@ -188,7 +188,8 @@ module.exports = function(RED) {
                     noble.startScanning(node.uuids, node.duplicates);
                 } else {
                     node.warn("Unable to start BLE scan. Adapter state: " + noble.state);
-                    setTimeout (devices, 4000);
+                    noble.startScanning(node.uuids, node.duplicates);
+                    // setTimeout (devices, 4000);
                 }
             }
 
