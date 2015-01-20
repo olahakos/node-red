@@ -57,43 +57,43 @@ module.exports = function(RED) {
         else
         if (type == 'uint8')
         {
-            data = new Buffer ();
+            data = new Buffer (1);
             data.writeUInt8 (value, 0);
         }
         else
         if (type == 'int8')
         {
-            data = new Buffer ();
+            data = new Buffer (1);
             data.writeInt8 (value, 0);
         }
         else
         if (type == 'uint16')
         {
-            data = new Buffer ();
+            data = new Buffer (2);
             data.writeUInt16LE (value, 0);
         }
         else
         if (type == 'int16')
         {
-            data = new Buffer ();
+            data = new Buffer (2);
             data.writeInt16LE (value, 0);
         }
         else
         if (type == 'uint32')
         {
-            data = new Buffer ();
+            data = new Buffer (4);
             data.writeUInt32LE (value, 0);
         }
         else
         if (type == 'int32')
         {
-            data = new Buffer ();
+            data = new Buffer (4);
             data.writeInt32LE (value, 0);
         }
         else
         if (type == 'float')
         {
-            data = new Buffer ();
+            data = new Buffer (4);
             data.writeFloatLE (value, 0);
         }
         return data;
