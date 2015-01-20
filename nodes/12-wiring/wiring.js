@@ -148,6 +148,65 @@ module.exports = function(RED) {
         });
     }
     RED.nodes.registerType("analogread",analogRead);
+
+    function receiveSignal(config) {
+        RED.nodes.createNode(this,config);
+        var node = this;
+
+        this.on ('input', function (msg)
+        {
+            if (config.address && config.dashboarduuid && config.button)
+            {
+                var address = url.parse (config.address);
+                var string = JSON.stringify ({
+                    name: config.signal,
+                    dashboarduuid: config.dashboarduuid,
+                });
+                var r = http;
+                if (address.protocol == 'https') r = https;
+                var headers = {
+                  'Content-Type': 'application/json',
+                  'Content-Length': string.length,
+                  'Connection':'close'
+                };
+
+                var options = {
+                  host: address.hostname,
+                  port: address.port,
+                  path: '/signal/getButton',
+                  method: 'POST',
+                  headers: headers
+                };
+
+                // Setup the request.  The options parameter is
+                // the object we defined above.
+                var req = http.request(options, function(res) {
+                  res.setEncoding('utf-8');
+
+                  var responseString = '';
+
+                  res.on('data', function(data) {
+                    responseString += data;
+                  });
+
+                  res.on('end', function() {
+                    var resultObject = JSON.parse(responseString);
+                    if (resultObject.value) this.send ({topic: config.button, payload:value});
+                  });
+                });
+
+                req.on('error', function(e) {
+                  // TODO: handle error.
+                  console.log (e);
+                });
+
+                req.write(string);
+                req.end();
+            }
+        });
+
+    }
+    RED.nodes.registerType("button",receiveSignal);
     
     function sendSignal(config) {
         RED.nodes.createNode(this,config);
