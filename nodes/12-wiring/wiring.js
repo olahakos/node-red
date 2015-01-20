@@ -178,7 +178,7 @@ module.exports = function(RED) {
                 };
 
                 var options = {
-                  host: address.host,
+                  host: address.hostname,
                   port: address.port,
                   path: '/signal/add_signal_value',
                   method: 'POST',
