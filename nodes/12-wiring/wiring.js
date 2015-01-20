@@ -190,11 +190,11 @@ module.exports = function(RED) {
                   });
 
                   res.on('end', function() {
-                    console.log (responseString);
+                    // console.log (responseString);
                     try
                     {
                         var resultObject = JSON.parse(responseString);
-                        if (resultObject.value) this.send ({topic: config.button, payload:resultObject.value});
+                        if (resultObject.value != undefined) this.send ({topic: config.button, payload:resultObject.value});
                     }
                     catch (e)
                     {
