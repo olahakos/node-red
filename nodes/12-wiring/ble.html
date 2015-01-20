@@ -68,6 +68,17 @@
         <input type="text" id="node-input-characteristic" placeholder="">
     </div>
 
+    <select type="text" id="node-input-type" style="width:72%;">
+        <option value="string">Text (string)</option>
+        <option value="uint8">8 Bit Unsigned Integer</option>
+        <option value="int8">8 Bit Unsigned Integer</option>
+        <option value="uint16">16 Bit Unsigned Integer</option>
+        <option value="int16">16 Bit Unsigned Integer</option>
+        <option value="uint32">32 Bit Unsigned Integer</option>
+        <option value="int32">32 Bit Unsigned Integer</option>
+        <option value="float">32 Bit Float</option>
+    </select>
+
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field. Should always be the last option      -->
 
@@ -97,6 +108,17 @@
         <input type="text" id="node-input-characteristic" placeholder="">
     </div>
 
+    <select type="text" id="node-input-type" style="width:72%;">
+        <option value="string">Text (string)</option>
+        <option value="uint8">8 Bit Unsigned Integer</option>
+        <option value="int8">8 Bit Unsigned Integer</option>
+        <option value="uint16">16 Bit Unsigned Integer</option>
+        <option value="int16">16 Bit Unsigned Integer</option>
+        <option value="uint32">32 Bit Unsigned Integer</option>
+        <option value="int32">32 Bit Unsigned Integer</option>
+        <option value="float">32 Bit Float</option>
+    </select>
+
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field. Should always be the last option      -->
 
@@ -125,6 +147,17 @@
         <label for="node-input-characteristic"><i class="fa fa-tasks"></i> Characteristic</label>
         <input type="text" id="node-input-characteristic" placeholder="">
     </div>
+
+    <select type="text" id="node-input-type" style="width:72%;">
+        <option value="string">Text (string)</option>
+        <option value="uint8">8 Bit Unsigned Integer</option>
+        <option value="int8">8 Bit Unsigned Integer</option>
+        <option value="uint16">16 Bit Unsigned Integer</option>
+        <option value="int16">16 Bit Unsigned Integer</option>
+        <option value="uint32">32 Bit Unsigned Integer</option>
+        <option value="int32">32 Bit Unsigned Integer</option>
+        <option value="float">32 Bit Float</option>
+    </select>
 
     <!-- By convention, most nodes have a 'name' property. The following div -->
     <!-- provides the necessary field. Should always be the last option      -->
@@ -199,6 +232,7 @@ RED.nodes.registerType('read ble',{
             // duplicates: {value:false},
             service: {value:""},
             characteristic: {value:""},
+            type: {value:"string"},
             name: {value:""}
         },
         inputs:1,               // set the number of inputs - only 0 or 1
@@ -226,6 +260,7 @@ RED.nodes.registerType('notify ble',{
             // duplicates: {value:false},
             service: {value:""},
             characteristic: {value:""},
+            type: {value:"string"},
             name: {value:""}
         },
         inputs:1,               // set the number of inputs - only 0 or 1
@@ -253,6 +288,7 @@ RED.nodes.registerType('write ble',{
             // duplicates: {value:false},
             service: {value:""},
             characteristic: {value:""},
+            type: {value:"string"},
             name: {value:""}
         },
         inputs:1,               // set the number of inputs - only 0 or 1

@@ -47,6 +47,103 @@ module.exports = function(RED) {
         connections = dict ();
     }
 
+    function writeValue (type, value)
+    {
+        var data = null;
+        if (type == 'string')
+        {
+            data = new Buffer (value, 'utf8');
+        }
+        else
+        if (type == 'uint8')
+        {
+            data = new Buffer ();
+            data.writeUInt8 (value, 0);
+        }
+        else
+        if (type == 'int8')
+        {
+            data = new Buffer ();
+            data.writeInt8 (value, 0);
+        }
+        else
+        if (type == 'uint16')
+        {
+            data = new Buffer ();
+            data.writeUInt16LE (value, 0);
+        }
+        else
+        if (type == 'int16')
+        {
+            data = new Buffer ();
+            data.writeInt16LE (value, 0);
+        }
+        else
+        if (type == 'uint32')
+        {
+            data = new Buffer ();
+            data.writeUInt32LE (value, 0);
+        }
+        else
+        if (type == 'int32')
+        {
+            data = new Buffer ();
+            data.writeInt32LE (value, 0);
+        }
+        else
+        if (type == 'float')
+        {
+            data = new Buffer ();
+            data.writeFloatLE (value, 0);
+        }
+        return data;
+    }
+
+    function readValue (type, data)
+    {
+        var value = null;
+        if (type == 'string')
+        {
+            value = value.toString();
+        }
+        else
+        if (type == 'uint8')
+        {
+            value = data.readUInt8 (0);
+        }
+        else
+        if (type == 'int8')
+        {
+            value = data.readInt8 (0);
+        }
+        else
+        if (type == 'uint16')
+        {
+            value = data.readUInt16LE (0);
+        }
+        else
+        if (type == 'int16')
+        {
+            value = data.readInt16LE (0);
+        }
+        else
+        if (type == 'uint32')
+        {
+            value = data.readUInt32LE (0);
+        }
+        else
+        if (type == 'int32')
+        {
+            value = data.readInt32LE (0);
+        }
+        else
+        if (type == 'float')
+        {
+            value = data.readFloatLE (0);
+        }
+        return value;
+    }
+
     function pconnect (peripheral, done)
     {
         console.log (peripheral.uuid+' connect');
@@ -228,6 +325,7 @@ module.exports = function(RED) {
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
+        this.type = n.type;
 
         var that = this;
 
@@ -311,7 +409,9 @@ module.exports = function(RED) {
                                                         {
                                                             characteristics[0].on ('read', function (data)
                                                             {
-                                                                that.send ({payload: data});
+                                                                var type = that.type;
+                                                                if (msg.type) type = msg.type;
+                                                                that.send ({payload: readValue (type, data)});
                                                             });
                                                             // pdisconnect (peripheraldevice);
                                                         }
@@ -375,6 +475,7 @@ module.exports = function(RED) {
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
+        this.type = n.type;
 
         var that = this;
 
@@ -469,7 +570,9 @@ module.exports = function(RED) {
                                                     }
                                                     else
                                                     {
-                                                        that.send ({payload: data});
+                                                        var type = that.type;
+                                                        if (msg.type) type = msg.type;
+                                                        that.send ({payload: readValue (type, data)});
                                                         pdisconnect (peripheraldevice);
                                                     }
                                                 });
@@ -524,6 +627,7 @@ module.exports = function(RED) {
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
+        this.type = n.type;
 
         var that = this;
 
@@ -608,21 +712,36 @@ module.exports = function(RED) {
                                             }
                                             else
                                             {
-                                                var buffer = null;
-                                                characteristics[0].write (buffer, false, function (err, data)
+                                                var type = that.type;
+                                                if (msg.type) type = msg.type;
+                                                var data = writeValue (type, msg.payload);
+                                                var response = 0;
+                                                for (var i = 0; i<characteristics[0].properties.length; i++)
                                                 {
-                                                    that.access.delete (that.service+'.'+that.characteristic);
-                                                    if (err)
+                                                    if (characteristics[0].properties[i] == 'write') response = response + 1;
+                                                    if (characteristics[0].properties[i] == 'writeWithoutResponse') response = response + 2;
+                                                }
+                                                if (response > 0)
+                                                {
+                                                    characteristics[0].write (data, response & 2, function (err, data)
                                                     {
-                                                        console.log (err);
-                                                        pdisconnect (peripheraldevice);
-                                                    }
-                                                    else
-                                                    {
-                                                        that.send ({payload: data});
-                                                        pdisconnect (peripheraldevice);
-                                                    }
-                                                });
+                                                        that.access.delete (that.service+'.'+that.characteristic);
+                                                        if (err)
+                                                        {
+                                                            console.log (err);
+                                                            pdisconnect (peripheraldevice);
+                                                        }
+                                                        else
+                                                        {
+                                                            that.send ({event: true});
+                                                            pdisconnect (peripheraldevice);
+                                                        }
+                                                    });
+                                                }
+                                                else
+                                                {
+                                                    that.warn ('Characteristic is not writable');
+                                                }
                                                 // peripheraldevice.disconnect ();
                                             }
                                         });
