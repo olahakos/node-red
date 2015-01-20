@@ -170,7 +170,7 @@ module.exports = function(RED) {
                 if (config.address.indexOf ('https://') == 0) r = https;
                 var headers = {
                   'Content-Type': 'application/json',
-                  'Content-Length': userString.length,
+                  'Content-Length': string.length,
                   'Connection':'close'
                 };
 
@@ -200,7 +200,7 @@ module.exports = function(RED) {
                   // TODO: handle error.
                 });
 
-                req.write(userString);
+                req.write(string);
                 req.end();
             }
 
