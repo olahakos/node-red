@@ -134,11 +134,11 @@
         inputs:1,
         outputs:1,
         icon: "serial.png",
-        // align: 'left',
+        align: 'left',
         label: function() {
             return this.name||"Button "+this.button;
         }
-    })
+    });
     
     RED.nodes.registerType('sendsignal',{
         category: 'Signals',
