@@ -167,7 +167,8 @@ module.exports = function(RED) {
                 var string = JSON.stringify ({
                     timestamp:(new Date()).getTime() / 1000,
                     value: parseFloat (msg.payload),
-                    dashboarduuid: config.dashboarduuid
+                    name: config.signal
+                    dashboarduuid: config.dashboarduuid,
                 });
                 var r = http;
                 if (address.protocol == 'https') r = https;
