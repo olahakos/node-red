@@ -153,7 +153,7 @@ module.exports = function(RED) {
         this.on('input', function(msg) {
             if (msg.topic)
             {
-               wyliodrin.sendSignal (msg.topic, config.signal, parseFloat (msg.payload)); 
+               wyliodrin.sendSignalAndFlag (msg.topic, config.signal, parseFloat (msg.payload)); 
             }
             else
             {
@@ -161,7 +161,7 @@ module.exports = function(RED) {
             }
             if (config.address && config.dashboarduuid)
             {
-                var string = JSON.strinify ({
+                var string = JSON.stringify ({
                     timestamp:(new Date()).getTime() / 1000,
                     value: parseFloat (msg.payload),
                     dashboarduuid: config.dashboarduuid
