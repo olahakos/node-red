@@ -104,7 +104,7 @@ module.exports = function(RED) {
         var value = null;
         if (type == 'string')
         {
-            value = value.toString();
+            value = data.toString('utf8');
         }
         else
         if (type == 'uint8')
