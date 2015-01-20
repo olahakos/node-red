@@ -655,6 +655,7 @@ module.exports = function(RED) {
 
         var hasId = function (id)
         {
+            if (!id) return false;
             if (that.ids.length == 0) return true;
             else
             {
