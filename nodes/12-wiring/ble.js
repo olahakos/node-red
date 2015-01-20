@@ -737,35 +737,42 @@ module.exports = function(RED) {
                                                 }
                                                 else
                                                 {
-                                                    var type = that.datatype;
-                                                    if (msg.datatype) type = msg.datatype;
-                                                    var data = writeValue (type, msg.payload);
-                                                    var response = 0;
-                                                    for (var i = 0; i<characteristics[0].properties.length; i++)
+                                                    if (characteristics.length > 0)
                                                     {
-                                                        if (characteristics[0].properties[i] == 'write') response = response + 1;
-                                                        if (characteristics[0].properties[i] == 'writeWithoutResponse') response = response + 2;
-                                                    }
-                                                    if (response > 0)
-                                                    {
-                                                        characteristics[0].write (data, response & 2, function (err, data)
+                                                        var type = that.datatype;
+                                                        if (msg.datatype) type = msg.datatype;
+                                                        var data = writeValue (type, msg.payload);
+                                                        var response = 0;
+                                                        for (var i = 0; i<characteristics[0].properties.length; i++)
                                                         {
-                                                            that.access.delete (that.service+'.'+that.characteristic);
-                                                            if (err)
+                                                            if (characteristics[0].properties[i] == 'write') response = response + 1;
+                                                            if (characteristics[0].properties[i] == 'writeWithoutResponse') response = response + 2;
+                                                        }
+                                                        if (response > 0)
+                                                        {
+                                                            characteristics[0].write (data, response & 2, function (err, data)
                                                             {
-                                                                console.log (err);
-                                                                pdisconnect (peripheraldevice);
-                                                            }
-                                                            else
-                                                            {
-                                                                that.send ({event: true});
-                                                                pdisconnect (peripheraldevice);
-                                                            }
-                                                        });
+                                                                that.access.delete (that.service+'.'+that.characteristic);
+                                                                if (err)
+                                                                {
+                                                                    console.log (err);
+                                                                    pdisconnect (peripheraldevice);
+                                                                }
+                                                                else
+                                                                {
+                                                                    that.send ({event: true});
+                                                                    pdisconnect (peripheraldevice);
+                                                                }
+                                                            });
+                                                        }
+                                                        else
+                                                        {
+                                                            that.warn ('Characteristic is not writable');
+                                                        }
                                                     }
                                                     else
                                                     {
-                                                        that.warn ('Characteristic is not writable');
+                                                        pdisconnect (peripheraldevice);
                                                     }
                                                     // peripheraldevice.disconnect ();
                                                 }
