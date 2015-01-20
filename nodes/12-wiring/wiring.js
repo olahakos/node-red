@@ -165,9 +165,9 @@ module.exports = function(RED) {
             {
                 var address = url.parse (config.address);
                 var string = JSON.stringify ({
+                    name: config.signal
                     timestamp:(new Date()).getTime() / 1000,
                     value: parseFloat (msg.payload),
-                    name: config.signal
                     dashboarduuid: config.dashboarduuid,
                 });
                 var r = http;
