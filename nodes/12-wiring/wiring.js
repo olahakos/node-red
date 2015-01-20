@@ -5,6 +5,7 @@ module.exports = function(RED) {
 	var wyliodrin = null;
     var http = null;
     var https = null;
+    var url = null;
 	if (RED.device)
 	{
         if (process.env.wyliodrin_board == "raspberrypi")
@@ -14,6 +15,7 @@ module.exports = function(RED) {
 		wyliodrin = require ('wyliodrin');   
         http = require ('http');
         https = require ('https');
+        url = require ('url');
 	}
 
     if (!RED.wyliodrin) RED.wyliodrin = {};
@@ -161,13 +163,14 @@ module.exports = function(RED) {
             }
             if (config.address && config.dashboarduuid)
             {
+                var address = url.parse (address);
                 var string = JSON.stringify ({
                     timestamp:(new Date()).getTime() / 1000,
                     value: parseFloat (msg.payload),
                     dashboarduuid: config.dashboarduuid
                 });
                 var r = http;
-                if (config.address.indexOf ('https://') == 0) r = https;
+                if (address.protocol == 'https') r = https;
                 var headers = {
                   'Content-Type': 'application/json',
                   'Content-Length': string.length,
@@ -175,7 +178,9 @@ module.exports = function(RED) {
                 };
 
                 var options = {
-                  url: config.address+'/signal/add_signal_value',
+                  host: address.host,
+                  port: address.port,
+                  path: '/signal/add_signal_value',
                   method: 'POST',
                   headers: headers
                 };
