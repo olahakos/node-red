@@ -334,10 +334,10 @@ module.exports = function(RED) {
 
     function pnextreadwrite (pdata)
     {
-        if (pdata.read.length > 0)
+        if (pdata.readwrites.length > 0)
         {
             var readwrite = pdata.readwrites[0];
-            pdata.read.splice (0, 1);
+            pdata.readwrites.splice (0, 1);
             pdata.readwrite = true;
             readwrite (function ()
                 {
