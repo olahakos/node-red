@@ -331,6 +331,7 @@ module.exports = function(RED) {
 
         var hasId = function (id)
         {
+            if (!id) return false;
             if (that.ids.length == 0) return true;
             else
             {
@@ -389,39 +390,43 @@ module.exports = function(RED) {
                                         that.access.set (that.service+'.'+that.characteristic);
                                         msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                             {
-                                                if (err)
-                                                {
-                                                    console.log (err);
-                                                    pdisconnect (msg.peripheral);
-                                                }
-                                                else
+                                                if (!connected)
                                                 {
                                                     connected = true;
-                                                    characteristics[0].notify (true, function (err)
+                                                    if (err)
                                                     {
-                                                        if (err)
+                                                        console.log (err);
+                                                        pdisconnect (msg.peripheral);
+                                                    }
+                                                    else
+                                                    {
+                                                        characteristics[0].notify (true, function (err)
                                                         {
-                                                            console.log (err);
-                                                            pdisconnect (msg.peripheral);
-                                                        }
-                                                        else
-                                                        {
-                                                            characteristics[0].on ('read', function (data)
+                                                            if (err)
                                                             {
-                                                                var type = that.datatype;
-                                                                if (msg.datatype) type = msg.datatype;
-                                                                that.send ({payload: readValue (type, data)});
-                                                            });
-                                                            // pdisconnect (peripheraldevice);
-                                                        }
-                                                    });
-                                                    // peripheraldevice.disconnect ();
+                                                                console.log (err);
+                                                                pdisconnect (msg.peripheral);
+                                                            }
+                                                            else
+                                                            {
+                                                                characteristics[0].on ('read', function (data)
+                                                                {
+                                                                    var type = that.datatype;
+                                                                    if (msg.datatype) type = msg.datatype;
+                                                                    that.send ({payload: readValue (type, data)});
+                                                                });
+                                                                // pdisconnect (peripheraldevice);
+                                                            }
+                                                        });
+                                                        // peripheraldevice.disconnect ();
+                                                    }
                                                 }
                                           });
                                         setTimeout (function ()
                                         {
                                             if (!connected)
                                             {
+                                                connected = true;
                                                 pdisconnect (msg.peripheral);
                                                 that.access.delete (that.service+'.'+that.characteristic);
                                             }
@@ -480,6 +485,7 @@ module.exports = function(RED) {
 
         var hasId = function (id)
         {
+            if (!id) return false;
             if (that.ids.length == 0) return true;
             else
             {
@@ -552,30 +558,33 @@ module.exports = function(RED) {
                                     that.access.set (that.service+'.'+that.characteristic);
                                     peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                         {
-                                            if (err)
+                                            if (that.access.has ((that.service+'.'+that.characteristic)))
                                             {
-                                                console.log (err);
-                                                pdisconnect (peripheraldevice);
-                                            }
-                                            else
-                                            {
-                                                characteristics[0].read (function (err, data)
+                                                if (err)
                                                 {
-                                                    that.access.delete (that.service+'.'+that.characteristic);
-                                                    if (err)
+                                                    console.log (err);
+                                                    pdisconnect (peripheraldevice);
+                                                }
+                                                else
+                                                {
+                                                    characteristics[0].read (function (err, data)
                                                     {
-                                                        console.log (err);
-                                                        pdisconnect (peripheraldevice);
-                                                    }
-                                                    else
-                                                    {
-                                                        var type = that.datatype;
-                                                        if (msg.datatype) type = msg.datatype;
-                                                        that.send ({payload: readValue (type, data)});
-                                                        pdisconnect (peripheraldevice);
-                                                    }
-                                                });
-                                                // peripheraldevice.disconnect ();
+                                                        that.access.delete (that.service+'.'+that.characteristic);
+                                                        if (err)
+                                                        {
+                                                            console.log (err);
+                                                            pdisconnect (peripheraldevice);
+                                                        }
+                                                        else
+                                                        {
+                                                            var type = that.datatype;
+                                                            if (msg.datatype) type = msg.datatype;
+                                                            that.send ({payload: readValue (type, data)});
+                                                            pdisconnect (peripheraldevice);
+                                                        }
+                                                    });
+                                                    // peripheraldevice.disconnect ();
+                                                }
                                             }
                                         });
                                     setTimeout (function ()
@@ -704,44 +713,47 @@ module.exports = function(RED) {
                                     that.access.set (that.service+'.'+that.characteristic);
                                     peripheraldevice.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                         {
-                                            if (err)
+                                            if (that.access.has ((that.service+'.'+that.characteristic)))
                                             {
-                                                console.log (err);
-                                                pdisconnect (peripheraldevice);
-                                            }
-                                            else
-                                            {
-                                                var type = that.datatype;
-                                                if (msg.datatype) type = msg.datatype;
-                                                var data = writeValue (type, msg.payload);
-                                                var response = 0;
-                                                for (var i = 0; i<characteristics[0].properties.length; i++)
+                                                if (err)
                                                 {
-                                                    if (characteristics[0].properties[i] == 'write') response = response + 1;
-                                                    if (characteristics[0].properties[i] == 'writeWithoutResponse') response = response + 2;
-                                                }
-                                                if (response > 0)
-                                                {
-                                                    characteristics[0].write (data, response & 2, function (err, data)
-                                                    {
-                                                        that.access.delete (that.service+'.'+that.characteristic);
-                                                        if (err)
-                                                        {
-                                                            console.log (err);
-                                                            pdisconnect (peripheraldevice);
-                                                        }
-                                                        else
-                                                        {
-                                                            that.send ({event: true});
-                                                            pdisconnect (peripheraldevice);
-                                                        }
-                                                    });
+                                                    console.log (err);
+                                                    pdisconnect (peripheraldevice);
                                                 }
                                                 else
                                                 {
-                                                    that.warn ('Characteristic is not writable');
+                                                    var type = that.datatype;
+                                                    if (msg.datatype) type = msg.datatype;
+                                                    var data = writeValue (type, msg.payload);
+                                                    var response = 0;
+                                                    for (var i = 0; i<characteristics[0].properties.length; i++)
+                                                    {
+                                                        if (characteristics[0].properties[i] == 'write') response = response + 1;
+                                                        if (characteristics[0].properties[i] == 'writeWithoutResponse') response = response + 2;
+                                                    }
+                                                    if (response > 0)
+                                                    {
+                                                        characteristics[0].write (data, response & 2, function (err, data)
+                                                        {
+                                                            that.access.delete (that.service+'.'+that.characteristic);
+                                                            if (err)
+                                                            {
+                                                                console.log (err);
+                                                                pdisconnect (peripheraldevice);
+                                                            }
+                                                            else
+                                                            {
+                                                                that.send ({event: true});
+                                                                pdisconnect (peripheraldevice);
+                                                            }
+                                                        });
+                                                    }
+                                                    else
+                                                    {
+                                                        that.warn ('Characteristic is not writable');
+                                                    }
+                                                    // peripheraldevice.disconnect ();
                                                 }
-                                                // peripheraldevice.disconnect ();
                                             }
                                         });
                                     setTimeout (function ()
