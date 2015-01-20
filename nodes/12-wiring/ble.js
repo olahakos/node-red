@@ -146,13 +146,19 @@ module.exports = function(RED) {
 
     function pconnect (peripheral, done)
     {
-        console.log (peripheral.uuid+' connect');
+        console.log ('connection request '+peripheral.uuid);
         var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
-            if (pdata.connecting) pdata.done.push (done);
+            if (pdata.connecting)
+            {
+                console.log ('connection in progress '+peripheral.uuid);
+                pdata.done.push (done);
+            }
             else 
             {
+                console.log ('already connected '+peripheral.uuid);
+                pdata.load++;
                 done (null);
                 // console.log ('connecting should be true '+pdata.peripheral.Uuid);
             }
@@ -163,9 +169,10 @@ module.exports = function(RED) {
             pdata = connections.get (peripheral.uuid);
             peripheral.connect (function (err)
             {
+                console.log ('connecting '+peripheral.uuid);
                 if (err)
                 {
-                    console.log (err);
+                    console.log ('error connecting '+err+' '+peripheral.uuid)
                     _.each (pdata.done, function (func)
                     {
                         func (err);
@@ -174,6 +181,7 @@ module.exports = function(RED) {
                 }
                 else
                 {
+                    console.log ('connected '+peripheral.uuid);
                     pdata.connecting = false;
                     _.each (pdata.done, function (func)
                     {
@@ -188,20 +196,26 @@ module.exports = function(RED) {
 
     function pdisconnect (peripheral)
     {
-        console.log (peripheral.uuid+' disconnect');
+        console.log ('disconnect request '+peripheral.uuid);
         var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
             pdata.load = pdata.load - 1;
             if (!pdata.connecting && pdata.load == 0)
             {
+                console.log ('disconnect '+peripheral.uuid);
                 if (pdata.peripheral) pdata.peripheral.disconnect ();
                 connections.delete (peripheral.uuid);
+            }
+            else
+            {
+                console.log ('connection in use '+peripheral.uuid);
             }
             console.log (pdata.load+' '+pdata.peripheral.uuid);
         }
         else
         {
+            console.log ('disconnecting '+peripheral.uuid);
             peripheral.disconnect ();
         }
     }
