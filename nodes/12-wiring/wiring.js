@@ -190,8 +190,16 @@ module.exports = function(RED) {
                   });
 
                   res.on('end', function() {
-                    var resultObject = JSON.parse(responseString);
-                    if (resultObject.value) this.send ({topic: config.button, payload:value});
+                    console.log (responseString);
+                    try
+                    {
+                        var resultObject = JSON.parse(responseString);
+                        if (resultObject.value) this.send ({topic: config.button, payload:value});
+                    }
+                    catch (e)
+                    {
+                        console.log (e);
+                    }
                   });
                 });
 
