@@ -159,7 +159,7 @@ module.exports = function(RED) {
             {
                 var address = url.parse (config.address);
                 var string = JSON.stringify ({
-                    name: config.signal,
+                    name: config.button,
                     dashboarduuid: config.dashboarduuid,
                 });
                 var r = http;
