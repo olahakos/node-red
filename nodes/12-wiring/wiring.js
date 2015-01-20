@@ -3,6 +3,8 @@
 
 module.exports = function(RED) {
 	var wyliodrin = null;
+    var http = null;
+    var https = null;
 	if (RED.device)
 	{
         if (process.env.wyliodrin_board == "raspberrypi")
@@ -10,6 +12,8 @@ module.exports = function(RED) {
             process.env.GROVE_PI = 300;   
         }
 		wyliodrin = require ('wyliodrin');   
+        http = require ('http');
+        https = require ('https');
 	}
 
     if (!RED.wyliodrin) RED.wyliodrin = {};
@@ -155,6 +159,53 @@ module.exports = function(RED) {
             {
         	   wyliodrin.sendSignal (config.signal, parseFloat (msg.payload));
             }
+            if (config.address && config.dashboarduuid)
+            {
+                var string = JSON.strinify ({
+                    timestamp:(new Date()).getTime() / 1000,
+                    value: parseFloat (msg.payload),
+                    dashboarduuid: config.dashboarduuid
+                });
+                var r = http;
+                if (address.indexOf ('https://') == 0) r = https;
+                var headers = {
+                  'Content-Type': 'application/json',
+                  'Content-Length': userString.length,
+                  'Connection':'close'
+                };
+
+                var options = {
+                  url: config.address+'/signal/add_signal_value',
+                  method: 'POST',
+                  headers: headers
+                };
+
+                // Setup the request.  The options parameter is
+                // the object we defined above.
+                var req = http.request(options, function(res) {
+                  res.setEncoding('utf-8');
+
+                  var responseString = '';
+
+                  res.on('data', function(data) {
+                    responseString += data;
+                  });
+
+                  res.on('end', function() {
+                    var resultObject = JSON.parse(responseString);
+                  });
+                });
+
+                req.on('error', function(e) {
+                  // TODO: handle error.
+                });
+
+                req.write(userString);
+                req.end();
+            }
+
+
+
             node.send(null);
         });
     }
