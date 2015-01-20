@@ -247,8 +247,6 @@ module.exports = function(RED) {
                                 }
                                 else
                                 {
-                                    var type = that.datatype;
-                                    if (msg.datatype) type = msg.datatype;
                                     done (null, data);
                                     pdisconnect (pdata.peripheral);
                                     pdone ();
