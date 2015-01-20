@@ -167,7 +167,7 @@ module.exports = function(RED) {
                     dashboarduuid: config.dashboarduuid
                 });
                 var r = http;
-                if (address.indexOf ('https://') == 0) r = https;
+                if (config.address.indexOf ('https://') == 0) r = https;
                 var headers = {
                   'Content-Type': 'application/json',
                   'Content-Length': userString.length,
