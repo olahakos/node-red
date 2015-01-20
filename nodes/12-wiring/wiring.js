@@ -162,6 +162,7 @@ module.exports = function(RED) {
                     name: config.button,
                     dashboarduuid: config.dashboarduuid,
                 });
+
                 var r = http;
                 if (address.protocol == 'https') r = https;
                 var headers = {
@@ -177,6 +178,8 @@ module.exports = function(RED) {
                   method: 'POST',
                   headers: headers
                 };
+                
+                var that = this; 
 
                 // Setup the request.  The options parameter is
                 // the object we defined above.
@@ -194,7 +197,7 @@ module.exports = function(RED) {
                     try
                     {
                         var resultObject = JSON.parse(responseString);
-                        if (resultObject.value != undefined) this.send ({topic: config.button, payload:resultObject.value});
+                        if (resultObject.value != undefined) that.send ({topic: config.button, payload:resultObject.value});
                     }
                     catch (e)
                     {
