@@ -163,7 +163,7 @@ module.exports = function(RED) {
             }
             if (config.address && config.dashboarduuid)
             {
-                var address = url.parse (address);
+                var address = url.parse (config.address);
                 var string = JSON.stringify ({
                     timestamp:(new Date()).getTime() / 1000,
                     value: parseFloat (msg.payload),
