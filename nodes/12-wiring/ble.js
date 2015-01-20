@@ -234,14 +234,14 @@ module.exports = function(RED) {
             {
                 pdata.readwrites.push (function (pdone)
                 {
-                    peripheraldevice.discoverSomeServicesAndCharacteristics(service, characteristic, function (err, services, characteristics)
+                    pdata.peripheral.discoverSomeServicesAndCharacteristics(service, characteristic, function (err, services, characteristics)
                         {
                             characteristics[0].read (function (err, data)
                             {
                                 if (err)
                                 {
                                     console.log (err);
-                                    pdisconnect (peripheraldevice);
+                                    pdisconnect (pdata.peripheral);
                                     pdone ();
                                     done (err);
                                 }
@@ -250,7 +250,7 @@ module.exports = function(RED) {
                                     var type = that.datatype;
                                     if (msg.datatype) type = msg.datatype;
                                     done (null, data);
-                                    pdisconnect (peripheraldevice);
+                                    pdisconnect (pdata.peripheral);
                                     pdone ();
                                 }
                             });
@@ -275,12 +275,12 @@ module.exports = function(RED) {
             {
                 pdata.readwrites.push (function (pdone)
                 {
-                    peripheraldevice.discoverSomeServicesAndCharacteristics([service], [characteristic], function (err, services, characteristics)
+                    pdata.peripheral.discoverSomeServicesAndCharacteristics([service], [characteristic], function (err, services, characteristics)
                         {
                             if (err)
                             {
                                 console.log (err);
-                                pdisconnect (peripheraldevice);
+                                pdisconnect (pdata.peripheral);
                                 pdone ();
                                 if (done) done (err);
                             }
@@ -301,13 +301,13 @@ module.exports = function(RED) {
                                             if (err)
                                             {
                                                 console.log (err);
-                                                pdisconnect (peripheraldevice);
+                                                pdisconnect (pdata.peri);
                                                 pdone ();
                                                 if (done) done (err);
                                             }
                                             else
                                             {
-                                                pdisconnect (peripheraldevice);
+                                                pdisconnect (pdata.peripheral);
                                                 pdone ();
                                                 done (null);
                                             }
@@ -321,7 +321,7 @@ module.exports = function(RED) {
                                 else
                                 {
                                     pdone ();
-                                    pdisconnect (peripheraldevice);
+                                    pdisconnect (pdata.peripheral);
                                 }
                                 // peripheraldevice.disconnect ();
                             }
