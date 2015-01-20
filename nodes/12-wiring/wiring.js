@@ -194,7 +194,7 @@ module.exports = function(RED) {
                     try
                     {
                         var resultObject = JSON.parse(responseString);
-                        if (resultObject.value) this.send ({topic: config.button, payload:value});
+                        if (resultObject.value) this.send ({topic: config.button, payload:resultObject.value});
                     }
                     catch (e)
                     {
