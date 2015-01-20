@@ -396,7 +396,6 @@ module.exports = function(RED) {
                                                 }
                                                 else
                                                 {
-                                                    console.log (characteristics[0]);
                                                     connected = true;
                                                     characteristics[0].notify (true, function (err)
                                                     {
