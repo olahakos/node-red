@@ -325,7 +325,7 @@ module.exports = function(RED) {
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
-        this.type = n.type;
+        this.datatype = n.datatype;
 
         var that = this;
 
@@ -409,8 +409,8 @@ module.exports = function(RED) {
                                                         {
                                                             characteristics[0].on ('read', function (data)
                                                             {
-                                                                var type = that.type;
-                                                                if (msg.type) type = msg.type;
+                                                                var type = that.datatype;
+                                                                if (msg.datatype) type = msg.datatype;
                                                                 that.send ({payload: readValue (type, data)});
                                                             });
                                                             // pdisconnect (peripheraldevice);
@@ -475,7 +475,7 @@ module.exports = function(RED) {
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
-        this.type = n.type;
+        this.datatype = n.datatype;
 
         var that = this;
 
@@ -570,8 +570,8 @@ module.exports = function(RED) {
                                                     }
                                                     else
                                                     {
-                                                        var type = that.type;
-                                                        if (msg.type) type = msg.type;
+                                                        var type = that.datatype;
+                                                        if (msg.datatype) type = msg.datatype;
                                                         that.send ({payload: readValue (type, data)});
                                                         pdisconnect (peripheraldevice);
                                                     }
@@ -627,7 +627,7 @@ module.exports = function(RED) {
         this.addresses = n.addresses.split (', ');
         this.service = n.service;
         this.characteristic = n.characteristic;
-        this.type = n.type;
+        this.datatype = n.datatype;
 
         var that = this;
 
@@ -712,8 +712,8 @@ module.exports = function(RED) {
                                             }
                                             else
                                             {
-                                                var type = that.type;
-                                                if (msg.type) type = msg.type;
+                                                var type = that.datatype;
+                                                if (msg.datatype) type = msg.datatype;
                                                 var data = writeValue (type, msg.payload);
                                                 var response = 0;
                                                 for (var i = 0; i<characteristics[0].properties.length; i++)
