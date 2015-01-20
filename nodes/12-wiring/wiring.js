@@ -198,6 +198,7 @@ module.exports = function(RED) {
 
                 req.on('error', function(e) {
                   // TODO: handle error.
+                  console.log (e);
                 });
 
                 req.write(string);
