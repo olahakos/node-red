@@ -173,7 +173,7 @@ module.exports = function(RED) {
                 var options = {
                   host: address.hostname,
                   port: address.port,
-                  path: '/signal/getButton',
+                  path: '/signal/get_button',
                   method: 'POST',
                   headers: headers
                 };
