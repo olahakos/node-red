@@ -34,7 +34,7 @@ module.exports = function(RED) {
 
     function load ()
     {
-        if (_load)
+        if (!_load)
         {
             _load = true;
             if (RED.device)
