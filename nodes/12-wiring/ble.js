@@ -30,21 +30,30 @@ module.exports = function(RED) {
     var _ = require ('underscore');
     var connections = null;
 
-    if (RED.device)
+    var _load = false;
+
+    function load ()
     {
-        noble = require('noble');
-        os = require('os');
-        dict = require ('dict');
-
-        console.log('Unblocking BLE');
-        function puts(error, stdout, stderr) { console.log(stdout) };
-        if (process.env.wyliodrin_board == "edison")
+        if (_load)
         {
-            var cps = require ('child_process');
-            cps.exec("systemctl stop bluetooth; rfkill unblock bluetooth; hciconfig hci0 up", puts);
-        }
+            _load = true;
+            if (RED.device)
+            {
+                noble = require('noble');
+                os = require('os');
+                dict = require ('dict');
 
-        connections = dict ();
+                console.log('Unblocking BLE');
+                function puts(error, stdout, stderr) { console.log(stdout) };
+                if (process.env.wyliodrin_board == "edison")
+                {
+                    var cps = require ('child_process');
+                    cps.exec("systemctl stop bluetooth; rfkill unblock bluetooth; hciconfig hci0 up", puts);
+                }
+
+                connections = dict ();
+            }
+        }
     }
 
     function writeValue (type, value)
@@ -350,6 +359,7 @@ module.exports = function(RED) {
     
     // The main node definition - most things happen in here
     function NobleScan(n) {
+        load ();
         // Create a RED node
         RED.nodes.createNode(this,n);
 
@@ -457,6 +467,7 @@ module.exports = function(RED) {
 
     // The main node definition - most things happen in here
     function NobleNotify(n) {
+        load ();
         // Create a RED node
         RED.nodes.createNode(this,n);
 
@@ -602,6 +613,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("notify ble",NobleNotify);
 
     function NobleRead(n) {
+        load ();
         // Create a RED node
         RED.nodes.createNode(this,n);
 
@@ -704,6 +716,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("read ble",NobleRead);
 
     function NobleWrite(n) {
+        load ();
         // Create a RED node
         RED.nodes.createNode(this,n);
 
