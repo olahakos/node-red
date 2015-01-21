@@ -389,6 +389,7 @@ module.exports = function(RED) {
             else
             {
                 done (new Error ());
+                pnextreadwrite (pdata, done);
             }
         }
         else
