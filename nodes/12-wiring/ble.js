@@ -389,7 +389,11 @@ module.exports = function(RED) {
             else
             {
                 done (new Error ());
-                pnextreadwrite (pdata, done);
+                process.nextTick (function ()
+                    {
+                        pnextreadwrite (pdata, done);
+                    });
+                
             }
         }
         else
