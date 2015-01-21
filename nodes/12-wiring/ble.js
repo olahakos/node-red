@@ -243,25 +243,50 @@ module.exports = function(RED) {
             {
                 pdata.readwrites.push (function (pdone)
                 {
+                    var connect = false;
                     pdata.peripheral.discoverSomeServicesAndCharacteristics(service, characteristic, function (err, services, characteristics)
                         {
-                            characteristics[0].read (function (err, data)
+                            if (connect!=null)
                             {
+                                connect = true;
                                 if (err)
+                                {
+                                    characteristics[0].read (function (err, data)
+                                    {
+                                        if (err)
+                                        {
+                                            console.log (err);
+                                            pdisconnect (pdata.peripheral);
+                                            pdone ();
+                                            done (err);
+                                        }
+                                        else
+                                        {
+                                            done (null, data);
+                                            pdisconnect (pdata.peripheral);
+                                            pdone ();
+                                        }
+                                    });
+                                }
+                                else
                                 {
                                     console.log (err);
                                     pdisconnect (pdata.peripheral);
                                     pdone ();
                                     done (err);
                                 }
-                                else
-                                {
-                                    done (null, data);
-                                    pdisconnect (pdata.peripheral);
-                                    pdone ();
-                                }
-                            });
+                            }
                         });
+                    setTimeout (function ()
+                    {
+                        if (!connect)
+                        {
+                            connect = null;
+                            pdisconnect (pdata.peripheral);
+                            pdone ();
+                            done (new Error ());
+                        }
+                    }, 5000);
                 });
                 if (!pdata.readwrite) pnextreadwrite (pdata);
             }
