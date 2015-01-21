@@ -242,7 +242,7 @@ module.exports = function(RED) {
             }
             else
             {
-                pdata.readwrites.push (function (pdone, done)
+                pdata.readwrites.push (function (pdone)
                 {
                     console.log ('read '+pdata.peripheral.uuid);
                     var connect = false;
@@ -292,7 +292,7 @@ module.exports = function(RED) {
                         }
                     }, 5000);
                 });
-                if (!pdata.readwrite) pnextreadwrite (pdata);
+                if (!pdata.readwrite) pnextreadwrite (pdata, done);
             }
         });
     }
