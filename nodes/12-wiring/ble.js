@@ -384,6 +384,9 @@ module.exports = function(RED) {
                                 pnextreadwrite (pdata);
                             });
                     });
+            }
+            else
+            {
                 done (new Error ());
             }
         }
