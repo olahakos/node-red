@@ -251,6 +251,7 @@ module.exports = function(RED) {
                                 connect = true;
                                 if (err)
                                 {
+                                    console.log ('reading '+pdata.peripheral.uuid);
                                     characteristics[0].read (function (err, data)
                                     {
                                         if (err)
