@@ -21,19 +21,30 @@ module.exports = function(RED) {
     var fs;
     var plat;
     var portlist;
-    if (RED.device)
+
+    var _load = false;
+
+    function load ()
     {
-        util = require("util");
-        ArduinoFirmata = require('arduino-firmata');
-        fs = require('fs');
-        plat = require('os').platform();
-        portlist = ArduinoFirmata.list(function (err, ports) {
-            portlist = ports;
-        });
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                util = require("util");
+                ArduinoFirmata = require('arduino-firmata');
+                fs = require('fs');
+                plat = require('os').platform();
+                portlist = ArduinoFirmata.list(function (err, ports) {
+                    portlist = ports;
+                });
+            }
+        }
     }
 
     // The Board Definition - this opens (and closes) the connection
     function ArduinoNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.device = n.device || null;
         this.repeat = n.repeat||25;
@@ -66,6 +77,7 @@ module.exports = function(RED) {
 
     // The Input Node
     function DuinoNodeIn(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.buttonState = -1;
         this.pin = n.pin;
@@ -110,6 +122,7 @@ module.exports = function(RED) {
 
     // The Output Node
     function DuinoNodeOut(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.buttonState = -1;
         this.pin = n.pin;

@@ -16,10 +16,23 @@
 
 module.exports = function(RED) {
     "use strict";
-    var util = require("util");
-    var vm = require("vm");
+    var util = null;
+    var vm = null;
+
+    var _load = false;
+
+    function load ()
+    {
+        if (!_load)
+        {
+            _load = true;
+            util = require("util");
+            vm = require("vm");
+        }
+    }
 
     function VisualNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.name = n.name;
         this.func = n.func;

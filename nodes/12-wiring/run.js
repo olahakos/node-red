@@ -16,9 +16,19 @@
 
 module.exports = function(RED) {
     var cron = null;
-    if (RED.device)
+
+    var _load = false;
+
+    function load ()
     {
-        cron = require("cron");
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                cron = require("cron");
+            }
+        }
     }
     
     function RunNode(n) {

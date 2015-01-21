@@ -6,23 +6,34 @@ module.exports = function(RED) {
     var http = null;
     var https = null;
     var url = null;
-	if (RED.device)
-	{
-        if (process.env.wyliodrin_board == "raspberrypi")
+
+    var _load = false;
+
+    function load ()
+    {
+        if (!_load)
         {
-            process.env.GROVE_PI = 300;   
+            _load = true;
+        	if (RED.device)
+        	{
+                if (process.env.wyliodrin_board == "raspberrypi")
+                {
+                    process.env.GROVE_PI = 300;   
+                }
+        		wyliodrin = require ('wyliodrin');   
+                http = require ('http');
+                https = require ('https');
+                url = require ('url');
+        	}
         }
-		wyliodrin = require ('wyliodrin');   
-        http = require ('http');
-        https = require ('https');
-        url = require ('url');
-	}
+    }
 
     if (!RED.wyliodrin) RED.wyliodrin = {};
 
     if (!RED.wyliodrin.pinModes) RED.wyliodrin.pinModes = [];
 
     function digitalWrite(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var node = this;
         this.on('input', function(msg) {
@@ -39,6 +50,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("digitalwrite",digitalWrite);
 
     function digitalRead(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var node = this;
         // if (this.interval == "on_input")
@@ -62,6 +74,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("digitalread",digitalRead);
 
     function shiftOut(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var node = this;
         this.on('input', function(msg) {
@@ -85,6 +98,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("shift out",shiftOut);
 
     function shiftIn(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var node = this;
         // if (this.interval == "on_input")
@@ -115,6 +129,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("shift in",shiftIn);
 
     function analogWrite(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var node = this;
         this.on('input', function(msg) {
@@ -131,6 +146,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("analogwrite",analogWrite);
 
     function analogRead(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var node = this;
         // if (this.interval == "on_input")
@@ -150,6 +166,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("analogread",analogRead);
 
     function receiveSignal(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var node = this;
 
@@ -220,6 +237,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("button",receiveSignal);
     
     function sendSignal(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var node = this;
         this.on('input', function(msg) {

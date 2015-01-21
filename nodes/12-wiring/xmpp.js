@@ -5,12 +5,23 @@ module.exports = function(RED) {
 	var redis = null;
     var subscribe = null;
     var publish = null;
-	if (RED.device)
-	{
-		redis = require ('redis');
-	}
+
+    var _load = false;
+
+    function load ()
+    {
+        if (!_load)
+        {
+            _load = true;
+        	if (RED.device)
+        	{
+        		redis = require ('redis');
+        	}
+        }
+    }
 
     function sendMessage(config) {
+        load ();
         RED.nodes.createNode(this,config);
         this.name = config.name;
         this.label = config.label;
@@ -35,6 +46,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("send",sendMessage);
 
     function receiveMessage(config) {
+        load ();
         RED.nodes.createNode(this,config);
         var that = this;
         this.label = config.label;

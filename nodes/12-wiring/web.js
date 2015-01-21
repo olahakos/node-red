@@ -26,18 +26,27 @@ module.exports = function(RED) {
     var urllib = null;
     var querystring = null;
 
+    var _load = false;
 
-    if (RED.device)
+    function load ()
     {
-        express = require ('express');
-        http = require("follow-redirects").http;
-        https = require("follow-redirects").https;
-        mustache = require("mustache");
-        urllib = require("url");
-        querystring = require("querystring");
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                express = require ('express');
+                http = require("follow-redirects").http;
+                https = require("follow-redirects").https;
+                mustache = require("mustache");
+                urllib = require("url");
+                querystring = require("querystring");
+            }
+        }
     }
 
     function HTTPRequest(n) {
+        load ();
         RED.nodes.createNode(this,n);
         var nodeUrl = n.url;
         var isTemplatedUrl = (nodeUrl||"").indexOf("{{") != -1;
@@ -143,6 +152,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("http request",HTTPRequest);
 
     function WebListenNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.name = n.name;
         this.port = n.port;
@@ -207,6 +217,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("web route",WebListenNode);
 
     function WebResponseNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
 
         this.on ('input', function (msg)
@@ -221,6 +232,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("web response",WebResponseNode);
 
     function WebResponseTemplateNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.template = n.template;
         if (!jinja)

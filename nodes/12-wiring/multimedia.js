@@ -17,12 +17,22 @@ module.exports = function(RED) {
     
     var child_process = null;
 
-    if (RED.device)
+    var _load = false;
+
+    function load ()
     {
-        child_process = require ('child_process');
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                child_process = require ('child_process');
+            }
+        }
     }
 
     function SayNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.name = n.name;
         this.language = n.language;

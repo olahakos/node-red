@@ -20,12 +20,22 @@ module.exports = function(RED) {
 
     var dualShock = null;
 
-    if (RED.device)
+    var _load = false;
+
+    function load ()
     {
-        dualShock = require('dualshock-controller');
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                dualShock = require('dualshock-controller');
+            }
+        }
     }
 
     function PSNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
 
         this.data = null;
