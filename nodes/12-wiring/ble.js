@@ -287,7 +287,7 @@ module.exports = function(RED) {
                             console.log ('retry');
                             connect = null;
                             pdata.retry = true;
-                            pdisconnect (pdata.peripheral);
+                            // pdisconnect (pdata.peripheral);
                             pdone ();
                             done (new Error ());
                         }
