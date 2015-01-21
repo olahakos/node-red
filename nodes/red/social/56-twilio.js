@@ -19,9 +19,18 @@ module.exports = function(RED) {
     "use strict";
     var twilio = null;
 
-    if (RED.device)
+    var _load = false;
+
+    function load ()
     {
-        var twilio = require('twilio');
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                var twilio = require('twilio');
+            }
+        }
     }
 
     // try {
@@ -68,6 +77,7 @@ module.exports = function(RED) {
     // });
 
     function TwilioAPINode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.sid = n.sid;
         this.from = n.from;
@@ -82,6 +92,7 @@ module.exports = function(RED) {
 
 
     function TwilioOutNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.number = n.number;
 
@@ -120,6 +131,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("twilio sms",TwilioOutNode);
 
     function TwilioCallNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.number = n.number;
         this.language = n.language;

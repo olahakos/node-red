@@ -19,13 +19,23 @@ module.exports = function(RED) {
     var FeedParser = null;
     var request = null;
 
-    if (RED.device)
+    var _load = false;
+
+    function load ()
     {
-        var FeedParser = require("feedparser");
-        var request = require("request");
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                var FeedParser = require("feedparser");
+                var request = require("request");
+            }
+        }
     }
 
     function FeedParseNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.url = n.url;
         this.interval = (parseInt(n.interval)||15)*60000;

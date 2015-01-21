@@ -20,14 +20,24 @@ module.exports = function(RED) {
     var OAuth= null;
     var request = null;
 
-    if (RED.device)
+    var _load = false;
+
+    function load ()
     {
-        var ntwitter = require('twitter-ng');
-        var OAuth= require('oauth').OAuth;
-        var request = require('request');
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                var ntwitter = require('twitter-ng');
+                var OAuth= require('oauth').OAuth;
+                var request = require('request');
+            }
+        }
     }
     
     function TwitterNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.screen_name = n.screen_name;
         this.consumer_key = n.consumer_key;
@@ -38,6 +48,7 @@ module.exports = function(RED) {
     RED.nodes.registerType("twitter-credentials",TwitterNode);
 
     function TwitterInNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.active = true;
         this.user = n.user;
@@ -252,6 +263,7 @@ module.exports = function(RED) {
 
 
     function TwitterOutNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.topic = n.topic;
         this.twitter = n.twitter;

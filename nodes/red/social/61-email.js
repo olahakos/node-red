@@ -20,10 +20,19 @@ module.exports = function(RED) {
     var nodemailer = null;
     var Imap = null;
 
-    if (RED.device)
+    var _load = false;
+
+    function load ()
     {
-        nodemailer = require("nodemailer");
-        Imap = require('imap');
+        if (!_load)
+        {
+            _load = true;
+            if (RED.device)
+            {
+                nodemailer = require("nodemailer");
+                Imap = require('imap');
+            }
+        }
     }
 
     //console.log(nodemailer.Transport.transports.SMTP.wellKnownHosts);
@@ -34,6 +43,7 @@ module.exports = function(RED) {
     // }
 
     function EmailNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.topic = n.topic;
         this.name = n.name;
@@ -108,6 +118,7 @@ module.exports = function(RED) {
     });
 
     function EmailInNode(n) {
+        load ();
         RED.nodes.createNode(this,n);
         this.name = n.name;
         this.repeat = n.repeat * 1000 || 300000;
