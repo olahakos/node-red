@@ -218,14 +218,14 @@ module.exports = function(RED) {
                     }
                     catch (e)
                     {
-                        console.log (e);
+                        // console.log (e);
                     }
                   });
                 });
 
                 req.on('error', function(e) {
                   // TODO: handle error.
-                  console.log (e);
+                  // console.log (e);
                 });
 
                 req.write(string);
@@ -292,7 +292,7 @@ module.exports = function(RED) {
 
                 req.on('error', function(e) {
                   // TODO: handle error.
-                  console.log (e);
+                  // console.log (e);
                 });
 
                 req.write(string);
