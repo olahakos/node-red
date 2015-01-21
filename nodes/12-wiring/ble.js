@@ -278,16 +278,16 @@ module.exports = function(RED) {
                                 }
                             }
                         });
-                    setTimeout (function ()
-                    {
-                        if (!connect)
-                        {
-                            connect = null;
-                            pdisconnect (pdata.peripheral);
-                            pdone ();
-                            done (new Error ());
-                        }
-                    }, 5000);
+                    // setTimeout (function ()
+                    // {
+                    //     if (!connect)
+                    //     {
+                    //         connect = null;
+                    //         pdisconnect (pdata.peripheral);
+                    //         pdone ();
+                    //         done (new Error ());
+                    //     }
+                    // }, 5000);
                 });
                 if (!pdata.readwrite) pnextreadwrite (pdata);
             }
