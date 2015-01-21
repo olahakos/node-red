@@ -200,7 +200,7 @@ module.exports = function(RED) {
                 }
             });
         }
-        console.log (pdata.load+' '+pdata.peripheral.uuid);
+        console.log ('connect '+pdata.load+' '+pdata.peripheral.uuid);
     }
 
     function pdisconnect (peripheral)
@@ -221,7 +221,7 @@ module.exports = function(RED) {
             {
                 // console.log ('connection in use '+peripheral.uuid);
             }
-            console.log (pdata.load+' '+pdata.peripheral.uuid);
+            console.log ('disconnect '+pdata.load+' '+pdata.peripheral.uuid);
         }
         else
         {
