@@ -174,7 +174,7 @@ module.exports = function(RED) {
         }
         else
         {
-            connections.set (peripheral.uuid, {peripheral:peripheral, connecting:true, load: 0, done:[done], readwrites:[], readwrite: false});
+            connections.set (peripheral.uuid, {peripheral:peripheral, connecting:true, load: 0, done:[done], readwrites:[], readwrite: false, retry: false});
             pdata = connections.get (peripheral.uuid);
             peripheral.connect (function (err)
             {
@@ -209,6 +209,7 @@ module.exports = function(RED) {
         var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
+            if (pdata.retry) pdata.peripheral.disconnect ();
             pdata.load = pdata.load - 1;
             if (!pdata.connecting && pdata.load == 0)
             {
@@ -241,7 +242,7 @@ module.exports = function(RED) {
             }
             else
             {
-                pdata.readwrites.push (function (pdone)
+                pdata.readwrites.push (function (pdone, done)
                 {
                     console.log ('read '+pdata.peripheral.uuid);
                     var connect = false;
@@ -279,16 +280,17 @@ module.exports = function(RED) {
                                 }
                             }
                         });
-                    // setTimeout (function ()
-                    // {
-                    //     if (!connect)
-                    //     {
-                    //         connect = null;
-                    //         pdisconnect (pdata.peripheral);
-                    //         pdone ();
-                    //         done (new Error ());
-                    //     }
-                    // }, 5000);
+                    setTimeout (function ()
+                    {
+                        if (!connect)
+                        {
+                            connect = null;
+                            pdata.retry = true;
+                            pdisconnect (pdata.peripheral);
+                            pdone ();
+                            done (new Error ());
+                        }
+                    }, 5000);
                 });
                 if (!pdata.readwrite) pnextreadwrite (pdata);
             }
@@ -366,20 +368,24 @@ module.exports = function(RED) {
         });
     }
 
-    function pnextreadwrite (pdata)
+    function pnextreadwrite (pdata, done)
     {
         if (pdata.readwrites.length > 0)
         {
             var readwrite = pdata.readwrites[0];
             pdata.readwrites.splice (0, 1);
             pdata.readwrite = true;
-            readwrite (function ()
-                {
-                    process.nextTick (function ()
-                        {
-                            pnextreadwrite (pdata);
-                        });
-                });
+            if (!pdata.retry)
+            {
+                readwrite (function ()
+                    {
+                        process.nextTick (function ()
+                            {
+                                pnextreadwrite (pdata);
+                            });
+                    });
+                done (new Error ());
+            }
         }
         else
         {
