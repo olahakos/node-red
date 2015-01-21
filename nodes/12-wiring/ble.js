@@ -719,9 +719,16 @@ module.exports = function(RED) {
                         // console.log (peripheraldevice);
                         pread (peripheraldevice, that.service, that.characteristic, function (err, data)
                         {
-                            var type = that.datatype;
-                            if (msg.datatype) type = msg.datatype;   
-                            that.send ({payload: readValue (type, data)});
+                            if (!err)
+                            {
+                                var type = that.datatype;
+                                if (msg.datatype) type = msg.datatype;   
+                                that.send ({payload: readValue (type, data)});
+                            }
+                            else
+                            {
+                                console.log (err);
+                            }
                         });
                     });
                 }
