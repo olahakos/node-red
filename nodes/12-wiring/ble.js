@@ -209,23 +209,16 @@ module.exports = function(RED) {
         var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
-            if (!pdata.retry)
+            pdata.load = pdata.load - 1;
+            if (!pdata.connecting && pdata.load == 0)
             {
-                pdata.load = pdata.load - 1;
-                if (!pdata.connecting && pdata.load == 0)
-                {
-                    // console.log ('disconnect '+peripheral.uuid);
-                    if (pdata.peripheral) pdata.peripheral.disconnect ();
-                    connections.delete (peripheral.uuid);
-                }
-                else
-                {
-                    // console.log ('connection in use '+peripheral.uuid);
-                }
+                // console.log ('disconnect '+peripheral.uuid);
+                if (!pdata.retry && pdata.peripheral) pdata.peripheral.disconnect ();
+                connections.delete (peripheral.uuid);
             }
             else
             {
-                connections.delete (peripheral.uuid);
+                // console.log ('connection in use '+peripheral.uuid);
             }
             console.log ('disconnect '+pdata.load+' '+pdata.peripheral.uuid);
         }
