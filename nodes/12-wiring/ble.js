@@ -374,12 +374,15 @@ module.exports = function(RED) {
             pdata.readwrite = true;
             readwrite (function ()
                 {
-                    pdata.readwrite = false;
                     process.nextTick (function ()
                         {
                             pnextreadwrite (pdata);
                         });
                 });
+        }
+        else
+        {
+            pdata.readwrite = false;
         }
     }
     
