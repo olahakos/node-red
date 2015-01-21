@@ -209,17 +209,23 @@ module.exports = function(RED) {
         var pdata = connections.get (peripheral.uuid);
         if (pdata)
         {
-            if (pdata.retry) pdata.peripheral.disconnect ();
-            pdata.load = pdata.load - 1;
-            if (!pdata.connecting && pdata.load == 0)
+            if (!pdata.retry)
             {
-                // console.log ('disconnect '+peripheral.uuid);
-                if (pdata.peripheral) pdata.peripheral.disconnect ();
-                connections.delete (peripheral.uuid);
+                pdata.load = pdata.load - 1;
+                if (!pdata.connecting && pdata.load == 0)
+                {
+                    // console.log ('disconnect '+peripheral.uuid);
+                    if (pdata.peripheral) pdata.peripheral.disconnect ();
+                    connections.delete (peripheral.uuid);
+                }
+                else
+                {
+                    // console.log ('connection in use '+peripheral.uuid);
+                }
             }
             else
             {
-                // console.log ('connection in use '+peripheral.uuid);
+                connections.delete (peripheral.uuid);
             }
             console.log ('disconnect '+pdata.load+' '+pdata.peripheral.uuid);
         }
@@ -282,12 +288,15 @@ module.exports = function(RED) {
                         });
                     pdata.peripheral.on ('disconnect', function ()
                     {
-                        console.log ('retry');
-                        connect = null;
-                        pdata.retry = true;
-                        pdata.load = 0;
-                        pdone ();
-                        done (new Error ());
+                        if (!connected)
+                        {
+                            console.log ('retry');
+                            connect = null;
+                            pdata.retry = true;
+                            pdisconnect (pdata.peripheral);
+                            pdone ();
+                            done (new Error ());
+                        }
                     });
                 });
                 if (!pdata.readwrite) pnextreadwrite (pdata, done);
