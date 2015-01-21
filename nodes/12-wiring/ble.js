@@ -280,18 +280,15 @@ module.exports = function(RED) {
                                 }
                             }
                         });
-                    setTimeout (function ()
+                    pdata.peripheral.on ('disconnect', function ()
                     {
-                        if (!connect)
-                        {
-                            console.log ('retry');
-                            connect = null;
-                            pdata.retry = true;
-                            pdisconnect (pdata.peripheral);
-                            pdone ();
-                            done (new Error ());
-                        }
-                    }, 5000);
+                        console.log ('retry');
+                        connect = null;
+                        pdata.retry = true;
+                        pdata.load = 0;
+                        pdone ();
+                        done (new Error ());
+                    });
                 });
                 if (!pdata.readwrite) pnextreadwrite (pdata, done);
             }
