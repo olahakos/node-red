@@ -381,7 +381,7 @@ module.exports = function(RED) {
                     {
                         process.nextTick (function ()
                             {
-                                pnextreadwrite (pdata);
+                                pnextreadwrite (pdata, done);
                             });
                     });
             }
