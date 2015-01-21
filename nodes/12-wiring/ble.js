@@ -248,7 +248,7 @@ module.exports = function(RED) {
                     var connect = false;
                     pdata.peripheral.discoverSomeServicesAndCharacteristics(service, characteristic, function (err, services, characteristics)
                         {
-                            if (connect!=null)
+                            if (!pdata.retry)
                             {
                                 connect = true;
                                 if (!err)
@@ -284,6 +284,7 @@ module.exports = function(RED) {
                     {
                         if (!connect)
                         {
+                            console.log ('retry');
                             connect = null;
                             pdata.retry = true;
                             pdisconnect (pdata.peripheral);
