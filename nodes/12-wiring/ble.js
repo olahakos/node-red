@@ -243,6 +243,7 @@ module.exports = function(RED) {
             {
                 pdata.readwrites.push (function (pdone)
                 {
+                    console.log ('read '+pdata.peripheral.uuid);
                     var connect = false;
                     pdata.peripheral.discoverSomeServicesAndCharacteristics(service, characteristic, function (err, services, characteristics)
                         {
