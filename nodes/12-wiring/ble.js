@@ -586,7 +586,7 @@ module.exports = function(RED) {
                                     }
                                     else
                                     {
-                                        pdata.readwrite.push (function ()
+                                        pdata.readwrites.splice (0, 0, function ()
                                         {
 
 
