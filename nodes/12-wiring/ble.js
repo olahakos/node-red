@@ -281,7 +281,7 @@ module.exports = function(RED) {
                         });
                     pdata.peripheral.on ('disconnect', function ()
                     {
-                        if (!connected)
+                        if (!connect)
                         {
                             console.log ('retry');
                             connect = null;
