@@ -15,6 +15,7 @@
  **/
 
 //Simple node to introduce a pause into a flow
+
 module.exports = function(RED) {
     "use strict";
 
@@ -106,7 +107,7 @@ module.exports = function(RED) {
                     }
                     if (that.pos < that.size)
                     {
-                        // if (!that.data) that.data = {};
+                        // f (!that.data) that.data = {};
                         addToArray (msg);
                     }
                 }
