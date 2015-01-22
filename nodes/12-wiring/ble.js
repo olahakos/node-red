@@ -576,24 +576,22 @@ module.exports = function(RED) {
                             // console.log (that.peripherals);
                             // console.log (that.peripherals.size);
 
-                            pconnect (msg.peripheral, function (err)
+                            var connect = function ()
                             {
-                                if (err)
+                                pconnect (msg.peripheral, function (err, pdata)
                                 {
-                                    console.log (err+' '+msg.peripheral.uuid);
-                                }
-                                else
-                                {
-                                    console.log ('connected '+msg.peripheral.uuid);
-                                    if (!that.access.get (that.service+'.'+that.characteristic))
+                                    if (err)
                                     {
-                                        var connected = false;
-                                        that.access.set (that.service+'.'+that.characteristic);
-                                        msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
-                                            {
-                                                if (!connected)
+                                        console.log (err+' '+msg.peripheral.uuid);
+                                    }
+                                    else
+                                    {
+                                        console.log ('connected '+msg.peripheral.uuid);
+                                        if (!that.access.get (that.service+'.'+that.characteristic))
+                                        {
+                                            that.access.set (that.service+'.'+that.characteristic);
+                                            msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                                 {
-                                                    connected = true;
                                                     if (err)
                                                     {
                                                         console.log (err);
@@ -621,21 +619,30 @@ module.exports = function(RED) {
                                                         });
                                                         // peripheraldevice.disconnect ();
                                                     }
-                                                }
-                                          });
-                                        setTimeout (function ()
-                                        {
-                                            if (!connected)
-                                            {
-                                                connected = true;
-                                                pdisconnect (msg.peripheral);
-                                                that.access.delete (that.service+'.'+that.characteristic);
-                                            }
-                                        }, 5000);
+                                              });
+                                            
+                                            // setTimeout (function ()
+                                            // {
+                                            //     if (!connected)
+                                            //     {
+                                            //         connected = true;
+                                            //         pdisconnect (msg.peripheral);
+                                            //         that.access.delete (that.service+'.'+that.characteristic);
+                                            //     }
+                                            // }, 5000);
+                                        }
                                     }
-                                }
-                            });
-
+                                    msg.peripheral.on ('disconnect', function ()
+                                        {
+                                            pdata.retry = true;
+                                            pdisconnect (peripheraldevice);
+                                            setTimeout (function ()
+                                            {
+                                                connect ();
+                                            }, 4000);
+                                        });
+                                });
+                            };
                         }
                     }
                 }
