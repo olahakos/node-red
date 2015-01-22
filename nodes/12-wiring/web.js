@@ -241,7 +241,10 @@ module.exports = function(RED) {
         }
         this.on ('input', function (msg)
         {
-            msg.res.send (jinja.compileFile (process.cwd()+'/templates/'+this.template).render (_.extend (msg.payload, {payload:msg.payload}}));
+            var payload = null;
+            if (_.isObject (msg.payload)) payload = msg.payload;
+            else payload = {payload: msg.payload};
+            msg.res.send (jinja.compileFile (process.cwd()+'/templates/'+this.template).render (payload));
         });
 
     }
