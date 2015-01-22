@@ -643,6 +643,8 @@ module.exports = function(RED) {
                                         });
                                 });
                             };
+                            
+                            connect ();
                         }
                     }
                 }
