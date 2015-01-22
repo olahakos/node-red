@@ -28,7 +28,7 @@ module.exports = function(RED) {
             _load = true;
             if (RED.device)
             {
-                var twilio = require('twilio');
+                twilio = require('twilio');
             }
         }
     }
