@@ -586,10 +586,14 @@ module.exports = function(RED) {
                                     }
                                     else
                                     {
-                                        console.log ('connected '+msg.peripheral.uuid);
-                                        if (!that.access.get (that.service+'.'+that.characteristic))
+                                        pdata.readwrite.push (function ()
                                         {
-                                            that.access.set (that.service+'.'+that.characteristic);
+
+
+                                            console.log ('connected '+msg.peripheral.uuid);
+                                            // if (!that.access.get (that.service+'.'+that.characteristic))
+                                            // {
+                                            //     that.access.set (that.service+'.'+that.characteristic);
                                             msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                                 {
                                                     if (err)
@@ -620,7 +624,7 @@ module.exports = function(RED) {
                                                         // peripheraldevice.disconnect ();
                                                     }
                                               });
-                                            
+                                        });
                                             // setTimeout (function ()
                                             // {
                                             //     if (!connected)
@@ -630,8 +634,8 @@ module.exports = function(RED) {
                                             //         that.access.delete (that.service+'.'+that.characteristic);
                                             //     }
                                             // }, 5000);
-                                        }
                                     }
+                                    // }
                                     msg.peripheral.on ('disconnect', function ()
                                         {
                                             pdata.retry = true;
