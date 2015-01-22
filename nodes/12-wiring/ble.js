@@ -586,7 +586,7 @@ module.exports = function(RED) {
                                     }
                                     else
                                     {
-                                        pdata.readwrites.splice (0, 0, function ()
+                                        pdata.readwrites.splice (0, 0, function (pdone)
                                         {
 
 
@@ -596,6 +596,7 @@ module.exports = function(RED) {
                                             //     that.access.set (that.service+'.'+that.characteristic);
                                             msg.peripheral.discoverSomeServicesAndCharacteristics([that.service], [that.characteristic], function (err, services, characteristics)
                                                 {
+                                                    pdone ();
                                                     if (err)
                                                     {
                                                         console.log (err);
