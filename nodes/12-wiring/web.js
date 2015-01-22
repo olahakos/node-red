@@ -241,7 +241,7 @@ module.exports = function(RED) {
         }
         this.on ('input', function (msg)
         {
-            msg.res.send (jinja.compileFile (process.cwd()+'/templates/'+this.template).render (msg.payload));
+            msg.res.send (jinja.compileFile (process.cwd()+'/templates/'+this.template).render (_.extend (msg.payload, {payload:msg.payload}}));
         });
 
     }
