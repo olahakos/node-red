@@ -242,7 +242,7 @@ module.exports = function(RED) {
         this.on ('input', function (msg)
         {
             var payload = null;
-            if (_.isObject (msg.payload)) payload = msg.payload;
+            if (typeof msg.payload == "object") payload = msg.payload;
             else payload = {payload: msg.payload};
             msg.res.send (jinja.compileFile (process.cwd()+'/templates/'+this.template).render (payload));
         });
