@@ -213,7 +213,11 @@ module.exports = function(RED) {
             if (!pdata.connecting && pdata.load == 0)
             {
                 // console.log ('disconnect '+peripheral.uuid);
-                if (!pdata.retry && pdata.peripheral) pdata.peripheral.disconnect ();
+                if (!pdata.retry && pdata.peripheral)
+                {
+                    console.log ('stop connection')
+                    pdata.peripheral.disconnect ();
+                }
                 connections.delete (peripheral.uuid);
             }
             else
