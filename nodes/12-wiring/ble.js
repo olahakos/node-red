@@ -639,8 +639,7 @@ module.exports = function(RED) {
                                     // }
                                     msg.peripheral.on ('disconnect', function ()
                                         {
-                                            pdata.retry = true;
-                                            pdisconnect (pdata.peripheral);
+                                            pdisconnect (msg.peripheral);
                                             setTimeout (function ()
                                             {
                                                 connect ();

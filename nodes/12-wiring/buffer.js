@@ -66,7 +66,7 @@ module.exports = function(RED) {
             {
                 if (that.data)
                 {
-                    that.send (that.data);
+                    that.send (_.extend (that.data, msg));
                     that.data = null;
                     that.pos = 0;
                 }
