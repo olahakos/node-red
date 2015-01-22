@@ -635,7 +635,7 @@ module.exports = function(RED) {
                                     msg.peripheral.on ('disconnect', function ()
                                         {
                                             pdata.retry = true;
-                                            pdisconnect (peripheraldevice);
+                                            pdisconnect (pdata.peripheral);
                                             setTimeout (function ()
                                             {
                                                 connect ();
@@ -643,7 +643,7 @@ module.exports = function(RED) {
                                         });
                                 });
                             };
-                            
+
                             connect ();
                         }
                     }
