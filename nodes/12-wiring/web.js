@@ -244,6 +244,10 @@ module.exports = function(RED) {
             var payload = null;
             if (typeof msg.payload == "object") payload = msg.payload;
             else payload = {payload: msg.payload};
+            for (var variable in RED.settings.functionGlobalContext)
+            {
+                payload[variable] = RED.settings.functionGlobalContext[variable];
+            }
             msg.res.send (jinja.compileFile (process.cwd()+'/templates/'+this.template).render (payload));
         });
 

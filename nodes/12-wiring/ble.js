@@ -315,57 +315,74 @@ module.exports = function(RED) {
             {
                 pdata.readwrites.push (function (pdone)
                 {
+                    console.log ('write 'pdata.peripheral.uuid);
+                    var connect = false;
                     pdata.peripheral.discoverSomeServicesAndCharacteristics([service], [characteristic], function (err, services, characteristics)
                         {
-                            if (err)
+                            if (!pdata.retry)
                             {
-                                console.log (err);
-                                pdisconnect (pdata.peripheral);
-                                pdone ();
-                                if (done) done (err);
-                            }
-                            else
-                            {
-                                if (characteristics.length > 0 && characteristics[0])
+                                if (err)
                                 {
-                                    var response = 0;
-                                    for (var i = 0; i<characteristics[0].properties.length; i++)
-                                    {
-                                        if (characteristics[0].properties[i] == 'write') response = response + 1;
-                                        if (characteristics[0].properties[i] == 'writeWithoutResponse') response = response + 2;
-                                    }
-                                    if (response > 0)
-                                    {
-                                        characteristics[0].write (data, response & 2, function (err, data)
-                                        {
-                                            if (err)
-                                            {
-                                                console.log (err);
-                                                pdisconnect (pdata.peri);
-                                                pdone ();
-                                                if (done) done (err);
-                                            }
-                                            else
-                                            {
-                                                pdisconnect (pdata.peripheral);
-                                                pdone ();
-                                                done (null);
-                                            }
-                                        });
-                                    }
-                                    else
-                                    {
-                                        that.warn ('Characteristic is not writable');
-                                    }
+                                    console.log (err);
+                                    pdisconnect (pdata.peripheral);
+                                    pdone ();
+                                    if (done) done (err);
                                 }
                                 else
                                 {
-                                    pdone ();
-                                    pdisconnect (pdata.peripheral);
+                                    if (characteristics.length > 0 && characteristics[0])
+                                    {
+                                        var response = 0;
+                                        for (var i = 0; i<characteristics[0].properties.length; i++)
+                                        {
+                                            if (characteristics[0].properties[i] == 'write') response = response + 1;
+                                            if (characteristics[0].properties[i] == 'writeWithoutResponse') response = response + 2;
+                                        }
+                                        if (response > 0)
+                                        {
+                                            characteristics[0].write (data, response & 2, function (err, data)
+                                            {
+                                                if (err)
+                                                {
+                                                    console.log (err);
+                                                    pdisconnect (pdata.peri);
+                                                    pdone ();
+                                                    if (done) done (err);
+                                                }
+                                                else
+                                                {
+                                                    pdisconnect (pdata.peripheral);
+                                                    pdone ();
+                                                    done (null);
+                                                }
+                                            });
+                                        }
+                                        else
+                                        {
+                                            that.warn ('Characteristic is not writable');
+                                        }
+                                    }
+                                    else
+                                    {
+                                        pdone ();
+                                        pdisconnect (pdata.peripheral);
+                                    }
+                                    // peripheraldevice.disconnect ();
                                 }
-                                // peripheraldevice.disconnect ();
                             }
                         });
+                    pdata.peripheral.on ('disconnect', function ()
+                    {
+                        if (!connect)
+                        {
+                            console.log ('retry');
+                            connect = null;
+                            pdata.retry = true;
+                            pdisconnect (pdata.peripheral);
+                            pdone ();
+                            done (new Error ());
+                        }
+                    });
                 });
                 if (!pdata.readwrite) pnextreadwrite (pdata);
             }
