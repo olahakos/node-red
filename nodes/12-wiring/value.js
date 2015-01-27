@@ -40,7 +40,7 @@ module.exports = function(RED) {
         
         try {
             this.on("input", function(msg) {
-                node.global[value] = msg.payload;
+                node.global[node.value] = msg.payload;
             });
         } catch(err) {
             this.error(err);
