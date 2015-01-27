@@ -34,7 +34,7 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,n);
         this.name = n.name;
         this.value = n.value;
-        this.global = global:RED.settings.functionGlobalContext || {};
+        this.global = RED.settings.functionGlobalContext || {};
 
         var node = this;
         
