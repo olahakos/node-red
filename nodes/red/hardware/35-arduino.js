@@ -51,12 +51,12 @@ module.exports = function(RED) {
         //node.log("opening connection "+this.device);
         var node = this;
         node.board = new ArduinoFirmata();
-        if (portlist.indexOf(node.device) === -1) {
-            node.warn("Device "+node.device+" not found");
-        }
-        else {
+        // if (portlist.indexOf(node.device) === -1) {
+        //     node.warn("Device "+node.device+" not found");
+        // }
+        // else {
             node.board.connect(node.device);
-        }
+        // }
 
         node.board.on('boardReady', function(){
             node.log("version "+node.board.boardVersion);
