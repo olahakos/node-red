@@ -58,7 +58,8 @@
         "dualshock-controller":"0.6.7",
         "bleno": "0.1.9",
         "noble": "0.3.7",
-        "arduino-firmata":"0.3.2"
+        "arduino-firmata":"0.3.2",
+        "johnny-five":"0.8.40"
     },
     "devDependencies": {
         "grunt": "0.4.5",
