@@ -767,7 +767,7 @@ module.exports = function(RED) {
                         }
                     }
                 }
-                if (msg.event)
+                else
                 {
                     console.log ('periferal devices');
                     // console.log (that.peripherals);
@@ -878,7 +878,7 @@ module.exports = function(RED) {
                         }
                     }
                 }
-                if (msg.event)
+                else
                 {
                     console.log ('periferal devices');
                     // console.log (that.peripherals);
