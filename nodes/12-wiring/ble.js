@@ -303,33 +303,29 @@ module.exports = function(RED) {
 
     function pwrite (peripheral, service, characteristic, data, done)
     {
+
         console.log ('pwrite '+peripheral.uuid);
         pconnect (peripheral, function (err, pdata)
         {
             if (err)
             {
                 console.log ('write error '+peripheral.uuid);
-                if (done) done (err);
+                done (err, null);
             }
             else
             {
                 pdata.readwrites.push (function (pdone)
                 {
-                    console.log ('write 'pdata.peripheral.uuid);
+                    console.log ('write '+pdata.peripheral.uuid);
                     var connect = false;
-                    pdata.peripheral.discoverSomeServicesAndCharacteristics([service], [characteristic], function (err, services, characteristics)
+                    pdata.peripheral.discoverSomeServicesAndCharacteristics(service, characteristic, function (err, services, characteristics)
                         {
                             if (!pdata.retry)
                             {
-                                if (err)
+                                connect = true;
+                                if (!err)
                                 {
-                                    console.log (err);
-                                    pdisconnect (pdata.peripheral);
-                                    pdone ();
-                                    if (done) done (err);
-                                }
-                                else
-                                {
+                                    console.log ('writing '+pdata.peripheral.uuid);
                                     if (characteristics.length > 0 && characteristics[0])
                                     {
                                         var response = 0;
@@ -345,7 +341,7 @@ module.exports = function(RED) {
                                                 if (err)
                                                 {
                                                     console.log (err);
-                                                    pdisconnect (pdata.peri);
+                                                    pdisconnect (pdata.peripheral);
                                                     pdone ();
                                                     if (done) done (err);
                                                 }
@@ -367,7 +363,13 @@ module.exports = function(RED) {
                                         pdone ();
                                         pdisconnect (pdata.peripheral);
                                     }
-                                    // peripheraldevice.disconnect ();
+                                }
+                                else
+                                {
+                                    console.log (err);
+                                    pdisconnect (pdata.peripheral);
+                                    pdone ();
+                                    done (err);
                                 }
                             }
                         });
@@ -384,7 +386,7 @@ module.exports = function(RED) {
                         }
                     });
                 });
-                if (!pdata.readwrite) pnextreadwrite (pdata);
+                if (!pdata.readwrite) pnextreadwrite (pdata, done);
             }
         });
     }
