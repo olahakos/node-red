@@ -297,7 +297,7 @@ module.exports = function(RED) {
                         }
                     });
                 });
-                if (!pdata.readwrite) pnextreadwrite (pdata, done);
+                if (!pdata.readwrite) pnextreadwrite (pdata);
             }
         });
     }
@@ -387,12 +387,12 @@ module.exports = function(RED) {
                         }
                     });
                 });
-                if (!pdata.readwrite) pnextreadwrite (pdata, done);
+                if (!pdata.readwrite) pnextreadwrite (pdata);
             }
         });
     }
 
-    function pnextreadwrite (pdata, done)
+    function pnextreadwrite (pdata)
     {
         if (pdata.readwrites.length > 0)
         {
@@ -405,16 +405,16 @@ module.exports = function(RED) {
                     {
                         process.nextTick (function ()
                             {
-                                pnextreadwrite (pdata, done);
+                                pnextreadwrite (pdata);
                             });
                     });
             }
             else
             {
-                done (new Error ());
+                // done (new Error ());
                 process.nextTick (function ()
                     {
-                        pnextreadwrite (pdata, done);
+                        pnextreadwrite (pdata);
                     });
                 
             }
