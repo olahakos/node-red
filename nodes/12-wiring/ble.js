@@ -62,7 +62,7 @@ module.exports = function(RED) {
         if (type == 'string')
         {
             data = new Buffer (value, 'ascii');
-            console.log (buffer);
+            console.log (data);
         }
         else
         if (type == 'uint8')
