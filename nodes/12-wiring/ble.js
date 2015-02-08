@@ -646,7 +646,7 @@ module.exports = function(RED) {
                                               });
                                         });
 
-                                        if (!pdata.readwrite) pnextreadwrite (pdata, done);
+                                        if (!pdata.readwrite) pnextreadwrite (pdata, null);
 
                                             // setTimeout (function ()
                                             // {
