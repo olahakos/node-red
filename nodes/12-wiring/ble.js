@@ -61,7 +61,7 @@ module.exports = function(RED) {
         var data = null;
         if (type == 'string')
         {
-            data = new Buffer (value, 'ascii');
+            data = new Buffer (value+"", 'utf8');
             console.log (data);
         }
         else
