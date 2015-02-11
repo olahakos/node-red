@@ -230,7 +230,7 @@ module.exports = function(RED) {
         else
         {
             // console.log ('disconnecting '+peripheral.uuid);
-            console.log ('disconnect');
+            console.log ('disconnect')
             peripheral.disconnect ();
         }
     }
