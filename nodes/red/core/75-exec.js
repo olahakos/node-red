@@ -49,7 +49,7 @@ module.exports = function(RED) {
                         node.send([null,msg,null]);
                     });
                     ex.on('close', function (code) {
-                        //console.log('[exec] result: ' + code);
+                        console.log('[exec] result: ' + code);
                         msg.payload = code;
                         node.status({});
                         node.send([null,null,msg]);
