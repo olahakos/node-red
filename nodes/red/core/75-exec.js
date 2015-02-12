@@ -49,7 +49,7 @@ module.exports = function(RED) {
                         node.send([null,msg,null]);
                     });
                     ex.on('close', function (code) {
-                        console.log('[exec] result: ' + code);
+                        //console.log('[exec] result: ' + code);
                         msg.payload = code;
                         node.status({});
                         node.send([null,null,msg]);
@@ -66,7 +66,7 @@ module.exports = function(RED) {
                 var child = exec(cl, function (error, stdout, stderr) {
                     msg.payload = stdout;
                     var msg2 = {payload:stderr};
-                    var msg3 = null;
+                    var msg3 = {payload: {code: 0}};
                     //console.log('[exec] stdout: ' + stdout);
                     //console.log('[exec] stderr: ' + stderr);
                     if (error !== null) {
