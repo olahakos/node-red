@@ -30,6 +30,8 @@ module.exports = function(RED) {
     var _ = require ('underscore');
     var connections = null;
 
+    var BLEFirmata = null;
+
     var _load = false;
 
     function load ()
@@ -52,6 +54,8 @@ module.exports = function(RED) {
                 }
 
                 connections = dict ();
+
+                BLEFirmata = require ('ble-firmata');
             }
         }
     }
@@ -918,5 +922,142 @@ module.exports = function(RED) {
     // Register the node by name. This must be called before overriding any of the
     // Node functions.
     RED.nodes.registerType("write ble",NobleWrite);
+
+    // The Board Definition - this opens (and closes) the connection
+    function BleNode(n) {
+        load ();
+        RED.nodes.createNode(this,n);
+        this.device = n.device || null;
+        this.repeat = n.repeat||25;
+        //node.log("opening connection "+this.device);
+        var node = this;
+        node.board = new BLEFirmata ();
+        // if (portlist.indexOf(node.device) === -1) {
+        //     node.warn("Device "+node.device+" not found");
+        // }
+        // else {
+            node.board.connect(node.device);
+        // }
+
+        node.board.on('connect', function(){
+            node.log("version "+node.board.boardVersion);
+        });
+
+        node.on('close', function() {
+            if (node.board) {
+                try {
+                    node.board.close(function() {
+                        node.log("port closed");
+                    });
+                } catch(e) { }
+            }
+        });
+    }
+    RED.nodes.registerType("ble-board",BleNode);
+
+
+    // The Input Node
+    function BleIn(n) {
+        load ();
+        RED.nodes.createNode(this,n);
+        this.buttonState = -1;
+        this.pin = n.pin;
+        this.state = n.state;
+        this.arduino = n.arduino;
+        this.serverConfig = RED.nodes.getNode(this.arduino);
+        if (typeof this.serverConfig === "object") {
+            this.board = this.serverConfig.board;
+            //this.repeat = this.serverConfig.repeat;
+            var node = this;
+            node.status({fill:"red",shape:"ring",text:"connecting"});
+
+            node.board.on('connect', function() {
+                node.status({fill:"green",shape:"dot",text:"connected"});
+                //console.log("i",node.state,node.pin);
+                if (node.state == "ANALOG") {
+                    node.board.on('analogChange', function(e) {
+                        if (e.pin == node.pin) {
+                            var msg = {payload:e.value, topic:"A"+e.pin};
+                            node.send(msg);
+                        }
+                    });
+
+                }
+                else {
+                    node.board.pinMode(node.pin, ArduinoFirmata.INPUT);
+                    node.board.on('digitalChange', function(e) {
+                        if (e.pin == node.pin) {
+                            var msg = {payload:e.value, topic:e.pin};
+                            node.send(msg);
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            util.log("[BLEFirmata-arduino] port not configured");
+        }
+    }
+    RED.nodes.registerType("ble in",BleIn);
+
+
+    // The Output Node
+    function BleOut(n) {
+        load ();
+        RED.nodes.createNode(this,n);
+        this.buttonState = -1;
+        this.pin = n.pin;
+        this.state = n.state;
+        this.arduino = n.arduino;
+        this.serverConfig = RED.nodes.getNode(this.arduino);
+        if (typeof this.serverConfig === "object") {
+            this.board = this.serverConfig.board;
+            var node = this;
+            node.status({fill:"red",shape:"ring",text:"connecting"});
+
+            node.board.on('connect', function() {
+                node.status({fill:"green",shape:"dot",text:"connected"});
+                //console.log("o",node.state,node.pin);
+                node.board.pinMode(node.pin, node.state);
+                node.on("input", function(msg) {
+                    if (node.state == "OUTPUT") {
+                        if ((msg.payload == true)||(msg.payload == 1)||(msg.payload.toString().toLowerCase() == "on")) {
+                            node.board.digitalWrite(node.pin, true);
+                        }
+                        if ((msg.payload == false)||(msg.payload == 0)||(msg.payload.toString().toLowerCase() == "off")) {
+                            node.board.digitalWrite(node.pin, false);
+                        }
+                    }
+                    if (node.state == "PWM") {
+                        msg.payload = msg.payload * 1;
+                        if ((msg.payload >= 0) && (msg.payload <= 255)) {
+                            //console.log(msg.payload, node.pin);
+                            node.board.analogWrite(node.pin, msg.payload);
+                        }
+                    }
+                    if (node.state == "SERVO") {
+                        msg.payload = msg.payload * 1;
+                        if ((msg.payload >= 0) && (msg.payload <= 180)) {
+                            //console.log(msg.payload, node.pin);
+                            node.board.servoWrite(node.pin, msg.payload);
+                        }
+                    }
+                });
+            });
+        }
+        else {
+            util.log("[BLEFirmata-arduino] port not configured");
+        }
+    }
+    RED.nodes.registerType("ble out",BleOut);
+
+    RED.httpAdmin.get("/arduinoports",function(req,res) {
+        ArduinoFirmata.list(function (err, ports) {
+            //console.log(JSON.stringify(ports));
+            res.writeHead(200, {'Content-Type': 'text/plain'});
+            res.write(JSON.stringify(ports));
+            res.end();
+        });
+    });
 
 }

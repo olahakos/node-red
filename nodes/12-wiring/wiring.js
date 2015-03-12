@@ -160,7 +160,7 @@ module.exports = function(RED) {
         this.on('input', function(msg) {
             var pin = config.pin;
             if (config.pin.length == 0) pin = msg.topic;
-            node.send({topic: pin, payload: wyliodrin.analogRead (parseInt(pin))});
+            node.send({topic: 'A'+pin, payload: wyliodrin.analogRead (parseInt(pin))});
         });
     }
     RED.nodes.registerType("analogread",analogRead);
@@ -241,9 +241,9 @@ module.exports = function(RED) {
         RED.nodes.createNode(this,config);
         var node = this;
         this.on('input', function(msg) {
-            if (msg.topic)
+            if (msg.flag)
             {
-               wyliodrin.sendSignalAndFlag (msg.topic, config.signal, parseFloat (msg.payload)); 
+               wyliodrin.sendSignalAndFlag (msg.flag, config.signal, parseFloat (msg.payload)); 
             }
             else
             {
@@ -286,7 +286,7 @@ module.exports = function(RED) {
                   });
 
                   res.on('end', function() {
-                    var resultObject = JSON.parse(responseString);
+                    // var resultObject = JSON.parse(responseString);
                   });
                 });
 
