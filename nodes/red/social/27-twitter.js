@@ -29,9 +29,9 @@ module.exports = function(RED) {
             _load = true;
             if (RED.device)
             {
-                ntwitter = require('twitter-ng');
-                OAuth= require('oauth').OAuth;
-                request = require('request');
+                var ntwitter = require('twitter-ng');
+                var OAuth= require('oauth').OAuth;
+                var request = require('request');
             }
         }
     }
