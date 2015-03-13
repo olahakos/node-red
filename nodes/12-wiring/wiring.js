@@ -210,7 +210,7 @@ module.exports = function(RED) {
                   });
 
                   res.on('end', function() {
-                    // console.log (responseString);
+                    console.log (responseString);
                     try
                     {
                         var resultObject = JSON.parse(responseString);
@@ -218,7 +218,7 @@ module.exports = function(RED) {
                     }
                     catch (e)
                     {
-                        // console.log (e);
+                        console.log (e);
                     }
                   });
                 });
