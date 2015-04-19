@@ -21,6 +21,21 @@
         color: '#a6bbcf',
         defaults: {
             name: {value:""},
+            signal: {value:"*"}
+        },
+        inputs:0,
+        outputs:1,
+        icon: "serial.png",
+        label: function() {
+            return this.name||"Receive Signal "+this.label;
+        }
+    });
+
+    RED.nodes.registerType('receivesignal',{
+        category: 'Signals',
+        color: '#a6bbcf',
+        defaults: {
+            name: {value:""},
             label: {value:"*"}
         },
         inputs:0,
@@ -74,6 +89,29 @@
         <li> <b>label</b> - the label of the message
         <li> <b>sender</b> - the board id of the sender of the message</li>
         <li> <b>payload</b> - the message
+    </ul>
+    </p>
+</script>
+
+<script type="text/x-red" data-template-name="receivesignal">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-signal"><i class="icon-tag"></i> Signal</label>
+        <input type="text" id="node-input-signal" placeholder="*">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="receivesignal">
+    <p>Receive a signal from a board. If signal is <b>*</b>, it will receive all the signals.</p>
+
+    <p>Message will be filled with:
+    <ul>
+        <li> <b>signal</b> - the signal
+        <li> <b>sender</b> - the board id of the sender of the message</li>
+        <li> <b>payload</b> - the signal value
     </ul>
     </p>
 </script>

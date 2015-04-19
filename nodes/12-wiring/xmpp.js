@@ -74,5 +74,35 @@ module.exports = function(RED) {
         });
     }
     RED.nodes.registerType("receive",receiveMessage);
+
+    function receiveSignal(config) {
+        load ();
+        RED.nodes.createNode(this,config);
+        var that = this;
+        this.signal = config.signal;
+        this.subscribe = redis.createClient ();
+        // if (this.interval == "on_input")
+        // {
+        //     this.inputs = 1;
+        // }
+        // else
+        // {
+        //     this.inputs = 0;
+        // }
+
+        this.subscribe.psubscribe ('communication_client:signal:'+this.signal);
+        this.subscribe.on ('pmessage', function (pattern, channel, strmessage)
+        {
+            var message = JSON.parse (strmessage);
+            var msg = 
+            {
+                signal: channel.substring ('communication_client'.length+1),
+                sender: message.from,
+                payload: JSON.parse(message.data)
+            };
+            that.send (msg);
+        });
+    }
+    RED.nodes.registerType("receivesignal",receiveSignal);
 }
 
