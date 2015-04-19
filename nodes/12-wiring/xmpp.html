@@ -16,8 +16,8 @@
         }
     });
 
-    RED.nodes.registerType('receive',{
-        category: 'social',
+    RED.nodes.registerType('receivesignal',{
+        category: 'Signals',
         color: '#a6bbcf',
         defaults: {
             name: {value:""},
@@ -27,12 +27,12 @@
         outputs:1,
         icon: "serial.png",
         label: function() {
-            return this.name||"Receive Signal "+this.label;
+            return this.name||"Receive Signal "+this.signal;
         }
     });
 
-    RED.nodes.registerType('receivesignal',{
-        category: 'Signals',
+    RED.nodes.registerType('receive',{
+        category: 'social',
         color: '#a6bbcf',
         defaults: {
             name: {value:""},
