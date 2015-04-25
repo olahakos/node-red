@@ -30,7 +30,8 @@ module.exports = function(RED) {
             util:util,
             Buffer:Buffer,
             context: {
-                global:RED.settings.functionGlobalContext || {}
+                require: require,
+                global:RED.settings.functionGlobalContext || {},
             }
         };
         var context = vm.createContext(sandbox);
