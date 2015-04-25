@@ -188,7 +188,7 @@ module.exports = function(RED) {
         {
             app.post (this.route, function (req, res, next)
             {
-                msg = {
+                var msg = {
                     payload: req.body,
                     req: req,
                     res: res,
@@ -202,7 +202,7 @@ module.exports = function(RED) {
         {
             app.post (this.route, function (req, res, next)
             {
-                msg = {
+                var msg = {
                     payload: req.body,
                     req: req,
                     res: res,
