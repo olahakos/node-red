@@ -119,12 +119,12 @@ module.exports = function(RED) {
                 var tonum = node.number || msg.topic;
                 node.twilioClient.sendMessage( {to: tonum, from: node.fromNumber, body: msg.payload}, function(err, response) {
                     if (err) {
-                        node.error(err);
+                        node.error(JSON.stringify(err));
                     }
-                    //console.log(response);
+                    console.log(response);
                 });
             } catch (err) {
-                node.error(err);
+                node.error(JSON.stringify(err));
             }
         });
     }
