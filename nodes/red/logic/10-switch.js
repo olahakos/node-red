@@ -45,33 +45,37 @@ module.exports = function(RED) {
             var rule = this.rules[i];
             // console.log (this.rules[i]);
             if (!isNaN(Number(rule.v))) {
-                var that = rule.v;
-                rule.v = function ()
+                // var that = rule.v;
+                rule.fv = function ()
                 {
-                    return Number(that);
+                    console.log (rule.v);
+                    return Number(rule.v);
                 };
             }
             else
             {
-                var that = rule.v;
-                rule.v = function ()
+                // var that = rule.v;
+                rule.fv = function ()
                 {
-                    return RED.settings.functionGlobalContext[that];
+                    console.log (rule.v);
+                    return RED.settings.functionGlobalContext[rule.v];
                 };
             }
             if (!isNaN(Number(rule.v2))) {
-                var that = rule.v2;
-                rule.v2 = function ()
+                // var that = rule.v2;
+                rule.fv2 = function ()
                 {
-                    return Number(that);
+                    console.log (rule.v2);
+                    return Number(rule.v2);
                 }
             }
             else
             {
-                var that = rule.v2;
-                rule.v2 = function ()
+                // var that = rule.v2;
+                rule.fv2 = function ()
                 {
-                    return RED.settings.functionGlobalContext[that];
+                    console.log (rule.v2);
+                    return RED.settings.functionGlobalContext[rule.v2];
                 };
             }
         }
