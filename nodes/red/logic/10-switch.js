@@ -94,7 +94,7 @@ module.exports = function(RED) {
                     var rule = node.rules[i];
                     var test = prop;
                     if (rule.t == "else") { test = elseflag; elseflag = true; }
-                    if (operators[rule.t](test,rule.v(), rule.v2())) {
+                    if (operators[rule.t](test,rule.fv(), rule.fv2())) {
                         onward.push(msg);
                         elseflag = false;
                         if (node.checkall == "false") { break; }
