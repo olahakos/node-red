@@ -51,8 +51,9 @@ module.exports = function(RED) {
 
         function value (v)
         {
+            if (v == NaN) return v;
             if (!isNaN (Number(v))) return v;
-            else if (v.indexOf("{{")==0 && v.indexOf("}}") == v.length-3) return RED.settings.functionGlobalContext[v.substring (2, v.length-4)];
+            else if (v.indexOf("{{")==0 && v.indexOf("}}") == v.length-2) return RED.settings.functionGlobalContext[v.substring (2, v.length-4)];
             else return v;
         }
 
