@@ -43,41 +43,17 @@ module.exports = function(RED) {
 
         for (var i=0; i<this.rules.length; i+=1) {
             var rule = this.rules[i];
-            // console.log (this.rules[i]);
             if (!isNaN(Number(rule.v))) {
-                // var that = rule.v;
-                rule.fv = function ()
-                {
-                    console.log (rule.v);
-                    return Number(rule.v);
-                };
+                rule.v = Number(rule.v);
+                rule.v2 = Number(rule.v2);
             }
-            else
-            {
-                // var that = rule.v;
-                rule.fv = function ()
-                {
-                    console.log (rule.v);
-                    return RED.settings.functionGlobalContext[rule.v];
-                };
-            }
-            if (!isNaN(Number(rule.v2))) {
-                // var that = rule.v2;
-                rule.fv2 = function ()
-                {
-                    console.log (rule.v2);
-                    return Number(rule.v2);
-                }
-            }
-            else
-            {
-                // var that = rule.v2;
-                rule.fv2 = function ()
-                {
-                    console.log (rule.v2);
-                    return RED.settings.functionGlobalContext[rule.v2];
-                };
-            }
+        }
+
+        function value (v)
+        {
+            if (!isNan (v)) return v;
+            else if (v.indexOf("{{")==0 && v.indexOf("}}") == v.length-3) return RED.settings.functionGlobalContext[v.substring (2, v.length-4)];
+            else return v;
         }
 
         this.on('input', function (msg) {
@@ -88,13 +64,13 @@ module.exports = function(RED) {
                 }, msg);
                 var elseflag = true;
                 for (var i=0; i<node.rules.length; i+=1) {
-                    console.log (node.rules[i]);
-                    console.log (node.rules[i].fv());
-                    console.log (node.rules[i].fv2());
                     var rule = node.rules[i];
                     var test = prop;
+                    console.log (rule);
+                    console.log (value(rule.v));
+                    console.log (value(rule.v2));
                     if (rule.t == "else") { test = elseflag; elseflag = true; }
-                    if (operators[rule.t](test,rule.fv(), rule.fv2())) {
+                    if (operators[rule.t](test,value(rule.v), value(rule.v2))) {
                         onward.push(msg);
                         elseflag = false;
                         if (node.checkall == "false") { break; }
