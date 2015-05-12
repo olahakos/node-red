@@ -84,6 +84,9 @@ module.exports = function(RED) {
                 }, msg);
                 var elseflag = true;
                 for (var i=0; i<node.rules.length; i+=1) {
+                    console.log (node.rules[i]);
+                    console.log (node.rules[i].v());
+                    console.log (node.rules[i].v2());
                     var rule = node.rules[i];
                     var test = prop;
                     if (rule.t == "else") { test = elseflag; elseflag = true; }
