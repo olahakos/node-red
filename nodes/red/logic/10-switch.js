@@ -53,9 +53,10 @@ module.exports = function(RED) {
             }
             else
             {
+                var that = rule.v;
                 rule.v = function ()
                 {
-                    return RED.settings.functionGlobalContext[rule.v];
+                    return RED.settings.functionGlobalContext[that];
                 };
             }
             if (!isNaN(Number(rule.v2))) {
@@ -67,9 +68,10 @@ module.exports = function(RED) {
             }
             else
             {
+                var that = rule.v2;
                 rule.v2 = function ()
                 {
-                    return RED.settings.functionGlobalContext[rule.v2];
+                    return RED.settings.functionGlobalContext[that];
                 };
             }
         }
