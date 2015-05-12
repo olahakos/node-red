@@ -43,20 +43,34 @@ module.exports = function(RED) {
 
         for (var i=0; i<this.rules.length; i+=1) {
             var rule = this.rules[i];
-            console.log (this.rules[i]);
+            // console.log (this.rules[i]);
             if (!isNaN(Number(rule.v))) {
-                rule.v = Number(rule.v);
+                var that = rule.v;
+                rule.v = function ()
+                {
+                    return Number(that);
+                };
             }
             else
             {
-                rule.v = RED.settings.functionGlobalContext[rule.v];
+                rule.v = function ()
+                {
+                    return RED.settings.functionGlobalContext[rule.v];
+                };
             }
             if (!isNaN(Number(rule.v2))) {
-                rule.v2 = Number(rule.v2);
+                var that = rule.v2;
+                rule.v2 = function ()
+                {
+                    return Number(that);
+                }
             }
             else
             {
-                rule.v2 = RED.settings.functionGlobalContext[rule.v2];
+                rule.v2 = function ()
+                {
+                    return RED.settings.functionGlobalContext[rule.v2];
+                };
             }
         }
 
@@ -71,7 +85,7 @@ module.exports = function(RED) {
                     var rule = node.rules[i];
                     var test = prop;
                     if (rule.t == "else") { test = elseflag; elseflag = true; }
-                    if (operators[rule.t](test,rule.v, rule.v2)) {
+                    if (operators[rule.t](test,rule.v(), rule.v2())) {
                         onward.push(msg);
                         elseflag = false;
                         if (node.checkall == "false") { break; }
