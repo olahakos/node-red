@@ -43,6 +43,7 @@ module.exports = function(RED) {
 
         for (var i=0; i<this.rules.length; i+=1) {
             var rule = this.rules[i];
+            console.log (this.rules[i]);
             if (!isNaN(Number(rule.v))) {
                 rule.v = Number(rule.v);
             }
