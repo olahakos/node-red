@@ -45,7 +45,17 @@ module.exports = function(RED) {
             var rule = this.rules[i];
             if (!isNaN(Number(rule.v))) {
                 rule.v = Number(rule.v);
+            }
+            else
+            {
+                rule.v = RED.settings.functionGlobalContext[rule.v];
+            }
+            if (!isNaN(Number(rule.2))) {
                 rule.v2 = Number(rule.v2);
+            }
+            else
+            {
+                rule.v2 = RED.settings.functionGlobalContext[rule.v2];
             }
         }
 
