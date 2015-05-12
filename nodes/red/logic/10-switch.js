@@ -50,7 +50,7 @@ module.exports = function(RED) {
             {
                 rule.v = RED.settings.functionGlobalContext[rule.v];
             }
-            if (!isNaN(Number(rule.2))) {
+            if (!isNaN(Number(rule.v2))) {
                 rule.v2 = Number(rule.v2);
             }
             else
