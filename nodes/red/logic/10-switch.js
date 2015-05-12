@@ -53,8 +53,9 @@ module.exports = function(RED) {
         {
             if (v == NaN || !v) return v;
             if (!isNaN (Number(v))) return v;
-            else if (v.indexOf("{{")==0 && v.indexOf("}}") == v.length-2) {
-                v.substring (2, v.length-2);
+            else if (v.indexOf("{{")==0 && v.indexOf("}}") == v.length-2) 
+            {
+                // v.substring (2, v.length-2);
                 return RED.settings.functionGlobalContext[v.substring (2, v.length-2)];
             }
             else return v;
@@ -70,9 +71,9 @@ module.exports = function(RED) {
                 for (var i=0; i<node.rules.length; i+=1) {
                     var rule = node.rules[i];
                     var test = prop;
-                    console.log (rule);
-                    console.log (value(rule.v));
-                    console.log (value(rule.v2));
+                    // console.log (rule);
+                    // console.log (value(rule.v));
+                    // console.log (value(rule.v2));
                     if (rule.t == "else") { test = elseflag; elseflag = true; }
                     if (operators[rule.t](test,value(rule.v), value(rule.v2))) {
                         onward.push(msg);
